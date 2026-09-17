@@ -1,0 +1,996 @@
+/* =========================================
+   MOTORA ADMIN DASHBOARD
+========================================= */
+
+.dashboard {
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding: 40px;
+
+  background: #f5f5f3;
+
+  color: #050505;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 35px;
+}
+
+.dashboard-eyebrow {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #999;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.17em;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+
+  font-size:
+    clamp(32px, 4vw, 52px);
+
+  line-height: 0.95;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 600;
+}
+
+.dashboard-header p {
+  margin: 13px 0 0;
+
+  color: #888;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+.dashboard-add-btn {
+  min-height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0 17px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.35s ease,
+    background 0.3s ease;
+}
+
+.dashboard-add-btn:hover {
+  transform: translateY(-3px);
+
+  background: #222;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.dashboard-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.dashboard-stat-card {
+  position: relative;
+
+  min-height: 150px;
+
+  padding: 20px;
+
+  border:
+    1px solid
+    rgba(0,0,0,0.08);
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 18px 40px
+    rgba(0,0,0,0.06);
+}
+
+.stat-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+}
+
+.stat-top > span {
+  color: #999;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.stat-icon {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 7px;
+
+  background: #f2f2f0;
+
+  color: #555;
+}
+
+.stat-bottom {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 10px;
+
+  margin-top: 28px;
+}
+
+.stat-bottom strong {
+  font-size: 34px;
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 600;
+}
+
+.stat-change {
+  margin-bottom: 3px;
+
+  color: #555;
+
+  font-size: 8px;
+
+  font-weight: 600;
+}
+
+.stat-line {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2px;
+
+  background: #050505;
+
+  transform: scaleX(0.3);
+
+  transform-origin: left;
+
+  transition:
+    transform 0.5s ease;
+}
+
+.dashboard-stat-card:hover
+.stat-line {
+  transform: scaleX(1);
+}
+
+
+/* =========================================
+   MAIN GRID
+========================================= */
+
+.dashboard-main-grid {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr 0.7fr;
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+
+/* =========================================
+   PANEL
+========================================= */
+
+.dashboard-panel {
+  border:
+    1px solid
+    rgba(0,0,0,0.08);
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 22px 18px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.07);
+}
+
+.panel-header > div > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #aaa;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.panel-header h2 {
+  margin: 0;
+
+  font-size: 18px;
+
+  letter-spacing: -0.04em;
+
+  font-weight: 600;
+}
+
+.panel-header > button {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #777;
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.panel-header > button:hover {
+  color: #050505;
+}
+
+
+/* =========================================
+   INVENTORY CHART
+========================================= */
+
+.inventory-chart {
+  min-height: 275px;
+
+  padding: 25px 22px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+}
+
+.inventory-chart-value {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 10px;
+
+  margin-bottom: 28px;
+}
+
+.inventory-chart-value strong {
+  font-size: 42px;
+
+  line-height: 1;
+
+  letter-spacing: -0.07em;
+}
+
+.inventory-chart-value span {
+  margin-bottom: 4px;
+
+  color: #999;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.inventory-bars {
+  height: 145px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 10px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.1);
+}
+
+.inventory-bar {
+  flex: 1;
+
+  min-width: 15px;
+
+  border-radius:
+    3px 3px 0 0;
+
+  background: #050505;
+
+  opacity: 0.88;
+
+  transform-origin: bottom;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.inventory-bar:hover {
+  opacity: 1;
+
+  transform:
+    scaleY(1.04);
+}
+
+.inventory-labels {
+  display: flex;
+
+  gap: 10px;
+
+  padding-top: 9px;
+}
+
+.inventory-labels span {
+  flex: 1;
+
+  text-align: center;
+
+  color: #aaa;
+
+  font-size: 7px;
+}
+
+
+/* =========================================
+   QUICK ACTIONS
+========================================= */
+
+.quick-actions {
+  padding-bottom: 10px;
+}
+
+.quick-action {
+  width: calc(100% - 28px);
+
+  min-height: 57px;
+
+  margin: 7px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 10px;
+
+  border: 1px solid transparent;
+
+  border-radius: 7px;
+
+  background: #f7f7f5;
+
+  color: #050505;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.quick-action:hover {
+  border-color:
+    rgba(0,0,0,0.12);
+
+  background: #ffffff;
+
+  transform: translateX(3px);
+}
+
+.quick-action > div {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  color: #555;
+}
+
+.quick-action span {
+  flex: 1;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.quick-action > svg {
+  color: #999;
+}
+
+
+/* =========================================
+   LOWER GRID
+========================================= */
+
+.dashboard-lower-grid {
+  display: grid;
+
+  grid-template-columns:
+    1.1fr 0.9fr;
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+
+/* =========================================
+   RECENT CARS
+========================================= */
+
+.recent-car-list {
+  padding: 5px 22px 15px;
+}
+
+.recent-car {
+  min-height: 66px;
+
+  display: grid;
+
+  grid-template-columns:
+    42px 1fr auto auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.06);
+}
+
+.recent-car:last-child {
+  border-bottom: 0;
+}
+
+.car-mini-image {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  background: #f1f1ef;
+
+  color: #555;
+}
+
+.recent-car-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.recent-car-info strong {
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.recent-car-info span {
+  color: #999;
+
+  font-size: 8px;
+}
+
+.recent-car-price {
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.status {
+  min-width: 52px;
+
+  padding: 5px 7px;
+
+  border-radius: 100px;
+
+  text-align: center;
+
+  font-size: 7px;
+
+  font-weight: 700;
+}
+
+.status.active {
+  background: #eeeeec;
+
+  color: #333;
+}
+
+.status.pending {
+  background: #f5f1e7;
+
+  color: #806d3f;
+}
+
+
+/* =========================================
+   TEST DRIVES
+========================================= */
+
+.test-drive-list {
+  padding: 5px 22px 15px;
+}
+
+.test-drive {
+  min-height: 66px;
+
+  display: grid;
+
+  grid-template-columns:
+    100px 1fr auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.06);
+}
+
+.test-drive:last-child {
+  border-bottom: 0;
+}
+
+.test-drive-date {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #777;
+
+  font-size: 8px;
+
+  font-weight: 600;
+}
+
+.test-drive-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.test-drive-info strong {
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.test-drive-info span {
+  color: #999;
+
+  font-size: 8px;
+}
+
+.test-drive-time {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #777;
+
+  font-size: 8px;
+}
+
+
+/* =========================================
+   ENQUIRIES
+========================================= */
+
+.enquiries-panel {
+  margin-bottom: 12px;
+}
+
+.enquiries-table {
+  width: 100%;
+}
+
+.enquiry-head,
+.enquiry-row {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr
+    1.1fr
+    1fr
+    0.8fr
+    35px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    0 22px;
+}
+
+.enquiry-head {
+  min-height: 38px;
+
+  background: #fafaf8;
+
+  color: #aaa;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.enquiry-row {
+  min-height: 70px;
+
+  border-top:
+    1px solid
+    rgba(0,0,0,0.06);
+
+  color: #555;
+
+  font-size: 9px;
+}
+
+.customer-cell {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.customer-avatar {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #eeeeec;
+
+  color: #555;
+
+  font-size: 7px;
+
+  font-weight: 700;
+}
+
+.customer-cell strong {
+  color: #050505;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.enquiry-type {
+  color: #555;
+
+  font-weight: 600;
+}
+
+.enquiry-time {
+  color: #999;
+}
+
+.row-arrow {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: #f4f4f2;
+
+  color: #777;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.row-arrow:hover {
+  background: #050505;
+
+  color: #ffffff;
+
+  transform:
+    translate(2px,-2px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.dashboard-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 18px 2px 0;
+
+  color: #aaa;
+
+  font-size: 7px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.13em;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .dashboard {
+    padding: 30px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .dashboard-main-grid,
+  .dashboard-lower-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+
+  .dashboard {
+    padding: 20px 15px;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .dashboard-header h1 {
+    font-size: 34px;
+  }
+
+  .dashboard-add-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+  }
+
+  .dashboard-stat-card {
+    min-height: 130px;
+
+    padding: 14px;
+  }
+
+  .stat-bottom strong {
+    font-size: 28px;
+  }
+
+  .inventory-bars {
+    gap: 5px;
+  }
+
+  .inventory-labels {
+    gap: 5px;
+  }
+
+  .recent-car {
+    grid-template-columns:
+      40px 1fr auto;
+  }
+
+  .recent-car-price {
+    display: none;
+  }
+
+  .test-drive {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .test-drive-time {
+    grid-column: 1 / -1;
+
+    padding-bottom: 10px;
+  }
+
+  .enquiries-table {
+    overflow-x: auto;
+  }
+
+  .enquiry-head,
+  .enquiry-row {
+    min-width: 650px;
+  }
+
+  .dashboard-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+}

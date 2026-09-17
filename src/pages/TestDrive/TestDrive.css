@@ -1,0 +1,904 @@
+/* =========================================
+   MOTORA — TEST DRIVE
+========================================= */
+
+.test-drive-page {
+  min-height: 100vh;
+  padding: 145px 0 110px;
+  background: #f5f5f2;
+  color: #080808;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.test-drive-hero {
+  width: min(calc(100% - 80px), var(--container));
+  min-height: 430px;
+  margin: 0 auto;
+  padding: 60px 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #080808;
+  color: #fff;
+}
+
+.test-drive-hero > div:first-child {
+  max-width: 720px;
+}
+
+.test-drive-hero span {
+  color: rgba(255,255,255,0.35);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+}
+
+.test-drive-hero h1 {
+  margin: 23px 0 0;
+  font-size: clamp(60px, 7vw, 95px);
+  line-height: 0.84;
+  letter-spacing: -0.08em;
+  font-weight: 400;
+}
+
+.test-drive-hero h1 strong {
+  font-weight: 600;
+}
+
+.test-drive-hero p {
+  max-width: 440px;
+  margin: 28px 0 0;
+  color: rgba(255,255,255,0.42);
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.hero-drive-mark {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.5);
+}
+
+.car-mark {
+  display: grid;
+  place-items: center;
+}
+
+
+/* =========================================
+   BOOKING
+========================================= */
+
+.booking-section {
+  width: min(calc(100% - 80px), var(--container));
+  margin: 100px auto 0;
+  padding: 40px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.booking-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.booking-header span {
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.booking-header h2 {
+  margin: 10px 0 0;
+  font-size: clamp(35px, 4vw, 52px);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+  font-weight: 400;
+}
+
+.booking-step-count {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.booking-step-count strong {
+  font-size: 32px;
+  letter-spacing: -0.06em;
+}
+
+.booking-step-count span {
+  font-size: 8px;
+}
+
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+.booking-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.progress-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #aaa;
+}
+
+.progress-step > div {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  font-size: 7px;
+}
+
+.progress-step span {
+  font-size: 7px;
+}
+
+.progress-step.active {
+  color: #111;
+}
+
+.progress-step.active > div {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+
+/* =========================================
+   STEP
+========================================= */
+
+.booking-step-content {
+  display: grid;
+  grid-template-columns: 0.65fr 1.35fr;
+  gap: 65px;
+  margin-top: 60px;
+}
+
+.step-intro > span {
+  color: #aaa;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.step-intro h3 {
+  margin: 12px 0 0;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+  font-weight: 400;
+}
+
+.step-intro p {
+  max-width: 260px;
+  margin: 17px 0 0;
+  color: #999;
+  font-size: 8px;
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   CAR SELECTION
+========================================= */
+
+.drive-car-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.drive-car {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  background: #fafaf8;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.drive-car:hover {
+  transform: translateY(-3px);
+  border-color: #777;
+}
+
+.drive-car.selected {
+  border-color: #080808;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.drive-car-image {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+}
+
+.drive-car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-check {
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #080808;
+  color: #fff;
+}
+
+.drive-car-info {
+  padding: 13px;
+}
+
+.drive-car-info span {
+  color: #aaa;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.drive-car-info h4 {
+  margin: 5px 0 0;
+  font-size: 18px;
+  letter-spacing: -0.04em;
+}
+
+.drive-car-info small {
+  display: block;
+  margin-top: 5px;
+  color: #999;
+  font-size: 6px;
+}
+
+.drive-car-info strong {
+  display: block;
+  margin-top: 13px;
+  font-size: 10px;
+}
+
+
+/* =========================================
+   LOCATION
+========================================= */
+
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.location-card {
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 45px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  background: #fafaf8;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.location-card:hover {
+  border-color: #777;
+  background: #fff;
+}
+
+.location-card.selected {
+  border-color: #080808;
+  background: #fff;
+}
+
+.location-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  background: #eee;
+  color: #666;
+}
+
+.location-info > span {
+  color: #aaa;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.location-info h4 {
+  margin: 5px 0 0;
+  font-size: 12px;
+}
+
+.location-info p {
+  margin: 4px 0 0;
+  color: #999;
+  font-size: 7px;
+}
+
+.location-distance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.location-distance strong {
+  color: #777;
+  font-size: 7px;
+}
+
+
+/* =========================================
+   DATE / TIME
+========================================= */
+
+.date-time-area {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 25px;
+}
+
+.date-picker,
+.time-picker {
+  padding: 20px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  background: #fafaf8;
+}
+
+.date-picker label,
+.time-picker label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #aaa;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.date-input {
+  position: relative;
+  margin-top: 25px;
+}
+
+.date-input input {
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  font-family: inherit;
+  font-size: 8px;
+}
+
+.date-input svg {
+  position: absolute;
+  right: 12px;
+  top: 17px;
+  pointer-events: none;
+}
+
+.date-picker p {
+  margin: 12px 0 0;
+  color: #777;
+  font-size: 8px;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 25px;
+}
+
+.time-grid button {
+  height: 42px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 5px;
+  background: #fff;
+  color: #666;
+  font-family: inherit;
+  font-size: 7px;
+  cursor: pointer;
+}
+
+.time-grid button:hover {
+  border-color: #555;
+}
+
+.time-grid button.selected {
+  border-color: #080808;
+  background: #080808;
+  color: #fff;
+}
+
+
+/* =========================================
+   DETAILS
+========================================= */
+
+.details-area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.input-field {
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  background: #fafaf8;
+}
+
+.input-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #aaa;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.input-field input {
+  width: 100%;
+  height: 42px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111;
+  font-family: inherit;
+  font-size: 9px;
+}
+
+.input-field input::placeholder {
+  color: #bbb;
+}
+
+.appointment-summary {
+  grid-column: 1 / -1;
+  margin-top: 5px;
+  padding: 18px;
+  border-radius: 6px;
+  background: #080808;
+  color: #fff;
+}
+
+.appointment-summary > span {
+  color: rgba(255,255,255,0.3);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.appointment-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.appointment-summary strong {
+  font-size: 13px;
+}
+
+.appointment-summary small {
+  color: rgba(255,255,255,0.4);
+  font-size: 7px;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.booking-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 55px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.back-button,
+.continue-button {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 17px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.back-button {
+  border: 1px solid rgba(0,0,0,0.1);
+  background: #fff;
+  color: #666;
+}
+
+.continue-button {
+  border: 0;
+  background: #080808;
+  color: #fff;
+}
+
+.continue-button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   TRUST
+========================================= */
+
+.drive-trust {
+  width: min(calc(100% - 80px), var(--container));
+  margin: 70px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.drive-trust > div {
+  padding: 25px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.drive-trust svg {
+  color: #777;
+}
+
+.drive-trust span {
+  display: block;
+  margin-top: 20px;
+  color: #777;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.drive-trust p {
+  margin: 8px 0 0;
+  color: #999;
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.booking-success {
+  width: min(calc(100% - 80px), 900px);
+  min-height: 700px;
+  margin: 0 auto;
+  padding: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #080808;
+  color: #fff;
+  text-align: center;
+}
+
+.success-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+
+.booking-success > span {
+  margin-top: 20px;
+  color: rgba(255,255,255,0.35);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.booking-success h1 {
+  margin: 15px 0 0;
+  font-size: clamp(60px, 7vw, 90px);
+  line-height: 0.85;
+  letter-spacing: -0.08em;
+  font-weight: 400;
+}
+
+.booking-success h1 strong {
+  font-weight: 600;
+}
+
+.booking-success > p {
+  max-width: 420px;
+  margin: 25px 0 0;
+  color: rgba(255,255,255,0.4);
+  font-size: 9px;
+  line-height: 1.8;
+}
+
+.booking-summary {
+  width: 100%;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.summary-car,
+.summary-line {
+  min-height: 105px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+}
+
+.summary-car img {
+  width: 80px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.summary-car > div,
+.summary-line > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-car span,
+.summary-line span {
+  color: rgba(255,255,255,0.3);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.summary-car h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.summary-car small,
+.summary-line small {
+  color: rgba(255,255,255,0.4);
+  font-size: 6px;
+}
+
+.summary-line > svg {
+  color: rgba(255,255,255,0.45);
+  flex-shrink: 0;
+}
+
+.summary-line strong {
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.new-booking-button {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 25px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 100px;
+  background: #fff;
+  color: #080808;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+  .test-drive-hero,
+  .booking-section,
+  .drive-trust {
+    width: calc(100% - 48px);
+  }
+
+  .booking-step-content {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .booking-success {
+    width: calc(100% - 48px);
+  }
+
+  .booking-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-car,
+  .summary-line:nth-child(2) {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+  .test-drive-page {
+    padding-top: 105px;
+  }
+
+  .test-drive-hero,
+  .booking-section,
+  .drive-trust,
+  .booking-success {
+    width: calc(100% - 28px);
+  }
+
+  .test-drive-hero {
+    min-height: 500px;
+    padding: 35px 25px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .test-drive-hero h1 {
+    font-size: 55px;
+  }
+
+  .hero-drive-mark {
+    width: 110px;
+    height: 110px;
+  }
+
+  .booking-section {
+    padding: 25px;
+  }
+
+  .booking-progress {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .progress-step {
+    min-width: 100px;
+  }
+
+  .drive-car-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .drive-car-image {
+    height: 210px;
+  }
+
+  .date-time-area,
+  .details-area {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-summary {
+    grid-column: auto;
+  }
+
+  .drive-trust {
+    grid-template-columns: 1fr;
+  }
+
+  .drive-trust > div {
+    padding: 20px 0;
+  }
+
+  .booking-success {
+    min-height: 650px;
+    padding: 35px 22px;
+  }
+
+  .booking-success h1 {
+    font-size: 60px;
+  }
+
+  .booking-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-car,
+  .summary-line {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .summary-line:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+  .test-drive-hero h1 {
+    font-size: 48px;
+  }
+
+  .booking-header h2 {
+    font-size: 35px;
+  }
+
+  .booking-navigation {
+    margin-top: 35px;
+  }
+}

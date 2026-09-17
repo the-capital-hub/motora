@@ -1,0 +1,503 @@
+/* =========================================
+   MOTORA CATEGORIES
+========================================= */
+
+.categories {
+  position: relative;
+
+  min-height: 100svh;
+
+  padding: 150px 0 70px;
+
+  overflow: hidden;
+
+  background: #050505;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.categories-background {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+}
+
+.category-background-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transform: scale(1.08);
+
+  filter:
+    grayscale(100%)
+    brightness(0.48)
+    contrast(1.05);
+
+  transition:
+    opacity 0.8s ease,
+    transform 1.2s var(--ease-premium);
+}
+
+.category-background-image.active {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+.categories-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,0.88),
+      rgba(0,0,0,0.5) 55%,
+      rgba(0,0,0,0.72)
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0,0,0,0.85),
+      transparent 60%
+    );
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.categories-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    calc(100% - 80px),
+    var(--container)
+  );
+
+  min-height: calc(100svh - 220px);
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.categories-header {
+  margin-bottom: 75px;
+}
+
+.categories-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+
+  color:
+    rgba(255,255,255,0.55);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.categories-eyebrow span {
+  width: 38px;
+  height: 1px;
+
+  background:
+    rgba(255,255,255,0.45);
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.categories-title {
+  margin: 0;
+
+  font-size:
+    clamp(58px, 8vw, 112px);
+
+  line-height: 0.86;
+
+  letter-spacing: -0.07em;
+
+  font-weight: 400;
+}
+
+.categories-title-mask {
+  display: block;
+
+  overflow: hidden;
+}
+
+.categories-title-line {
+  display: block;
+}
+
+.categories-title-bold {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   LIST
+========================================= */
+
+.categories-list {
+  width: 100%;
+
+  margin-top: auto;
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.category-row {
+  position: relative;
+
+  min-height: 105px;
+
+  display: grid;
+
+  grid-template-columns:
+    80px
+    1fr
+    160px;
+
+  align-items: center;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,0.18);
+
+  cursor: pointer;
+
+  transition:
+    min-height 0.65s var(--ease-premium),
+    border-color 0.4s ease;
+}
+
+.category-row:last-child {
+  border-bottom:
+    1px solid
+    rgba(255,255,255,0.18);
+}
+
+.category-row::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 0;
+  height: 1px;
+
+  background: #ffffff;
+
+  transition:
+    width 0.7s var(--ease-premium);
+}
+
+.category-row:hover::before,
+.category-row.active::before {
+  width: 100%;
+}
+
+
+/* =========================================
+   NUMBER
+========================================= */
+
+.category-number {
+  align-self: start;
+
+  padding-top: 34px;
+
+  color:
+    rgba(255,255,255,0.38);
+
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.category-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 30px;
+}
+
+.category-main h3 {
+  margin: 0;
+
+  font-size:
+    clamp(35px, 4vw, 64px);
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 500;
+
+  transition:
+    transform 0.65s var(--ease-premium),
+    letter-spacing 0.65s var(--ease-premium);
+}
+
+.category-main p {
+  max-width: 230px;
+
+  margin: 0;
+
+  color:
+    rgba(255,255,255,0.42);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  opacity: 0;
+
+  transform: translateX(-15px);
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s var(--ease-premium);
+}
+
+.category-row:hover .category-main h3,
+.category-row.active .category-main h3 {
+  transform: translateX(12px);
+
+  letter-spacing: -0.07em;
+}
+
+.category-row:hover .category-main p,
+.category-row.active .category-main p {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================
+   ACTION
+========================================= */
+
+.category-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+}
+
+.category-action svg {
+  transition:
+    transform 0.5s var(--ease-premium),
+    color 0.35s ease;
+}
+
+.category-row:hover .category-action,
+.category-row.active .category-action {
+  color: #ffffff;
+}
+
+.category-row:hover .category-action svg,
+.category-row.active .category-action svg {
+  transform: translate(4px,-4px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.categories-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 30px;
+
+  color:
+    rgba(255,255,255,0.3);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .categories {
+    padding: 110px 0 60px;
+  }
+
+  .categories-container {
+    width:
+      calc(100% - 48px);
+  }
+
+  .category-row {
+    grid-template-columns:
+      55px
+      1fr
+      110px;
+  }
+
+  .category-main p {
+    display: none;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .categories {
+    min-height: auto;
+
+    padding: 90px 0 45px;
+  }
+
+  .categories-container {
+    width:
+      calc(100% - 32px);
+
+    min-height: auto;
+  }
+
+  .categories-header {
+    margin-bottom: 55px;
+  }
+
+  .categories-title {
+    font-size: 58px;
+  }
+
+  .category-row {
+    min-height: 100px;
+
+    grid-template-columns:
+      35px
+      1fr
+      35px;
+  }
+
+  .category-number {
+    padding-top: 32px;
+  }
+
+  .category-main {
+    display: block;
+  }
+
+  .category-main h3 {
+    font-size: 31px;
+  }
+
+  .category-main p {
+    display: block;
+
+    max-width: 230px;
+
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    opacity: 1;
+
+    transform: none;
+
+    color:
+      rgba(255,255,255,0.4);
+  }
+
+  .category-action span {
+    display: none;
+  }
+
+  .category-action svg {
+    width: 17px;
+  }
+
+  .category-row:hover .category-main h3,
+  .category-row.active .category-main h3 {
+    transform: none;
+  }
+
+  .categories-footer {
+    margin-top: 25px;
+  }
+
+}

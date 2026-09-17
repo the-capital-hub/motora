@@ -1,0 +1,162 @@
+/* =========================================
+   MOTORA ADMIN LAYOUT
+========================================= */
+
+.admin-layout {
+  min-height: 100vh;
+  background: #f5f5f3;
+}
+
+
+/* =========================================
+   MAIN AREA
+========================================= */
+
+.admin-main {
+  min-height: 100vh;
+  margin-left: 245px;
+
+  transition: margin-left 0.3s ease;
+
+  background: #f5f5f3;
+}
+
+.admin-main.sidebar-is-collapsed {
+  margin-left: 76px;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.admin-content {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   MOBILE HEADER
+========================================= */
+
+.admin-mobile-header {
+  display: none;
+
+  height: 64px;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  background: #080808;
+
+  color: #fff;
+
+  border-bottom: 1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.admin-mobile-menu {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.14);
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.admin-mobile-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.admin-mobile-brand strong {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.admin-mobile-brand span {
+  padding: 4px 6px;
+
+  border-radius: 3px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-size: 6px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .admin-main {
+    margin-left: 76px;
+  }
+
+  .admin-main.sidebar-is-collapsed {
+    margin-left: 76px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 850px) {
+
+  .admin-main,
+  .admin-main.sidebar-is-collapsed {
+    margin-left: 0;
+  }
+
+  .admin-mobile-header {
+    display: flex;
+  }
+
+  .admin-content {
+    min-height: calc(100vh - 64px);
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+  .admin-mobile-header {
+    height: 58px;
+  }
+
+  .admin-content {
+    min-height: calc(100vh - 58px);
+  }
+
+}

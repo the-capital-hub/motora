@@ -1,0 +1,1209 @@
+/* =========================================
+   MOTORA SERVICES
+   PREMIUM AUTOMOTIVE EXPERIENCE
+========================================= */
+
+.services-page {
+  width: 100%;
+  background: #f2f0eb;
+  color: #111312;
+  overflow: hidden;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.services-hero {
+  min-height: 92vh;
+  padding: 150px 7vw 90px;
+
+  position: relative;
+
+  display: flex;
+  align-items: flex-end;
+
+  overflow: hidden;
+
+  background: #101211;
+}
+
+.services-hero-image {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+}
+
+.services-hero-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: saturate(0.72);
+
+  transform: scale(1.02);
+
+  transition:
+    transform 1.2s
+      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.services-hero:hover
+.services-hero-image img {
+  transform: scale(1.06);
+}
+
+.services-hero-image-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 7, 7, 0.86) 0%,
+      rgba(5, 7, 7, 0.62) 42%,
+      rgba(5, 7, 7, 0.18) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(5, 7, 7, 0.75) 0%,
+      transparent 50%
+    );
+}
+
+.services-hero-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 900px;
+
+  color: #fff;
+}
+
+.services-eyebrow {
+  display: block;
+
+  margin-bottom: 25px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.services-hero h1 {
+  margin: 0;
+
+  font-size: clamp(65px, 9vw, 145px);
+
+  line-height: 0.84;
+
+  letter-spacing: -0.075em;
+
+  font-weight: 350;
+}
+
+.services-hero h1 strong {
+  font-weight: 650;
+}
+
+.services-hero-content p {
+  max-width: 490px;
+
+  margin-top: 40px;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.services-hero-mark {
+  position: absolute;
+
+  z-index: 3;
+
+  right: 7vw;
+  bottom: 90px;
+
+  width: 145px;
+  height: 145px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 14px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.22);
+
+  border-radius: 50%;
+
+  color: #fff;
+
+  transform: rotate(-8deg);
+
+  backdrop-filter: blur(5px);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+}
+
+.services-hero-mark span {
+  font-size: 8px;
+
+  line-height: 1.45;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   SERVICES SECTION
+========================================= */
+
+.services-section {
+  padding: 135px 7vw;
+}
+
+.services-heading {
+  display: grid;
+
+  grid-template-columns: 1fr 0.65fr;
+
+  gap: 80px;
+
+  margin-bottom: 70px;
+}
+
+.services-heading > div > span,
+.experience-content > span,
+.process-heading > span,
+.services-cta-content > span {
+  display: block;
+
+  margin-bottom: 22px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  color: #737570;
+}
+
+.services-heading h2,
+.experience-content h2,
+.process-heading h2,
+.services-cta-content h2 {
+  margin: 0;
+
+  font-size: clamp(44px, 5.2vw, 80px);
+
+  line-height: 0.93;
+
+  letter-spacing: -0.065em;
+
+  font-weight: 450;
+}
+
+.services-heading p {
+  align-self: end;
+
+  max-width: 410px;
+
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+  color: #737570;
+}
+
+
+/* =========================================
+   SERVICE GRID
+========================================= */
+
+.services-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+/* =========================================
+   SERVICE CARD
+========================================= */
+
+.service-card {
+  min-height: 580px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 2px;
+
+  background: #151716;
+
+  color: #fff;
+
+  isolation: isolate;
+
+  cursor: pointer;
+}
+
+.service-card-image {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -2;
+
+  overflow: hidden;
+}
+
+.service-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: saturate(0.72);
+
+  transform: scale(1.02);
+
+  transition:
+    transform 0.9s
+      cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.7s ease;
+}
+
+.service-card:hover
+.service-card-image img {
+  transform: scale(1.09);
+
+  filter: saturate(0.95);
+}
+
+.service-card-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 9, 9, 0.3) 0%,
+      rgba(8, 9, 9, 0.08) 30%,
+      rgba(8, 9, 9, 0.88) 100%
+    );
+
+  transition:
+    background 0.5s ease;
+}
+
+.service-card:hover
+.service-card-overlay {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 9, 9, 0.22) 0%,
+      rgba(8, 9, 9, 0.05) 28%,
+      rgba(8, 9, 9, 0.93) 100%
+    );
+}
+
+
+/* =========================================
+   CARD TOP
+========================================= */
+
+.service-card-top {
+  position: absolute;
+
+  top: 30px;
+  left: 30px;
+  right: 30px;
+
+  z-index: 3;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.service-card-top > span {
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.15em;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.service-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.24);
+
+  border-radius: 50%;
+
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.45s ease,
+    background 0.4s ease;
+}
+
+.service-card:hover
+.service-icon {
+  transform: rotate(-8deg);
+
+  background:
+    rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.service-card-content {
+  position: absolute;
+
+  z-index: 3;
+
+  left: 30px;
+  right: 30px;
+  bottom: 30px;
+}
+
+.service-card h3 {
+  margin: 0 0 14px;
+
+  font-size: clamp(28px, 3vw, 40px);
+
+  line-height: 1;
+
+  letter-spacing: -0.045em;
+
+  font-weight: 500;
+}
+
+.service-card-content > p {
+  max-width: 480px;
+
+  margin: 0 0 25px;
+
+  font-size: 12px;
+
+  line-height: 1.75;
+
+  color: rgba(255, 255, 255, 0.64);
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.service-features {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 9px 20px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.16);
+}
+
+.service-features div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 9px;
+
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.service-features svg {
+  flex-shrink: 0;
+
+  color: #fff;
+}
+
+
+/* =========================================
+   CARD BUTTON
+========================================= */
+
+.service-card button {
+  margin-top: 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.service-card button svg {
+  transition:
+    transform 0.35s
+      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card button:hover svg {
+  transform:
+    translate(4px, -4px);
+}
+
+
+/* =========================================
+   EXPERIENCE
+========================================= */
+
+.service-experience {
+  min-height: 720px;
+
+  display: grid;
+
+  grid-template-columns: 1.1fr 0.9fr;
+
+  background: #0d0f0e;
+
+  color: #fff;
+}
+
+.experience-image {
+  min-height: 650px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.experience-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: saturate(0.65);
+
+  transition:
+    transform 1s
+      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-experience:hover
+.experience-image img {
+  transform: scale(1.05);
+}
+
+.experience-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.02),
+      rgba(0, 0, 0, 0.62)
+    );
+}
+
+.experience-label {
+  position: absolute;
+
+  left: 45px;
+  bottom: 40px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+}
+
+.experience-content {
+  padding: 100px 8vw;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.experience-content > span {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.experience-content h2 {
+  margin-bottom: 30px;
+}
+
+.experience-content > p {
+  max-width: 430px;
+
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================================
+   EXPERIENCE POINTS
+========================================= */
+
+.experience-points {
+  margin-top: 45px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.experience-points div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  font-size: 11px;
+
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.experience-points svg {
+  color: #fff;
+}
+
+.experience-content button {
+  width: fit-content;
+
+  margin-top: 50px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.experience-content button svg {
+  transition:
+    transform 0.35s ease;
+}
+
+.experience-content button:hover svg {
+  transform:
+    translate(4px, -4px);
+}
+
+
+/* =========================================
+   PROCESS
+========================================= */
+
+.service-process {
+  padding: 140px 7vw;
+
+  display: grid;
+
+  grid-template-columns: 0.7fr 1fr;
+
+  gap: 100px;
+
+  background: #e9e6df;
+}
+
+.process-list {
+  border-top: 1px solid
+    rgba(16, 17, 17, 0.15);
+}
+
+.process-item {
+  min-height: 145px;
+
+  display: grid;
+
+  grid-template-columns:
+    70px 1fr 25px;
+
+  align-items: center;
+
+  gap: 25px;
+
+  border-bottom: 1px solid
+    rgba(16, 17, 17, 0.15);
+
+  transition:
+    padding 0.4s ease;
+}
+
+.process-item:hover {
+  padding-left: 10px;
+}
+
+.process-number {
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.13em;
+
+  color: #777873;
+}
+
+.process-content h3 {
+  margin: 0 0 8px;
+
+  font-size: 19px;
+
+  font-weight: 550;
+
+  letter-spacing: -0.025em;
+}
+
+.process-content p {
+  max-width: 430px;
+
+  margin: 0;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+  color: #777873;
+}
+
+.process-item > svg {
+  color: #173c36;
+
+  transition:
+    transform 0.35s ease;
+}
+
+.process-item:hover > svg {
+  transform:
+    translateX(5px);
+}
+
+
+/* =========================================
+   TRUST STRIP
+========================================= */
+
+.service-trust {
+  padding: 65px 7vw;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 45px;
+
+  background: #173c36;
+
+  color: #fff;
+}
+
+.service-trust > div {
+  display: grid;
+
+  grid-template-columns: 28px 1fr;
+
+  column-gap: 14px;
+
+  row-gap: 7px;
+}
+
+.service-trust svg {
+  grid-row: span 2;
+
+  margin-top: 2px;
+
+  opacity: 0.72;
+}
+
+.service-trust strong {
+  font-size: 10px;
+
+  letter-spacing: 0.14em;
+}
+
+.service-trust span {
+  font-size: 11px;
+
+  line-height: 1.6;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================================
+   FINAL CTA
+========================================= */
+
+.services-cta {
+  min-height: 620px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  background: #0b0d0c;
+
+  color: #fff;
+}
+
+.services-cta-image {
+  position: absolute;
+
+  inset: 0;
+}
+
+.services-cta-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: saturate(0.6);
+
+  transform: scale(1.03);
+}
+
+.services-cta-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 8, 8, 0.9),
+      rgba(7, 8, 8, 0.4),
+      rgba(7, 8, 8, 0.25)
+    );
+}
+
+.services-cta-content {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 110px 7vw;
+}
+
+.services-cta-content > span {
+  color:
+    rgba(255, 255, 255, 0.45);
+}
+
+.services-cta-content h2 {
+  font-size:
+    clamp(55px, 7vw, 105px);
+
+  color: #fff;
+}
+
+.services-cta-content button {
+  margin-top: 45px;
+
+  min-height: 52px;
+
+  padding: 0 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  border-radius: 100px;
+
+  background: #fff;
+
+  color: #101111;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.35s ease,
+    background 0.3s ease;
+}
+
+.services-cta-content button:hover {
+  transform:
+    translateY(-3px);
+
+  background: #f0efeb;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .services-hero {
+    min-height: 82vh;
+  }
+
+  .services-hero-mark {
+    width: 120px;
+    height: 120px;
+
+    right: 5vw;
+  }
+
+  .services-heading {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
+
+  .service-experience {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-image {
+    min-height: 500px;
+  }
+
+  .service-process {
+    grid-template-columns: 1fr;
+
+    gap: 70px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .services-hero {
+    min-height: 780px;
+
+    padding:
+      120px 24px 70px;
+
+    align-items: flex-end;
+  }
+
+  .services-hero-image-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 7, 7, 0.25),
+        rgba(5, 7, 7, 0.88)
+      );
+  }
+
+  .services-hero h1 {
+    font-size:
+      clamp(53px, 15vw, 80px);
+  }
+
+  .services-hero-content p {
+    max-width: 390px;
+
+    margin-top: 30px;
+
+    font-size: 13px;
+  }
+
+  .services-hero-mark {
+    display: none;
+  }
+
+
+  /* SERVICES */
+
+  .services-section {
+    padding:
+      90px 24px;
+  }
+
+  .services-heading {
+    margin-bottom: 50px;
+  }
+
+  .services-heading h2 {
+    font-size: 48px;
+  }
+
+  .services-heading p {
+    font-size: 13px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .service-card {
+    min-height: 530px;
+  }
+
+  .service-card-top {
+    top: 24px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .service-card-content {
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+  }
+
+  .service-card h3 {
+    font-size: 31px;
+  }
+
+  .service-features {
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+  }
+
+
+  /* EXPERIENCE */
+
+  .experience-image {
+    min-height: 430px;
+  }
+
+  .experience-label {
+    left: 24px;
+    bottom: 24px;
+  }
+
+  .experience-content {
+    padding:
+      75px 24px;
+  }
+
+  .experience-content h2 {
+    font-size: 47px;
+  }
+
+  .experience-points {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+
+  /* PROCESS */
+
+  .service-process {
+    padding:
+      90px 24px;
+  }
+
+  .process-heading h2 {
+    font-size: 48px;
+  }
+
+  .process-item {
+    grid-template-columns:
+      42px 1fr 18px;
+
+    gap: 13px;
+
+    min-height: 135px;
+  }
+
+  .process-content h3 {
+    font-size: 17px;
+  }
+
+  .process-content p {
+    font-size: 11px;
+  }
+
+
+  /* TRUST */
+
+  .service-trust {
+    grid-template-columns: 1fr;
+
+    padding:
+      55px 24px;
+
+    gap: 30px;
+  }
+
+
+  /* CTA */
+
+  .services-cta {
+    min-height: 650px;
+  }
+
+  .services-cta-content {
+    padding:
+      85px 24px;
+  }
+
+  .services-cta-content h2 {
+    font-size: 57px;
+  }
+
+  .services-cta-content button {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+
+  .services-hero {
+    min-height: 720px;
+  }
+
+  .services-hero h1 {
+    font-size: 50px;
+  }
+
+  .services-heading h2,
+  .process-heading h2 {
+    font-size: 42px;
+  }
+
+  .experience-content h2 {
+    font-size: 42px;
+  }
+
+  .services-cta-content h2 {
+    font-size: 48px;
+  }
+
+}

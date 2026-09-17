@@ -1,0 +1,849 @@
+/* =========================================
+   MOTORA SHOWROOM
+========================================= */
+
+.showroom {
+  position: relative;
+
+  padding: 160px 0 80px;
+
+  background: #ffffff;
+
+  color: #050505;
+
+  overflow: hidden;
+}
+
+
+/* CONTAINER */
+
+.showroom-container {
+  width: min(
+    calc(100% - 80px),
+    var(--container)
+  );
+
+  margin: 0 auto;
+}
+
+
+/* HEADER */
+
+.showroom-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 50px;
+
+  margin-bottom: 75px;
+}
+
+.showroom-heading {
+  max-width: 900px;
+}
+
+
+/* EYEBROW */
+
+.showroom-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+
+  color: #888;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.showroom-eyebrow span {
+  width: 38px;
+  height: 1px;
+
+  background: #888;
+}
+
+
+/* TITLE */
+
+.showroom-title {
+  margin: 0;
+
+  font-size:
+    clamp(58px, 7.5vw, 105px);
+
+  line-height: 0.86;
+
+  letter-spacing: -0.07em;
+
+  font-weight: 400;
+}
+
+.showroom-title-mask {
+  display: block;
+
+  overflow: hidden;
+}
+
+.showroom-title-line {
+  display: block;
+}
+
+.showroom-title-bold {
+  font-weight: 700;
+}
+
+
+/* INTRO */
+
+.showroom-intro {
+  width: 280px;
+
+  margin: 0 0 5px;
+
+  color: #777;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.showroom-main {
+  display: grid;
+
+  grid-template-columns:
+    1.35fr 0.65fr;
+
+  gap: 25px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.showroom-image-wrapper {
+  position: relative;
+
+  min-height: 600px;
+
+  overflow: hidden;
+
+  background: #111;
+}
+
+.showroom-image {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  inset: 0;
+
+  object-fit: cover;
+
+  filter:
+    grayscale(100%)
+    brightness(0.72)
+    contrast(1.05);
+
+  transition:
+    transform 1.2s var(--ease-premium),
+    filter 0.7s ease;
+}
+
+.showroom-image-wrapper:hover
+.showroom-image {
+  transform: scale(1.04);
+
+  filter:
+    grayscale(70%)
+    brightness(0.8);
+}
+
+.showroom-image-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      0deg,
+      rgba(0,0,0,0.6),
+      transparent 55%
+    );
+}
+
+.showroom-image-label {
+  position: absolute;
+
+  left: 22px;
+  bottom: 20px;
+
+  color:
+    rgba(255,255,255,0.55);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+}
+
+.showroom-image-number {
+  position: absolute;
+
+  top: 22px;
+  right: 22px;
+
+  color:
+    rgba(255,255,255,0.55);
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   INFO
+========================================= */
+
+.showroom-info {
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 40px 5px 5px 30px;
+}
+
+.showroom-info-top {
+  padding-bottom: 35px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.1);
+}
+
+.showroom-info-top > span {
+  color: #999;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.showroom-info-top h3 {
+  margin: 9px 0 0;
+
+  font-size:
+    clamp(35px, 4vw, 55px);
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 500;
+}
+
+.showroom-info-top p {
+  max-width: 350px;
+
+  margin: 18px 0 0;
+
+  color: #777;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   DETAILS
+========================================= */
+
+.showroom-details {
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.1);
+}
+
+.showroom-detail {
+  min-height: 85px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  border-bottom:
+    1px solid
+    rgba(0,0,0,0.08);
+}
+
+.showroom-detail:last-child {
+  border-bottom: 0;
+}
+
+.showroom-detail > svg {
+  color: #777;
+}
+
+.showroom-detail span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #aaa;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.showroom-detail strong {
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.showroom-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-top: auto;
+
+  padding-top: 25px;
+}
+
+.showroom-primary,
+.showroom-secondary {
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 17px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.4s var(--ease-premium),
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.showroom-primary {
+  background: #050505;
+
+  color: #ffffff;
+}
+
+.showroom-primary:hover {
+  transform: translateY(-3px);
+
+  background: #222;
+}
+
+.showroom-primary svg {
+  transition:
+    transform 0.4s var(--ease-premium);
+}
+
+.showroom-primary:hover svg {
+  transform:
+    translate(3px,-3px);
+}
+
+.showroom-secondary {
+  border:
+    1px solid
+    rgba(0,0,0,0.15);
+
+  background: transparent;
+
+  color: #050505;
+}
+
+.showroom-secondary:hover {
+  transform: translateY(-3px);
+
+  background: #050505;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.showroom-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 28px;
+
+  color: #aaa;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================
+   BOOKING MODAL
+========================================= */
+
+.booking-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0,0,0,0.72);
+
+  backdrop-filter: blur(15px);
+}
+
+.booking-modal {
+  position: relative;
+
+  width: min(
+    100%,
+    540px
+  );
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  padding: 45px;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  color: #050505;
+
+  box-shadow:
+    0 40px 100px
+    rgba(0,0,0,0.25);
+}
+
+.booking-close {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(0,0,0,0.12);
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.booking-header > span {
+  color: #999;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.booking-header h3 {
+  margin: 10px 0 0;
+
+  font-size: 46px;
+
+  line-height: 0.95;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 500;
+}
+
+.booking-header p {
+  max-width: 360px;
+
+  margin-top: 14px;
+
+  color: #777;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* FORM */
+
+.booking-form {
+  margin-top: 35px;
+}
+
+.booking-field {
+  margin-bottom: 18px;
+}
+
+.booking-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #999;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.booking-field input {
+  width: 100%;
+
+  height: 48px;
+
+  padding: 0 13px;
+
+  border:
+    1px solid
+    rgba(0,0,0,0.13);
+
+  border-radius: 6px;
+
+  outline: none;
+
+  background: #f7f7f5;
+
+  color: #050505;
+
+  font-family: inherit;
+
+  font-size: 11px;
+}
+
+.booking-field input:focus {
+  border-color: #050505;
+
+  background: #ffffff;
+}
+
+.booking-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.booking-input-icon {
+  position: relative;
+}
+
+.booking-input-icon svg {
+  position: absolute;
+
+  right: 13px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #777;
+
+  pointer-events: none;
+}
+
+.booking-input-icon input {
+  padding-right: 40px;
+}
+
+
+/* SUBMIT */
+
+.booking-submit {
+  width: 100%;
+
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 17px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.4s var(--ease-premium);
+}
+
+.booking-submit:hover {
+  transform: translateY(-3px);
+}
+
+
+/* SUCCESS */
+
+.booking-success {
+  min-height: 390px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.booking-success-icon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+
+  place-items: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 50%;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  font-size: 20px;
+}
+
+.booking-success > span {
+  color: #999;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.booking-success h3 {
+  margin: 10px 0 0;
+
+  font-size: 40px;
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 500;
+}
+
+.booking-success p {
+  max-width: 330px;
+
+  margin: 15px 0 25px;
+
+  color: #777;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+.booking-success button {
+  min-height: 43px;
+
+  padding: 0 25px;
+
+  border: 0;
+
+  border-radius: 100px;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .showroom {
+    padding: 110px 0 60px;
+  }
+
+  .showroom-container {
+    width:
+      calc(100% - 48px);
+  }
+
+  .showroom-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 25px;
+  }
+
+  .showroom-intro {
+    width: 100%;
+
+    max-width: 400px;
+  }
+
+  .showroom-main {
+    grid-template-columns: 1fr;
+  }
+
+  .showroom-image-wrapper {
+    min-height: 520px;
+  }
+
+  .showroom-info {
+    padding:
+      20px 0 0;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .showroom {
+    padding: 90px 0 45px;
+  }
+
+  .showroom-container {
+    width:
+      calc(100% - 32px);
+  }
+
+  .showroom-title {
+    font-size: 57px;
+  }
+
+  .showroom-image-wrapper {
+    min-height: 390px;
+  }
+
+  .showroom-info-top h3 {
+    font-size: 40px;
+  }
+
+  .booking-modal {
+    padding: 35px 20px;
+  }
+
+  .booking-header h3 {
+    font-size: 38px;
+  }
+
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .showroom-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+}

@@ -1,0 +1,915 @@
+/* =========================================
+   MOTORA SELL CAR
+========================================= */
+
+.sell-car {
+  position: relative;
+
+  padding: 160px 0 80px;
+
+  background: #050505;
+
+  color: #ffffff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.sell-car-container {
+  width: min(
+    calc(100% - 80px),
+    var(--container)
+  );
+
+  margin: 0 auto;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.sell-header {
+  max-width: 850px;
+
+  margin-bottom: 80px;
+}
+
+.sell-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 25px;
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.sell-eyebrow span {
+  width: 38px;
+  height: 1px;
+
+  background:
+    rgba(255,255,255,0.4);
+}
+
+.sell-header h2 {
+  margin: 0;
+
+  font-size:
+    clamp(58px, 8vw, 112px);
+
+  line-height: 0.86;
+
+  letter-spacing: -0.07em;
+
+  font-weight: 400;
+}
+
+.sell-header h2 strong {
+  font-weight: 700;
+}
+
+.sell-header p {
+  max-width: 450px;
+
+  margin-top: 32px;
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   FLOW
+========================================= */
+
+.sell-flow {
+  display: flex;
+
+  align-items: center;
+
+  margin-bottom: 35px;
+}
+
+.sell-flow-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  white-space: nowrap;
+}
+
+.sell-flow-item span {
+  color:
+    rgba(255,255,255,0.6);
+
+  font-size: 9px;
+}
+
+.sell-flow-item.active {
+  color: #ffffff;
+}
+
+.sell-flow-line {
+  flex: 1;
+
+  height: 1px;
+
+  margin: 0 15px;
+
+  background:
+    rgba(255,255,255,0.12);
+}
+
+
+/* =========================================
+   VALUATION CARD
+========================================= */
+
+.valuation-card {
+  border:
+    1px solid
+    rgba(255,255,255,0.13);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,0.035);
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.valuation-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 22px;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,0.1);
+}
+
+.valuation-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.valuation-icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.15);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.06);
+}
+
+.valuation-title span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    rgba(255,255,255,0.4);
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.valuation-title h3 {
+  margin: 0;
+
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+.valuation-number {
+  color:
+    rgba(255,255,255,0.3);
+
+  font-size: 8px;
+
+  letter-spacing: 0.13em;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.valuation-form {
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 70px 40px 45px;
+}
+
+.valuation-form-heading {
+  margin-bottom: 40px;
+}
+
+.valuation-form-heading > span {
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.valuation-form-heading h3 {
+  margin: 9px 0 0;
+
+  font-size:
+    clamp(28px, 4vw, 48px);
+
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 500;
+}
+
+.valuation-form-heading p {
+  max-width: 400px;
+
+  margin-top: 14px;
+
+  color:
+    rgba(255,255,255,0.4);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   FIELDS
+========================================= */
+
+.valuation-fields {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+.valuation-field label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.valuation-field input,
+.valuation-select select {
+  width: 100%;
+
+  height: 52px;
+
+  padding: 0 15px;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.14);
+
+  border-radius: 7px;
+
+  outline: none;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.valuation-field input::placeholder {
+  color:
+    rgba(255,255,255,0.25);
+}
+
+.valuation-field input:focus,
+.valuation-select select:focus {
+  border-color:
+    rgba(255,255,255,0.5);
+
+  background:
+    rgba(255,255,255,0.07);
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.valuation-select {
+  position: relative;
+}
+
+.valuation-select select {
+  appearance: none;
+
+  cursor: pointer;
+
+  padding-right: 40px;
+}
+
+.valuation-select svg {
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color:
+    rgba(255,255,255,0.5);
+
+  pointer-events: none;
+}
+
+.valuation-select option {
+  background: #111111;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.valuation-button {
+  width: 100%;
+
+  min-height: 60px;
+
+  margin-top: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 20px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #050505;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.45s var(--ease-premium),
+    background 0.3s ease;
+}
+
+.valuation-button:hover {
+  transform: translateY(-3px);
+
+  background: #eeeeec;
+}
+
+.valuation-button svg {
+  transition:
+    transform 0.4s var(--ease-premium);
+}
+
+.valuation-button:hover svg {
+  transform:
+    translate(4px,-4px);
+}
+
+
+/* =========================================
+   THINKING
+========================================= */
+
+.valuation-thinking {
+  min-height: 470px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.thinking-orb {
+  width: 75px;
+  height: 75px;
+
+  display: grid;
+
+  place-items: center;
+
+  margin-bottom: 25px;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.2);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  animation:
+    valuationPulse 1.6s ease infinite;
+}
+
+@keyframes valuationPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+
+    box-shadow:
+      0 0 0
+      rgba(255,255,255,0);
+  }
+
+  50% {
+    transform: scale(1.08);
+
+    box-shadow:
+      0 0 60px
+      rgba(255,255,255,0.1);
+  }
+
+}
+
+.valuation-thinking > span {
+  color:
+    rgba(255,255,255,0.4);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.valuation-thinking h3 {
+  margin: 10px 0 30px;
+
+  font-size:
+    clamp(28px, 4vw, 50px);
+
+  letter-spacing: -0.05em;
+
+  font-weight: 500;
+}
+
+.valuation-checks {
+  display: flex;
+
+  gap: 25px;
+
+  color:
+    rgba(255,255,255,0.5);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+}
+
+.valuation-checks div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.valuation-checks svg {
+  color: #ffffff;
+}
+
+
+/* =========================================
+   RESULT
+========================================= */
+
+.valuation-result {
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 65px 40px 45px;
+}
+
+.valuation-success {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding-bottom: 35px;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,0.1);
+}
+
+.success-icon {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #050505;
+}
+
+.valuation-success span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.valuation-success h4 {
+  margin: 0;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   VALUE
+========================================= */
+
+.estimated-value {
+  padding: 45px 0;
+}
+
+.estimated-value > span {
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.estimated-value strong {
+  display: block;
+
+  margin-top: 10px;
+
+  font-size:
+    clamp(58px, 8vw, 100px);
+
+  line-height: 0.9;
+
+  letter-spacing: -0.075em;
+
+  font-weight: 600;
+}
+
+.estimated-value p {
+  max-width: 400px;
+
+  margin-top: 18px;
+
+  color:
+    rgba(255,255,255,0.4);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   RESULT ACTIONS
+========================================= */
+
+.valuation-result-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,0.1);
+}
+
+.valuation-primary {
+  min-height: 50px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 18px;
+
+  border-radius: 100px;
+
+  background: #ffffff;
+
+  color: #050505;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.4s var(--ease-premium);
+}
+
+.valuation-primary:hover {
+  transform: translateY(-3px);
+}
+
+.valuation-reset {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0 15px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.sell-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 25px;
+
+  color:
+    rgba(255,255,255,0.25);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 800px) {
+
+  .sell-car {
+    padding: 110px 0 60px;
+  }
+
+  .sell-car-container {
+    width:
+      calc(100% - 48px);
+  }
+
+  .sell-flow-item {
+    font-size: 7px;
+  }
+
+  .sell-flow-line {
+    margin: 0 8px;
+  }
+
+  .valuation-form,
+  .valuation-result {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .sell-car {
+    padding: 90px 0 45px;
+  }
+
+  .sell-car-container {
+    width:
+      calc(100% - 32px);
+  }
+
+  .sell-header h2 {
+    font-size: 57px;
+  }
+
+  .sell-flow {
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    gap: 5px;
+  }
+
+  .sell-flow-line {
+    display: none;
+  }
+
+  .sell-flow-item {
+    min-height: 45px;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    border:
+      1px solid
+      rgba(255,255,255,0.1);
+
+    font-size: 6px;
+  }
+
+  .valuation-top {
+    padding: 17px;
+  }
+
+  .valuation-form,
+  .valuation-result {
+    padding:
+      45px
+      17px
+      30px;
+  }
+
+  .valuation-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .valuation-thinking {
+    min-height: 400px;
+
+    padding: 20px;
+  }
+
+  .valuation-checks {
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .estimated-value strong {
+    font-size: 60px;
+  }
+
+  .valuation-result-actions {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .sell-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+}

@@ -1,0 +1,493 @@
+/* =========================================
+   MOTORA PREMIUM BRANDS
+========================================= */
+
+.premium-brands {
+  position: relative;
+
+  min-height: 100svh;
+
+  padding: 150px 0 70px;
+
+  overflow: hidden;
+
+  background: #050505;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.brands-background {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+}
+
+.brand-bg-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transform: scale(1.08);
+
+  filter:
+    grayscale(100%)
+    brightness(0.35)
+    contrast(1.1);
+
+  transition:
+    opacity 0.8s ease,
+    transform 1.2s var(--ease-premium);
+}
+
+.brand-bg-image.active {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+.brands-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,0.9),
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.8)
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0,0,0,0.9),
+      transparent 60%
+    );
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.brands-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    calc(100% - 80px),
+    var(--container)
+  );
+
+  min-height: calc(100svh - 220px);
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.brands-header {
+  margin-bottom: 75px;
+}
+
+.brands-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 25px;
+
+  color:
+    rgba(255,255,255,0.5);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.brands-eyebrow span {
+  width: 38px;
+  height: 1px;
+
+  background:
+    rgba(255,255,255,0.4);
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.brands-title {
+  margin: 0;
+
+  font-size:
+    clamp(58px, 7.5vw, 105px);
+
+  line-height: 0.86;
+
+  letter-spacing: -0.07em;
+
+  font-weight: 400;
+}
+
+.brands-title-mask {
+  display: block;
+
+  overflow: hidden;
+}
+
+.brands-title-line {
+  display: block;
+}
+
+.brands-title-bold {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   LIST
+========================================= */
+
+.brands-list {
+  width: 100%;
+
+  margin-top: auto;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,0.17);
+}
+
+
+/* =========================================
+   ROW
+========================================= */
+
+.brand-row {
+  position: relative;
+
+  min-height: 105px;
+
+  display: grid;
+
+  grid-template-columns:
+    80px
+    1fr
+    150px;
+
+  align-items: center;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,0.15);
+
+  cursor: pointer;
+
+  transition:
+    min-height 0.6s var(--ease-premium);
+}
+
+.brand-row::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 0;
+  height: 2px;
+
+  background: #ffffff;
+
+  transition:
+    width 0.7s var(--ease-premium);
+}
+
+.brand-row:hover::before,
+.brand-row.active::before {
+  width: 100%;
+}
+
+
+/* =========================================
+   NUMBER
+========================================= */
+
+.brand-number {
+  align-self: start;
+
+  padding-top: 35px;
+
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================
+   NAME
+========================================= */
+
+.brand-name-wrapper {
+  display: flex;
+
+  align-items: center;
+
+  gap: 35px;
+}
+
+.brand-name-wrapper h3 {
+  margin: 0;
+
+  font-size:
+    clamp(32px, 4vw, 62px);
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 500;
+
+  transition:
+    transform 0.65s var(--ease-premium);
+}
+
+.brand-name-wrapper > span {
+  color:
+    rgba(255,255,255,0.35);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
+  opacity: 0;
+
+  transform: translateX(-15px);
+
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s var(--ease-premium);
+}
+
+.brand-row:hover .brand-name-wrapper h3,
+.brand-row.active .brand-name-wrapper h3 {
+  transform: translateX(12px);
+}
+
+.brand-row:hover .brand-name-wrapper > span,
+.brand-row.active .brand-name-wrapper > span {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================
+   ACTION
+========================================= */
+
+.brand-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  color:
+    rgba(255,255,255,0.4);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.brand-action svg {
+  transition:
+    transform 0.5s var(--ease-premium),
+    color 0.3s ease;
+}
+
+.brand-row:hover .brand-action,
+.brand-row.active .brand-action {
+  color: #ffffff;
+}
+
+.brand-row:hover .brand-action svg,
+.brand-row.active .brand-action svg {
+  transform:
+    translate(4px,-4px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.brands-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 28px;
+
+  color:
+    rgba(255,255,255,0.3);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .premium-brands {
+    padding: 110px 0 60px;
+  }
+
+  .brands-container {
+    width:
+      calc(100% - 48px);
+  }
+
+  .brand-row {
+    grid-template-columns:
+      55px
+      1fr
+      100px;
+  }
+
+  .brand-name-wrapper > span {
+    display: none;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .premium-brands {
+    min-height: auto;
+
+    padding: 90px 0 45px;
+  }
+
+  .brands-container {
+    width:
+      calc(100% - 32px);
+
+    min-height: auto;
+  }
+
+  .brands-header {
+    margin-bottom: 55px;
+  }
+
+  .brands-title {
+    font-size: 56px;
+  }
+
+  .brand-row {
+    min-height: 92px;
+
+    grid-template-columns:
+      35px
+      1fr
+      35px;
+  }
+
+  .brand-number {
+    padding-top: 31px;
+  }
+
+  .brand-name-wrapper {
+    display: block;
+  }
+
+  .brand-name-wrapper h3 {
+    font-size: 28px;
+  }
+
+  .brand-name-wrapper > span {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 6px;
+
+    opacity: 1;
+
+    transform: none;
+  }
+
+  .brand-row:hover .brand-name-wrapper h3,
+  .brand-row.active .brand-name-wrapper h3 {
+    transform: none;
+  }
+
+  .brand-action span {
+    display: none;
+  }
+
+  .brand-action svg {
+    width: 17px;
+  }
+
+  .brands-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+}

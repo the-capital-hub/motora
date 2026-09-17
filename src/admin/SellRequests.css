@@ -1,0 +1,838 @@
+/* =========================================
+   MOTORA SELL REQUESTS
+========================================= */
+
+.sellrequests-page {
+  min-height: 100vh;
+  padding: 40px;
+  background: #f5f5f3;
+  color: #050505;
+}
+
+/* HEADER */
+
+.sellrequests-header {
+  margin-bottom: 30px;
+}
+
+.sellrequests-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: #999;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+}
+
+.sellrequests-header h1 {
+  margin: 0;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-weight: 600;
+}
+
+.sellrequests-header p {
+  margin: 13px 0 0;
+  color: #888;
+  font-size: 11px;
+}
+
+
+/* STATS */
+
+.sellrequests-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.sellrequest-stat {
+  min-height: 105px;
+  padding: 18px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.sellrequest-stat span {
+  display: block;
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.sellrequest-stat strong {
+  display: block;
+  margin-top: 20px;
+  font-size: 29px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+
+/* PROCESS */
+
+.sell-process {
+  margin-bottom: 12px;
+  padding: 22px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: #050505;
+  color: #fff;
+}
+
+.sell-process-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.sell-process-heading > div > span {
+  color: rgba(255,255,255,0.35);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.sell-process-heading h2 {
+  margin: 7px 0 0;
+  font-size: 18px;
+  letter-spacing: -0.04em;
+}
+
+.sell-process-heading > span {
+  color: rgba(255,255,255,0.4);
+  font-size: 8px;
+}
+
+.sell-process-steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sell-process-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sell-process-step > span {
+  color: rgba(255,255,255,0.3);
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.sell-process-step strong {
+  font-size: 10px;
+}
+
+.sell-process-step small {
+  color: rgba(255,255,255,0.35);
+  font-size: 7px;
+}
+
+.sell-process-line {
+  width: 50px;
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+
+/* PANEL */
+
+.sellrequests-panel {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+
+/* TOOLBAR */
+
+.sellrequests-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+.sellrequests-search {
+  width: min(410px, 100%);
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 6px;
+  background: #f8f8f6;
+  color: #999;
+}
+
+.sellrequests-search input {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #050505;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.sellrequests-search button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+}
+
+.sellrequest-filters {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+}
+
+.sellrequest-filter {
+  min-height: 34px;
+  padding: 0 11px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 100px;
+  background: #fff;
+  color: #777;
+  font-family: inherit;
+  font-size: 7px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sellrequest-filter.active {
+  border-color: #050505;
+  background: #050505;
+  color: #fff;
+}
+
+
+/* TABLE */
+
+.sellrequests-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sellrequests-table-head,
+.sellrequest-row {
+  min-width: 1100px;
+  display: grid;
+  grid-template-columns:
+    1.35fr
+    1.35fr
+    1fr
+    0.8fr
+    0.95fr
+    40px;
+  align-items: center;
+  gap: 15px;
+  padding: 0 20px;
+}
+
+.sellrequests-table-head {
+  min-height: 42px;
+  background: #fafaf8;
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.sellrequest-row {
+  min-height: 82px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+
+/* SELLER */
+
+.sellrequest-seller {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sellrequest-avatar,
+.large-sellrequest-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #eeeeec;
+  color: #555;
+  font-weight: 700;
+}
+
+.sellrequest-avatar {
+  width: 38px;
+  height: 38px;
+  font-size: 8px;
+}
+
+.sellrequest-seller > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sellrequest-seller strong {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.sellrequest-seller span {
+  color: #aaa;
+  font-size: 7px;
+}
+
+
+/* CAR */
+
+.sellrequest-car {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.sellrequest-car-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #f1f1ef;
+  color: #555;
+}
+
+.sellrequest-car > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sellrequest-car strong {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.sellrequest-car span {
+  color: #aaa;
+  font-size: 7px;
+}
+
+
+/* PRICE */
+
+.sellrequest-price {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+
+/* LOCATION */
+
+.sellrequest-location {
+  color: #777;
+  font-size: 8px;
+}
+
+
+/* STATUS */
+
+.sellrequest-status-wrapper {
+  position: relative;
+}
+
+.sellrequest-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 7px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sellrequest-status.new {
+  background: #e9f0ec;
+  color: #315943;
+}
+
+.sellrequest-status.inspection {
+  background: #f5f1e7;
+  color: #806d3f;
+}
+
+.sellrequest-status.offer-sent {
+  background: #e9edf2;
+  color: #3c536d;
+}
+
+.sellrequest-status.approved {
+  background: #e5efe7;
+  color: #285b38;
+}
+
+.sellrequest-status.rejected {
+  background: #f1e8e8;
+  color: #873b3b;
+}
+
+.sellrequest-status-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 130px;
+  padding: 5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.sellrequest-status-menu button {
+  width: 100%;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #555;
+  text-align: left;
+  font-family: inherit;
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.sellrequest-status-menu button:hover {
+  background: #f4f4f2;
+  color: #050505;
+}
+
+
+/* VIEW */
+
+.sellrequest-view {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #f2f2f0;
+  color: #777;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.sellrequest-view:hover {
+  background: #050505;
+  color: #fff;
+  transform: translate(2px, -2px);
+}
+
+
+/* EMPTY */
+
+.sellrequests-empty {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #999;
+}
+
+.sellrequests-empty strong {
+  color: #555;
+  font-size: 12px;
+}
+
+.sellrequests-empty span {
+  font-size: 9px;
+}
+
+
+/* FOOTER */
+
+.sellrequests-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 2px 0;
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.sellrequest-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+}
+
+.sellrequest-modal {
+  width: min(620px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fff;
+  color: #050505;
+  box-shadow: 0 35px 90px rgba(0,0,0,0.25);
+}
+
+.sellrequest-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.sellrequest-modal-header span {
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.sellrequest-modal-header h2 {
+  margin: 8px 0 0;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.sellrequest-modal-header > button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+
+/* PROFILE */
+
+.sellrequest-profile {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 25px 0;
+}
+
+.large-sellrequest-avatar {
+  width: 55px;
+  height: 55px;
+  font-size: 11px;
+}
+
+.sellrequest-profile > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sellrequest-profile strong {
+  font-size: 12px;
+}
+
+.sellrequest-profile span {
+  color: #999;
+  font-size: 8px;
+}
+
+
+/* VEHICLE CARD */
+
+.sellrequest-vehicle-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: #f6f6f4;
+}
+
+.sellrequest-large-car {
+  width: 52px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #fff;
+  color: #555;
+}
+
+.sellrequest-vehicle-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sellrequest-vehicle-card span {
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.sellrequest-vehicle-card strong {
+  font-size: 11px;
+}
+
+.sellrequest-vehicle-card small {
+  color: #999;
+  font-size: 7px;
+}
+
+
+/* DETAILS */
+
+.sellrequest-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.08);
+}
+
+.sellrequest-detail-grid > div {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 15px;
+  background: #fafaf8;
+}
+
+.sellrequest-detail-grid span {
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.sellrequest-detail-grid strong {
+  font-size: 9px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+
+/* STATUS */
+
+.sellrequest-status-section {
+  margin-top: 23px;
+}
+
+.sellrequest-status-section > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #aaa;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.sellrequest-status-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sellrequest-status-buttons button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 100px;
+  background: #fff;
+  color: #777;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sellrequest-status-buttons button.selected {
+  border-color: #050505;
+  background: #050505;
+  color: #fff;
+}
+
+
+/* ACTIONS */
+
+.sellrequest-modal-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 25px;
+}
+
+.sellrequest-modal-actions a,
+.sellrequest-modal-actions button {
+  min-height: 42px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sellrequest-modal-actions a {
+  border: 1px solid rgba(0,0,0,0.1);
+  background: #fff;
+  color: #555;
+}
+
+.sellrequest-modal-actions button {
+  border: 0;
+  background: #050505;
+  color: #fff;
+}
+
+
+/* TABLET */
+
+@media (max-width: 950px) {
+
+  .sellrequests-page {
+    padding: 30px;
+  }
+
+  .sellrequests-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sell-process-steps {
+    flex-wrap: wrap;
+  }
+
+  .sell-process-step {
+    min-width: 120px;
+  }
+
+  .sell-process-line {
+    display: none;
+  }
+
+  .sellrequests-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sellrequests-search {
+    width: 100%;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .sellrequests-page {
+    padding: 20px 15px;
+  }
+
+  .sellrequests-stats {
+    gap: 7px;
+  }
+
+  .sellrequest-stat {
+    min-height: 90px;
+    padding: 14px;
+  }
+
+  .sellrequest-stat strong {
+    margin-top: 15px;
+    font-size: 25px;
+  }
+
+  .sell-process {
+    padding: 17px;
+  }
+
+  .sell-process-heading {
+    flex-direction: column;
+  }
+
+  .sell-process-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sell-process-step {
+    min-width: 0;
+  }
+
+  .sellrequests-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .sellrequest-modal {
+    padding: 22px 17px;
+  }
+
+  .sellrequest-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sellrequest-modal-actions {
+    flex-direction: column;
+  }
+
+}
