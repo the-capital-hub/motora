@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
 import {
   ArrowUpRight,
   Menu,
@@ -11,17 +13,17 @@ import {
 import "./Navbar.css";
 
 const Navbar = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  /* =========================================
-     SCROLL EFFECT
-  ========================================= */
-
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 30);
     };
+
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
 
@@ -30,26 +32,33 @@ const Navbar = () => {
     };
   }, []);
 
-  /* =========================================
-     CLOSE MOBILE MENU
-  ========================================= */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    closeMenu();
   };
 
   return (
     <header
       className={`navbar ${
         scrolled ? "navbar-scrolled" : ""
-      }`}
+      } ${menuOpen ? "navbar-menu-active" : ""}`}
     >
 
       <div className="navbar-inner">
 
-        {/* =====================================
-            LOGO
-        ===================================== */}
+        {/* LOGO */}
 
         <Link
           to="/"
@@ -66,13 +75,9 @@ const Navbar = () => {
         </Link>
 
 
-        {/* =====================================
-            DESKTOP NAVIGATION
-        ===================================== */}
+        {/* DESKTOP NAVIGATION */}
 
         <nav className="navbar-links">
-
-          {/* CARS */}
 
           <Link
             to="/cars"
@@ -82,20 +87,6 @@ const Navbar = () => {
             Cars
           </Link>
 
-
-          {/* SELL YOUR CAR */}
-
-          <Link
-            to="/sell"
-            className="nav-link"
-            onClick={closeMenu}
-          >
-            Sell Your Car
-          </Link>
-
-
-          {/* SERVICES */}
-
           <Link
             to="/services"
             className="nav-link"
@@ -104,8 +95,29 @@ const Navbar = () => {
             Services
           </Link>
 
+          <Link
+            to="/sell-car"
+            className="nav-link"
+            onClick={closeMenu}
+          >
+            Sell Your Car
+          </Link>
 
-          {/* ABOUT */}
+          <Link
+            to="/brands"
+            className="nav-link"
+            onClick={closeMenu}
+          >
+            Brands
+          </Link>
+
+          <Link
+            to="/showroom"
+            className="nav-link"
+            onClick={closeMenu}
+          >
+            Showroom
+          </Link>
 
           <Link
             to="/about"
@@ -115,38 +127,20 @@ const Navbar = () => {
             About
           </Link>
 
-
-          {/* CONNECT */}
-
           <Link
             to="/contact"
             className="nav-link"
             onClick={closeMenu}
           >
-            Connect
-          </Link>
-
-
-          {/* ADMIN */}
-
-          <Link
-            to="/admin"
-            className="nav-link"
-            onClick={closeMenu}
-          >
-            Admin
+            Contact
           </Link>
 
         </nav>
 
 
-        {/* =====================================
-            RIGHT ACTIONS
-        ===================================== */}
+        {/* DESKTOP ACTIONS */}
 
         <div className="navbar-actions">
-
-          {/* AI CONCIERGE */}
 
           <Link
             to="/ai-concierge"
@@ -164,27 +158,49 @@ const Navbar = () => {
           </Link>
 
 
-          {/* SEARCH */}
-
-          <button
+          <Link
+            to="/smart-search"
             className="search-button"
-            aria-label="Search"
+            aria-label="Search cars"
+            onClick={closeMenu}
           >
             <Search
               size={18}
               strokeWidth={1.6}
             />
-          </button>
+          </Link>
 
 
-          {/* EXPLORE CARS */}
+          {isAuthenticated ? (
+            <button
+              type="button"
+              className="navbar-auth-button"
+              onClick={handleLogout}
+            >
+              Logout{" "}
+              {user?.name
+                ? user.name.split(" ")[0]
+                : ""}
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="navbar-auth-button"
+              onClick={closeMenu}
+            >
+              Sign in
+            </Link>
+          )}
+
 
           <Link
             to="/cars"
             className="navbar-cta"
             onClick={closeMenu}
           >
-            Explore Cars
+            <span>
+              Explore Cars
+            </span>
 
             <ArrowUpRight
               size={16}
@@ -195,171 +211,160 @@ const Navbar = () => {
         </div>
 
 
-        {/* =====================================
-            MOBILE MENU BUTTON
-        ===================================== */}
+        {/* MOBILE BUTTON */}
 
         <button
+          type="button"
           className="mobile-menu-button"
-          onClick={() =>
-            setMenuOpen(!menuOpen)
+          onClick={() => setMenuOpen((current) => !current)}
+          aria-label={
+            menuOpen
+              ? "Close menu"
+              : "Open menu"
           }
-          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
         >
-
           {menuOpen ? (
             <X
-              size={24}
-              strokeWidth={1.6}
+              size={23}
+              strokeWidth={1.5}
             />
           ) : (
             <Menu
-              size={24}
-              strokeWidth={1.6}
+              size={23}
+              strokeWidth={1.5}
             />
           )}
-
         </button>
 
       </div>
 
 
-      {/* =========================================
-          MOBILE MENU
-      ========================================= */}
+      {/* MOBILE MENU */}
 
       <div
         className={`mobile-menu ${
-          menuOpen
-            ? "mobile-menu-open"
-            : ""
+          menuOpen ? "mobile-menu-open" : ""
         }`}
       >
 
-        {/* MOBILE NAVIGATION */}
+        <div className="mobile-menu-inner">
 
-        <nav className="mobile-nav">
-
-          {/* CARS */}
-
-          <Link
-            to="/cars"
-            onClick={closeMenu}
-          >
-            Cars
-
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
+          <div className="mobile-menu-label">
+            MOTORA
+          </div>
 
 
-          {/* SELL */}
+          <nav className="mobile-nav">
 
-          <Link
-            to="/sell"
-            onClick={closeMenu}
-          >
-            Sell Your Car
+            <Link
+              to="/cars"
+              onClick={closeMenu}
+            >
+              <span>Cars</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
+            <Link
+              to="/services"
+              onClick={closeMenu}
+            >
+              <span>Services</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
+            <Link
+              to="/sell-car"
+              onClick={closeMenu}
+            >
+              <span>Sell Your Car</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
-          {/* SERVICES */}
+            <Link
+              to="/brands"
+              onClick={closeMenu}
+            >
+              <span>Brands</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
-          <Link
-            to="/services"
-            onClick={closeMenu}
-          >
-            Services
+            <Link
+              to="/showroom"
+              onClick={closeMenu}
+            >
+              <span>Showroom</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
+            <Link
+              to="/about"
+              onClick={closeMenu}
+            >
+              <span>About</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
+            <Link
+              to="/contact"
+              onClick={closeMenu}
+            >
+              <span>Contact</span>
+              <ArrowUpRight size={18} />
+            </Link>
 
-          {/* ABOUT */}
-
-          <Link
-            to="/about"
-            onClick={closeMenu}
-          >
-            About
-
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
-
-
-          {/* CONNECT */}
-
-          <Link
-            to="/contact"
-            onClick={closeMenu}
-          >
-            Connect
-
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
-
-
-          {/* ADMIN */}
-
-          <Link
-            to="/admin"
-            onClick={closeMenu}
-          >
-            Admin
-
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
-
-        </nav>
+          </nav>
 
 
-        {/* =====================================
-            MOBILE BOTTOM ACTIONS
-        ===================================== */}
+          {/* MOBILE ACTIONS */}
 
-        <div className="mobile-menu-bottom">
+          <div className="mobile-menu-bottom">
 
-          {/* AI CONCIERGE */}
+            {isAuthenticated ? (
+              <button
+                type="button"
+                className="mobile-action-button"
+                onClick={handleLogout}
+              >
+                Logout{" "}
+                {user?.name
+                  ? user.name.split(" ")[0]
+                  : ""}
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="mobile-action-button"
+                onClick={closeMenu}
+              >
+                Sign in
+              </Link>
+            )}
 
-          <Link
-            to="/ai-concierge"
-            className="mobile-ai-button"
-            onClick={closeMenu}
-          >
-            <Sparkles
-              size={17}
-            />
 
-            AI Concierge
-          </Link>
+            <Link
+              to="/ai-concierge"
+              className="mobile-action-button"
+              onClick={closeMenu}
+            >
+              <Sparkles size={17} />
+              AI Concierge
+            </Link>
 
 
-          {/* EXPLORE CARS */}
+            <Link
+              to="/cars"
+              className="mobile-explore-button"
+              onClick={closeMenu}
+            >
+              <span>
+                Explore Cars
+              </span>
 
-          <Link
-            to="/cars"
-            className="mobile-explore-button"
-            onClick={closeMenu}
-          >
-            Explore Cars
+              <ArrowUpRight size={18} />
+            </Link>
 
-            <ArrowUpRight
-              size={18}
-            />
-          </Link>
+          </div>
 
         </div>
 

@@ -1,509 +1,463 @@
 import {
   ArrowUpRight,
-  Award,
   CarFront,
-  Check,
+  CheckCircle2,
   Gauge,
   ShieldCheck,
   Sparkles,
   Users,
 } from "lucide-react";
-
+import { Link } from "react-router-dom";
 import "./About.css";
 
-const values = [
+const aboutImages = {
+  hero:
+    "https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=2400&q=95",
+
+  story:
+    "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2200&q=95",
+
+  interior:
+    "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1800&q=95",
+
+  showroom:
+    "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=2200&q=95",
+
+  road:
+    "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=2200&q=95",
+
+  final:
+    "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=2400&q=95",
+};
+
+const principles = [
   {
-    number: "01",
-    title: "Curated Cars",
-    text: "Every car is selected with attention to condition, quality and long-term value.",
     icon: CarFront,
+    title: "Exceptional Cars",
+    text: "A carefully selected collection of cars chosen for quality, character and performance.",
   },
   {
-    number: "02",
-    title: "Complete Trust",
-    text: "Clear information, transparent processes and no unnecessary complications.",
     icon: ShieldCheck,
+    title: "Complete Trust",
+    text: "Clear information and a transparent experience that helps you buy with confidence.",
   },
   {
-    number: "03",
-    title: "Human Expertise",
-    text: "Real automotive specialists supported by technology that makes every decision easier.",
     icon: Users,
+    title: "Human Expertise",
+    text: "Automotive specialists who understand your requirements and help you choose better.",
   },
   {
-    number: "04",
-    title: "Premium Experience",
-    text: "From your first search to your next journey, every interaction is thoughtfully designed.",
     icon: Sparkles,
+    title: "Premium Experience",
+    text: "A considered experience from the first search to the moment you drive away.",
   },
 ];
 
-const stats = [
-  {
-    value: "5K+",
-    label: "CARS DELIVERED",
-  },
-  {
-    value: "1200+",
-    label: "HAPPY CUSTOMERS",
-  },
-  {
-    value: "40+",
-    label: "PREMIUM BRANDS",
-  },
-  {
-    value: "98%",
-    label: "CUSTOMER SATISFACTION",
-  },
+const numbers = [
+  ["5K+", "Cars Delivered"],
+  ["40+", "Premium Brands"],
+  ["1200+", "Happy Customers"],
+  ["98%", "Customer Satisfaction"],
 ];
 
 const journey = [
   {
-    year: "01",
+    number: "01",
     title: "Discover",
-    text: "Find cars that match your lifestyle, taste and budget.",
+    text: "Explore a collection created around modern automotive enthusiasts.",
   },
   {
-    year: "02",
+    number: "02",
+    title: "Explore",
+    text: "Understand the car, its story, features and ownership experience.",
+  },
+  {
+    number: "03",
     title: "Experience",
-    text: "See the car, understand its story and experience it first-hand.",
+    text: "See the car in person and discover how it feels behind the wheel.",
   },
   {
-    year: "03",
-    title: "Decide",
-    text: "Make confident decisions with transparent information and expert guidance.",
-  },
-  {
-    year: "04",
+    number: "04",
     title: "Drive",
-    text: "Complete your journey and get behind the wheel of something you love.",
+    text: "Complete your journey and take home something you genuinely love.",
   },
 ];
 
-const About = () => {
+function About() {
   return (
-    <div className="about-page">
+    <main className="motora-about-page">
 
-      {/* =================================================
-          HERO
-      ================================================= */}
+      {/* HERO */}
 
-      <section className="about-hero">
+      <section
+        className="motora-about-hero"
+        style={{
+          backgroundImage: `url(${aboutImages.hero})`,
+        }}
+      >
+        <div className="motora-about-hero-overlay" />
 
-        <div className="about-hero-content">
+        <div className="motora-about-hero-top">
+          <span>THE MOTORA STORY</span>
 
-          <span className="about-eyebrow">
-            THE MOTORA STORY
-          </span>
+          <span>01 / 06</span>
+        </div>
+
+        <div className="motora-about-hero-content">
+          <div className="motora-about-eyebrow">
+            <span />
+            MORE THAN A CAR
+          </div>
 
           <h1>
-            A better way
+            Drive
             <br />
-            <strong>to move.</strong>
+            <em>different.</em>
           </h1>
 
           <p>
-            Motora is building a simpler, more thoughtful
-            way to discover, buy and experience cars.
+            Motora is a modern automotive experience built around exceptional
+            cars, trusted expertise and people who genuinely love driving.
           </p>
 
-          <div className="about-hero-actions">
-
-            <a href="/cars">
+          <div className="motora-about-hero-actions">
+            <Link to="/cars" className="motora-about-primary">
               Explore Cars
-              <ArrowUpRight size={16} />
-            </a>
+              <ArrowUpRight size={18} />
+            </Link>
 
-            <a href="/contact" className="about-secondary-btn">
-              Connect with us
-              <ArrowUpRight size={16} />
-            </a>
-
+            <Link to="/showroom" className="motora-about-secondary">
+              Visit Showroom
+            </Link>
           </div>
-
         </div>
 
-        <div className="about-hero-badge">
+        <div className="motora-about-scroll">
+          <span />
+          SCROLL TO EXPLORE
+        </div>
+      </section>
 
-          <Gauge size={28} strokeWidth={1.2} />
+      {/* INTRODUCTION */}
 
-          <span>
-            MOVE
-            <br />
-            DIFFERENT
+      <section className="motora-about-introduction">
+        <div className="motora-about-intro-number">
+          02
+        </div>
+
+        <div className="motora-about-intro-main">
+          <span className="motora-about-label">
+            WHY MOTORA
           </span>
 
-        </div>
+          <div className="motora-about-intro-grid">
+            <h2>
+              Cars are more
+              <br />
+              than <em>machines.</em>
+            </h2>
 
-        <div className="about-hero-bottom">
+            <div className="motora-about-intro-copy">
+              <p>
+                They become part of our everyday lives. They take us to work,
+                away for weekends and towards experiences we remember for years.
+              </p>
 
-          <span>SCROLL TO DISCOVER</span>
-
-          <div className="about-scroll-line">
-            <span />
+              <p>
+                Motora was created to make finding that car easier, clearer and
+                more enjoyable.
+              </p>
+            </div>
           </div>
-
         </div>
-
       </section>
 
+      {/* LARGE STORY IMAGE */}
 
-      {/* =================================================
-          INTRO
-      ================================================= */}
+      <section className="motora-about-story">
+        <img
+          src={aboutImages.story}
+          alt="Premium automobile"
+        />
 
-      <section className="about-intro">
+        <div className="motora-about-story-overlay" />
 
-        <div className="about-section-label">
-          <span>01</span>
-          <p>WHO WE ARE</p>
-        </div>
-
-        <div className="about-intro-content">
+        <div className="motora-about-story-content">
+          <span>THE RIGHT CAR FEELS DIFFERENT</span>
 
           <h2>
-            Cars are more than
+            Find something
             <br />
-            <strong>just machines.</strong>
+            <em>worth driving.</em>
           </h2>
-
-          <p>
-            They are freedom, ambition, memories and
-            the places we're going next. Motora exists
-            to make the journey of finding the right car
-            feel as exciting as the journey itself.
-          </p>
-
         </div>
 
+        <div className="motora-about-story-bottom">
+          <span>CURATED AUTOMOTIVE EXPERIENCE</span>
+
+          <span>MOTORA</span>
+        </div>
       </section>
 
+      {/* PHILOSOPHY */}
 
-      {/* =================================================
-          STORY
-      ================================================= */}
-
-      <section className="about-story">
-
-        <div className="about-story-image">
-
+      <section className="motora-about-philosophy">
+        <div className="motora-about-philosophy-image">
           <img
-            src="https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1800&q=90"
-            alt="Luxury car"
+            src={aboutImages.interior}
+            alt="Premium car interior"
           />
 
-          <div className="about-image-number">
-            01 / 03
+          <div className="motora-about-image-tag">
+            PRECISION
           </div>
-
         </div>
 
-        <div className="about-story-content">
-
-          <span>OUR PHILOSOPHY</span>
+        <div className="motora-about-philosophy-content">
+          <span className="motora-about-label">
+            OUR PHILOSOPHY
+          </span>
 
           <h2>
             Less noise.
             <br />
-            More confidence.
+            More <em>confidence.</em>
           </h2>
 
           <p>
-            The automotive buying experience can be
-            complicated. Too many choices. Too much
-            information. Too little clarity.
+            Buying a premium car should feel exciting, not complicated.
+            Motora brings together carefully selected vehicles, useful
+            information and automotive expertise in one seamless experience.
           </p>
 
-          <p>
-            We believe buying a car should feel different.
-            Calm. Personal. Transparent. And genuinely
-            exciting.
-          </p>
+          <div className="motora-about-philosophy-list">
+            <div>
+              <CheckCircle2 size={18} />
+              <span>Carefully selected inventory</span>
+            </div>
 
-          <div className="about-story-line">
-            <span />
+            <div>
+              <CheckCircle2 size={18} />
+              <span>Clear vehicle information</span>
+            </div>
+
+            <div>
+              <CheckCircle2 size={18} />
+              <span>Expert automotive guidance</span>
+            </div>
+
+            <div>
+              <CheckCircle2 size={18} />
+              <span>Premium ownership experience</span>
+            </div>
           </div>
-
-          <strong>
-            That's the Motora way.
-          </strong>
-
         </div>
-
       </section>
 
+      {/* NUMBERS */}
 
-      {/* =================================================
-          VALUES
-      ================================================= */}
+      <section className="motora-about-numbers">
+        <div className="motora-about-numbers-header">
+          <span>03</span>
 
-      <section className="about-values">
+          <p>THE MOTORA STANDARD</p>
+        </div>
 
-        <div className="about-values-heading">
+        <div className="motora-about-number-grid">
+          {numbers.map(([value, label]) => (
+            <div key={label}>
+              <strong>{value}</strong>
 
-          <div className="about-section-label">
-            <span>02</span>
-            <p>WHAT DRIVES US</p>
-          </div>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* WHY MOTORA */}
+
+      <section className="motora-about-principles">
+        <div className="motora-about-principles-heading">
+          <span className="motora-about-label">
+            WHAT DRIVES US
+          </span>
 
           <h2>
             Built around
             <br />
-            <strong>you.</strong>
+            <em>what matters.</em>
           </h2>
-
         </div>
 
-
-        <div className="about-values-grid">
-
-          {values.map((item) => {
-
+        <div className="motora-about-principles-grid">
+          {principles.map((item) => {
             const Icon = item.icon;
 
             return (
               <article
-                className="about-value-card"
-                key={item.number}
+                className="motora-about-principle"
+                key={item.title}
               >
+                <div className="motora-about-principle-top">
+                  <Icon size={27} strokeWidth={1.5} />
 
-                <div className="about-value-top">
-
-                  <span>
-                    {item.number}
-                  </span>
-
-                  <Icon
-                    size={20}
-                    strokeWidth={1.3}
-                  />
-
+                  <ArrowUpRight size={18} />
                 </div>
 
-                <h3>
-                  {item.title}
-                </h3>
+                <h3>{item.title}</h3>
 
-                <p>
-                  {item.text}
-                </p>
-
-                <div className="about-value-arrow">
-                  <ArrowUpRight size={17} />
-                </div>
-
+                <p>{item.text}</p>
               </article>
             );
           })}
-
         </div>
-
       </section>
 
+      {/* SHOWROOM */}
 
-      {/* =================================================
-          STATS
-      ================================================= */}
-
-      <section className="about-stats">
-
-        <div className="about-stats-heading">
-
-          <span>THE NUMBERS</span>
+      <section className="motora-about-showroom">
+        <div className="motora-about-showroom-content">
+          <span className="motora-about-label">
+            THE MOTORA EXPERIENCE
+          </span>
 
           <h2>
-            Growing with
+            See it.
             <br />
-            every journey.
-          </h2>
-
-        </div>
-
-        <div className="about-stats-grid">
-
-          {stats.map((stat) => (
-            <div
-              className="about-stat"
-              key={stat.label}
-            >
-
-              <strong>
-                {stat.value}
-              </strong>
-
-              <span>
-                {stat.label}
-              </span>
-
-            </div>
-          ))}
-
-        </div>
-
-      </section>
-
-
-      {/* =================================================
-          EXPERIENCE
-      ================================================= */}
-
-      <section className="about-experience">
-
-        <div className="about-experience-copy">
-
-          <div className="about-section-label">
-            <span>03</span>
-            <p>THE EXPERIENCE</p>
-          </div>
-
-          <h2>
-            Your car.
+            Feel it.
             <br />
-            Your story.
-            <br />
-            <strong>Your journey.</strong>
+            <em>Drive it.</em>
           </h2>
 
           <p>
-            From the moment you discover a car to the
-            moment you drive it home, Motora brings
-            technology and human expertise together
-            to make every step feel effortless.
+            The relationship with your next car should begin before you own
+            it. Visit a Motora showroom and experience the difference in
+            person.
           </p>
 
-          <a href="/services">
-            Explore our services
-            <ArrowUpRight size={16} />
-          </a>
-
+          <Link
+            to="/showroom"
+            className="motora-about-text-button"
+          >
+            Explore Showroom
+            <ArrowUpRight size={18} />
+          </Link>
         </div>
 
-        <div className="about-experience-image">
-
+        <div className="motora-about-showroom-image">
           <img
-            src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1800&q=90"
-            alt="Premium automobile"
+            src={aboutImages.showroom}
+            alt="Motora showroom"
           />
 
-          <div className="about-image-overlay">
-
-            <span>
-              THE MOTORA STANDARD
-            </span>
-
-            <strong>
-              PRECISION
-            </strong>
-
+          <div className="motora-about-showroom-card">
+            <GaugeIcon />
+            <span>PREMIUM AUTOMOTIVE EXPERIENCE</span>
           </div>
-
         </div>
-
       </section>
 
+      {/* JOURNEY */}
 
-      {/* =================================================
-          JOURNEY
-      ================================================= */}
+      <section className="motora-about-journey">
+        <div className="motora-about-journey-image">
+          <img
+            src={aboutImages.road}
+            alt="Luxury car on road"
+          />
 
-      <section className="about-journey">
+          <div className="motora-about-journey-image-overlay" />
+        </div>
 
-        <div className="about-journey-heading">
-
-          <div className="about-section-label">
-            <span>04</span>
-            <p>HOW WE THINK</p>
-          </div>
+        <div className="motora-about-journey-content">
+          <span className="motora-about-label">
+            YOUR JOURNEY
+          </span>
 
           <h2>
             From discovery
             <br />
-            <strong>to drive.</strong>
+            to <em>drive.</em>
           </h2>
 
-        </div>
+          <div className="motora-about-journey-list">
+            {journey.map((item) => (
+              <div
+                className="motora-about-journey-item"
+                key={item.number}
+              >
+                <span>{item.number}</span>
 
+                <div>
+                  <h3>{item.title}</h3>
 
-        <div className="about-journey-list">
+                  <p>{item.text}</p>
+                </div>
 
-          {journey.map((item) => (
-
-            <div
-              className="about-journey-item"
-              key={item.year}
-            >
-
-              <div className="about-journey-number">
-                {item.year}
+                <ArrowUpRight size={19} />
               </div>
-
-              <div>
-
-                <h3>
-                  {item.title}
-                </h3>
-
-                <p>
-                  {item.text}
-                </p>
-
-              </div>
-
-              <Check
-                className="about-journey-check"
-                size={17}
-              />
-
-            </div>
-
-          ))}
-
+            ))}
+          </div>
         </div>
-
       </section>
 
+      {/* FINAL CTA */}
 
-      {/* =================================================
-          FINAL CTA
-      ================================================= */}
+      <section className="motora-about-final">
+        <img
+          src={aboutImages.final}
+          alt="Luxury Motora automobile"
+        />
 
-      <section className="about-final">
+        <div className="motora-about-final-overlay" />
 
-        <div className="about-final-content">
-
-          <span>
-            READY FOR WHAT'S NEXT?
-          </span>
+        <div className="motora-about-final-content">
+          <span>YOUR NEXT MOVE</span>
 
           <h2>
-            Your next journey
+            Ready for your
             <br />
-            <strong>starts here.</strong>
+            <em>next drive?</em>
           </h2>
 
-          <div className="about-final-actions">
-
-            <a href="/cars">
+          <div className="motora-about-final-actions">
+            <Link
+              to="/cars"
+              className="motora-about-primary"
+            >
               Explore Cars
-              <ArrowUpRight size={16} />
-            </a>
+              <ArrowUpRight size={18} />
+            </Link>
 
-            <a
-              href="/contact"
-              className="about-final-secondary"
+            <Link
+              to="/contact"
+              className="motora-about-final-link"
             >
               Talk to Motora
-              <ArrowUpRight size={16} />
-            </a>
-
+            </Link>
           </div>
-
         </div>
-
       </section>
 
+    </main>
+  );
+}
+
+function GaugeIcon() {
+  return (
+    <div className="motora-about-gauge">
+      <GaugeIconInner />
     </div>
   );
-};
+}
+
+function GaugeIconInner() {
+  return (
+    <Gauge
+      size={21}
+      strokeWidth={1.5}
+    />
+  );
+}
 
 export default About;

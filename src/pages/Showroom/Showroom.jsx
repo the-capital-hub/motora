@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+
 import {
   ArrowUpRight,
   CalendarDays,
@@ -20,11 +21,11 @@ const showrooms = [
     area: "Vasant Kunj",
     address: "12 Nelson Mandela Road, Vasant Kunj",
     phone: "+91 11 4567 8900",
-    hours: "10:00 AM — 8:00 PM",
+    hours: "10:00 AM to 8:00 PM",
     cars: 42,
     type: "Flagship",
     image:
-      "https://images.unsplash.com/photo-1562141961-b9d9b8b8e4f5?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1562141961-b9d9b8b8e4f5?auto=format&fit=crop&w=1800&q=90",
   },
   {
     id: 2,
@@ -32,11 +33,11 @@ const showrooms = [
     area: "Bandra",
     address: "Linking Road, Bandra West",
     phone: "+91 22 4567 8900",
-    hours: "10:00 AM — 8:00 PM",
+    hours: "10:00 AM to 8:00 PM",
     cars: 35,
     type: "Premium",
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1800&q=90",
   },
   {
     id: 3,
@@ -44,11 +45,11 @@ const showrooms = [
     area: "Indiranagar",
     address: "100 Feet Road, Indiranagar",
     phone: "+91 80 4567 8900",
-    hours: "10:00 AM — 8:00 PM",
+    hours: "10:00 AM to 8:00 PM",
     cars: 29,
     type: "Premium",
     image:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=1800&q=90",
   },
   {
     id: 4,
@@ -56,11 +57,11 @@ const showrooms = [
     area: "Golf Course Road",
     address: "Golf Course Road, Sector 54",
     phone: "+91 12 4567 8900",
-    hours: "10:00 AM — 8:00 PM",
+    hours: "10:00 AM to 8:00 PM",
     cars: 31,
     type: "Premium",
     image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=90",
   },
   {
     id: 5,
@@ -68,24 +69,31 @@ const showrooms = [
     area: "Koregaon Park",
     address: "North Main Road, Koregaon Park",
     phone: "+91 20 4567 8900",
-    hours: "10:00 AM — 8:00 PM",
+    hours: "10:00 AM to 8:00 PM",
     cars: 24,
     type: "Studio",
     image:
-      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1600&q=85",
+      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1800&q=90",
   },
 ];
 
+const showroomExperienceImage =
+  "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1800&q=90";
+
+const showroomHeroImage =
+  "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=2000&q=90";
+
 const Showroom = () => {
   const [search, setSearch] = useState("");
-  const [selectedShowroom, setSelectedShowroom] =
-    useState(null);
+  const [selectedShowroom, setSelectedShowroom] = useState(null);
   const [visitOpen, setVisitOpen] = useState(false);
 
   const filteredShowrooms = useMemo(() => {
     const value = search.toLowerCase().trim();
 
-    if (!value) return showrooms;
+    if (!value) {
+      return showrooms;
+    }
 
     return showrooms.filter((showroom) =>
       `${showroom.city} ${showroom.area} ${showroom.address}`
@@ -102,11 +110,18 @@ const Showroom = () => {
   return (
     <div className="showroom-page">
 
-      {/* =================================
-          HERO
-      ================================= */}
+      {/* HERO */}
 
       <section className="showroom-hero">
+
+        <div className="showroom-hero-image">
+          <img
+            src={showroomHeroImage}
+            alt="Premium Motora automotive showroom"
+          />
+
+          <div className="showroom-hero-image-overlay" />
+        </div>
 
         <div className="showroom-hero-content">
 
@@ -137,27 +152,24 @@ const Showroom = () => {
           </strong>
 
           <small>
-            across India
+            premium locations across India
           </small>
 
         </div>
 
       </section>
 
-
-      {/* =================================
-          SEARCH
-      ================================= */}
+      {/* SEARCH */}
 
       <section className="showroom-search-section">
 
         <div className="showroom-search">
 
-          <Search size={16} />
+          <Search size={17} />
 
           <input
             type="text"
-            placeholder="Search city or location..."
+            placeholder="Search city or location"
             value={search}
             onChange={(event) =>
               setSearch(event.target.value)
@@ -166,6 +178,7 @@ const Showroom = () => {
 
           {search && (
             <button
+              type="button"
               onClick={() => setSearch("")}
               aria-label="Clear search"
             >
@@ -181,10 +194,7 @@ const Showroom = () => {
 
       </section>
 
-
-      {/* =================================
-          FEATURED SHOWROOM
-      ================================= */}
+      {/* FEATURED */}
 
       {!search && (
         <section className="showroom-featured">
@@ -193,22 +203,21 @@ const Showroom = () => {
 
             <img
               src={showrooms[0].image}
-              alt="Motora Delhi showroom"
+              alt="Motora Delhi flagship showroom"
             />
 
             <div className="showroom-image-overlay" />
 
-            <span>
+            <div className="showroom-image-label">
               MOTORA FLAGSHIP
-            </span>
+            </div>
 
           </div>
 
           <div className="showroom-featured-content">
 
             <span>
-              {showrooms[0].city} ·{" "}
-              {showrooms[0].area}
+              {showrooms[0].city} · {showrooms[0].area}
             </span>
 
             <h2>
@@ -230,19 +239,26 @@ const Showroom = () => {
                 <strong>
                   {showrooms[0].cars}
                 </strong>
-                <span>Cars available</span>
+
+                <span>
+                  Cars available
+                </span>
               </div>
 
               <div>
                 <strong>
                   7 Days
                 </strong>
-                <span>Open every week</span>
+
+                <span>
+                  Open every week
+                </span>
               </div>
 
             </div>
 
             <button
+              type="button"
               onClick={() =>
                 setSelectedShowroom(
                   showrooms[0].id
@@ -250,7 +266,7 @@ const Showroom = () => {
               }
             >
               Explore showroom
-              <ArrowUpRight size={15} />
+              <ArrowUpRight size={16} />
             </button>
 
           </div>
@@ -258,10 +274,7 @@ const Showroom = () => {
         </section>
       )}
 
-
-      {/* =================================
-          LOCATIONS
-      ================================= */}
+      {/* LOCATIONS */}
 
       <section className="showroom-locations">
 
@@ -285,12 +298,10 @@ const Showroom = () => {
 
         </div>
 
-
         <div className="showroom-grid">
 
           {filteredShowrooms.map(
             (showroom, index) => (
-
               <article
                 className="showroom-card"
                 key={showroom.id}
@@ -301,9 +312,10 @@ const Showroom = () => {
                   <img
                     src={showroom.image}
                     alt={`${showroom.city} showroom`}
+                    loading="lazy"
                   />
 
-                  <div />
+                  <div className="showroom-card-overlay" />
 
                   <span>
                     {String(index + 1).padStart(
@@ -318,12 +330,12 @@ const Showroom = () => {
 
                 </div>
 
-
                 <div className="showroom-card-content">
 
                   <div className="showroom-card-title">
 
                     <div>
+
                       <span>
                         {showroom.city}
                       </span>
@@ -331,29 +343,30 @@ const Showroom = () => {
                       <h3>
                         {showroom.area}
                       </h3>
+
                     </div>
 
-                    <MapPin size={16} />
+                    <MapPin size={17} />
 
                   </div>
-
 
                   <p>
                     {showroom.address}
                   </p>
 
-
                   <div className="showroom-card-info">
 
                     <div>
-                      <Clock3 size={13} />
+                      <Clock3 size={14} />
+
                       <span>
                         {showroom.hours}
                       </span>
                     </div>
 
                     <div>
-                      <CarFront size={13} />
+                      <CarFront size={14} />
+
                       <span>
                         {showroom.cars} cars
                       </span>
@@ -361,8 +374,8 @@ const Showroom = () => {
 
                   </div>
 
-
                   <button
+                    type="button"
                     onClick={() =>
                       setSelectedShowroom(
                         showroom.id
@@ -370,26 +383,24 @@ const Showroom = () => {
                     }
                   >
                     View showroom
-                    <ArrowUpRight size={14} />
+                    <ArrowUpRight size={15} />
                   </button>
 
                 </div>
 
               </article>
-
             )
           )}
 
         </div>
 
-
         {filteredShowrooms.length === 0 && (
           <div className="showroom-empty">
 
-            <MapPin size={22} />
+            <MapPin size={24} />
 
             <h3>
-              We couldn't find that location.
+              We could not find that location.
             </h3>
 
             <p>
@@ -397,6 +408,7 @@ const Showroom = () => {
             </p>
 
             <button
+              type="button"
               onClick={() => setSearch("")}
             >
               View all locations
@@ -407,18 +419,16 @@ const Showroom = () => {
 
       </section>
 
-
-      {/* =================================
-          SHOWROOM EXPERIENCE
-      ================================= */}
+      {/* EXPERIENCE */}
 
       <section className="showroom-experience">
 
         <div className="showroom-experience-image">
 
           <img
-            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85"
-            alt="Premium showroom interior"
+            src={showroomExperienceImage}
+            alt="Premium automotive showroom interior"
+            loading="lazy"
           />
 
         </div>
@@ -438,28 +448,31 @@ const Showroom = () => {
           <p>
             Browse at your own pace, ask questions,
             compare cars and take a test drive.
-            Our specialists are here to help —
-            never to pressure.
+            Our specialists are here to help
+            without pressure.
           </p>
 
           <div className="experience-points">
 
             <div>
-              <Sparkles size={15} />
+              <Sparkles size={16} />
+
               <span>
                 Curated collection
               </span>
             </div>
 
             <div>
-              <CarFront size={15} />
+              <CarFront size={16} />
+
               <span>
                 Test drives available
               </span>
             </div>
 
             <div>
-              <Phone size={15} />
+              <Phone size={16} />
+
               <span>
                 Dedicated specialists
               </span>
@@ -471,10 +484,7 @@ const Showroom = () => {
 
       </section>
 
-
-      {/* =================================
-          VISIT CTA
-      ================================= */}
+      {/* VISIT CTA */}
 
       <section className="showroom-visit-cta">
 
@@ -493,18 +503,16 @@ const Showroom = () => {
         </div>
 
         <button
+          type="button"
           onClick={() => setVisitOpen(true)}
         >
           Book a showroom visit
-          <CalendarDays size={16} />
+          <CalendarDays size={17} />
         </button>
 
       </section>
 
-
-      {/* =================================
-          SHOWROOM MODAL
-      ================================= */}
+      {/* SHOWROOM MODAL */}
 
       {activeShowroom && (
         <div
@@ -523,11 +531,13 @@ const Showroom = () => {
 
             <button
               className="showroom-modal-close"
+              type="button"
               onClick={() =>
                 setSelectedShowroom(null)
               }
+              aria-label="Close showroom"
             >
-              ×
+              <X size={18} />
             </button>
 
             <div className="showroom-modal-image">
@@ -540,11 +550,11 @@ const Showroom = () => {
               <div />
 
               <span>
-                MOTORA {activeShowroom.type.toUpperCase()}
+                MOTORA{" "}
+                {activeShowroom.type.toUpperCase()}
               </span>
 
             </div>
-
 
             <div className="showroom-modal-content">
 
@@ -560,13 +570,16 @@ const Showroom = () => {
                 {activeShowroom.address}
               </p>
 
-
               <div className="showroom-modal-details">
 
                 <div>
-                  <Clock3 size={14} />
+                  <Clock3 size={16} />
+
                   <div>
-                    <small>OPENING HOURS</small>
+                    <small>
+                      OPENING HOURS
+                    </small>
+
                     <strong>
                       {activeShowroom.hours}
                     </strong>
@@ -574,9 +587,13 @@ const Showroom = () => {
                 </div>
 
                 <div>
-                  <CarFront size={14} />
+                  <CarFront size={16} />
+
                   <div>
-                    <small>AVAILABLE CARS</small>
+                    <small>
+                      AVAILABLE CARS
+                    </small>
+
                     <strong>
                       {activeShowroom.cars} vehicles
                     </strong>
@@ -584,9 +601,13 @@ const Showroom = () => {
                 </div>
 
                 <div>
-                  <Phone size={14} />
+                  <Phone size={16} />
+
                   <div>
-                    <small>CONTACT</small>
+                    <small>
+                      CONTACT
+                    </small>
+
                     <strong>
                       {activeShowroom.phone}
                     </strong>
@@ -595,20 +616,21 @@ const Showroom = () => {
 
               </div>
 
-
               <div className="showroom-modal-actions">
 
                 <button
+                  type="button"
                   onClick={() => {
                     setSelectedShowroom(null);
                     setVisitOpen(true);
                   }}
                 >
                   Book a visit
-                  <CalendarDays size={14} />
+                  <CalendarDays size={15} />
                 </button>
 
                 <button
+                  type="button"
                   className="secondary"
                   onClick={() =>
                     setSelectedShowroom(null)
@@ -626,10 +648,7 @@ const Showroom = () => {
         </div>
       )}
 
-
-      {/* =================================
-          VISIT MODAL
-      ================================= */}
+      {/* VISIT MODAL */}
 
       {visitOpen && (
         <div
@@ -648,11 +667,13 @@ const Showroom = () => {
 
             <button
               className="showroom-modal-close"
+              type="button"
               onClick={() =>
                 setVisitOpen(false)
               }
+              aria-label="Close visit form"
             >
-              ×
+              <X size={18} />
             </button>
 
             <span>
@@ -660,49 +681,67 @@ const Showroom = () => {
             </span>
 
             <h2>
-              Let's arrange a time.
+              Let us arrange a time.
             </h2>
 
             <p>
-              Choose your preferred showroom and
-              we'll confirm your visit.
+              Choose your preferred showroom
+              and we will confirm your visit.
             </p>
 
-            <select>
-              <option>
+            <label>
+              Select showroom
+            </label>
+
+            <select defaultValue="">
+              <option value="" disabled>
                 Select showroom
               </option>
 
               {showrooms.map((showroom) => (
                 <option
                   key={showroom.id}
+                  value={showroom.id}
                 >
-                  {showroom.city} —{" "}
+                  {showroom.city} ·{" "}
                   {showroom.area}
                 </option>
               ))}
             </select>
 
+            <label>
+              Your name
+            </label>
+
             <input
               type="text"
-              placeholder="Your name"
+              placeholder="Enter your name"
             />
+
+            <label>
+              Phone number
+            </label>
 
             <input
               type="tel"
-              placeholder="Phone number"
+              placeholder="Enter your phone number"
             />
+
+            <label>
+              Preferred date
+            </label>
 
             <input type="date" />
 
             <button
               className="visit-submit"
+              type="button"
               onClick={() =>
                 setVisitOpen(false)
               }
             >
               Request a Visit
-              <ArrowUpRight size={15} />
+              <ArrowUpRight size={16} />
             </button>
 
           </div>

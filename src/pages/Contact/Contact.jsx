@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   ArrowUpRight,
-  Check,
   ChevronDown,
   Mail,
   MapPin,
@@ -9,8 +8,13 @@ import {
   Phone,
   Sparkles,
 } from "lucide-react";
-
 import "./Contact.css";
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2200&q=90";
+
+const CONTACT_IMAGE =
+  "https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1800&q=90";
 
 const faqs = [
   {
@@ -57,9 +61,7 @@ const Contact = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    alert(
-      "Thank you! Your message has been received."
-    );
+    alert("Thank you! Your message has been received.");
 
     setFormData({
       name: "",
@@ -69,73 +71,93 @@ const Contact = () => {
     });
   };
 
+  const goTo = (path) => {
+    window.location.href = path;
+  };
+
   return (
     <div className="contact-page">
 
-      {/* =================================
-          HERO
-      ================================= */}
+      {/* HERO */}
 
-      <section className="contact-hero">
+      <section
+        className="contact-hero"
+        style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+      >
+        <div className="contact-hero-overlay" />
 
-        <div className="contact-hero-content">
+        <div className="contact-hero-inner">
+          <div className="contact-hero-copy">
+            <span className="contact-eyebrow">
+              CONTACT MOTORA
+            </span>
 
-          <span>
-            CONTACT MOTORA
-          </span>
+            <h1>
+              Let's talk
+              <br />
+              <strong>cars.</strong>
+            </h1>
 
-          <h1>
-            Let's talk
-            <br />
-            <strong>cars.</strong>
-          </h1>
+            <p>
+              Whether you are looking for your next car,
+              need some help or simply want to know more
+              about Motora, we are here.
+            </p>
 
-          <p>
-            Whether you're looking for your next
-            car, need some help or simply want to
-            know more about Motora, we're here.
-          </p>
+            <div className="contact-hero-actions">
+              <button onClick={() => goTo("/cars")}>
+                Explore cars
+                <ArrowUpRight size={16} />
+              </button>
 
+              <button
+                className="contact-outline-button"
+                onClick={() => goTo("/showroom")}
+              >
+                Visit showroom
+              </button>
+            </div>
+          </div>
+
+          <div className="contact-hero-mark">
+            <MessageCircle size={30} strokeWidth={1.2} />
+
+            <span>
+              WE ARE
+              <br />
+              LISTENING
+            </span>
+          </div>
         </div>
 
-        <div className="contact-hero-mark">
-
-          <MessageCircle
-            size={30}
-            strokeWidth={1}
-          />
-
-          <span>
-            WE'RE
-            <br />
-            LISTENING
-          </span>
-
+        <div className="contact-hero-bottom">
+          <span>PERSONAL SERVICE</span>
+          <span>PREMIUM CARS</span>
+          <span>REAL PEOPLE</span>
         </div>
-
       </section>
 
 
-      {/* =================================
-          CONTACT INFO
-      ================================= */}
+      {/* CONTACT INFO */}
 
       <section className="contact-info-section">
-
-        <div className="contact-info-heading">
-
-          <span>
-            GET IN TOUCH
-          </span>
-
-          <h2>
-            We're never
-            <br />
-            too far away.
-          </h2>
-
+        <div className="contact-section-label">
+          GET IN TOUCH
         </div>
 
+        <div className="contact-info-heading">
+          <h2>
+            We are never
+            <br />
+            <strong>too far away.</strong>
+          </h2>
+
+          <p>
+            Have a question about a car, a test drive,
+            selling your vehicle or our showroom experience?
+            Choose the easiest way to reach us.
+          </p>
+        </div>
 
         <div className="contact-info-grid">
 
@@ -143,25 +165,25 @@ const Contact = () => {
             href="tel:+911800123456"
             className="contact-info-card"
           >
+            <div className="contact-info-top">
+              <div className="contact-info-icon">
+                <Phone size={19} />
+              </div>
 
-            <div className="contact-info-icon">
-              <Phone size={19} />
+              <ArrowUpRight size={17} />
             </div>
 
-            <span>
-              CALL US
-            </span>
+            <span>CALL US</span>
 
             <strong>
               +91 1800 123 456
             </strong>
 
             <p>
-              Mon – Sat · 9:00 AM – 7:00 PM
+              Monday to Saturday
+              <br />
+              9:00 AM to 7:00 PM
             </p>
-
-            <ArrowUpRight size={16} />
-
           </a>
 
 
@@ -169,115 +191,119 @@ const Contact = () => {
             href="mailto:hello@motora.com"
             className="contact-info-card"
           >
+            <div className="contact-info-top">
+              <div className="contact-info-icon">
+                <Mail size={19} />
+              </div>
 
-            <div className="contact-info-icon">
-              <Mail size={19} />
+              <ArrowUpRight size={17} />
             </div>
 
-            <span>
-              EMAIL US
-            </span>
+            <span>EMAIL US</span>
 
             <strong>
               hello@motora.com
             </strong>
 
             <p>
-              We usually reply within 24 hours.
+              We usually reply
+              <br />
+              within 24 hours.
             </p>
-
-            <ArrowUpRight size={16} />
-
           </a>
 
 
           <div className="contact-info-card">
+            <div className="contact-info-top">
+              <div className="contact-info-icon">
+                <MapPin size={19} />
+              </div>
 
-            <div className="contact-info-icon">
-              <MapPin size={19} />
+              <ArrowUpRight size={17} />
             </div>
 
-            <span>
-              VISIT US
-            </span>
+            <span>VISIT US</span>
 
             <strong>
               Experience Centres
             </strong>
 
             <p>
-              Explore our premium showrooms.
+              Explore our premium
+              <br />
+              showroom locations.
             </p>
 
             <button
-              onClick={() =>
-                (window.location.href =
-                  "/showroom")
-              }
+              onClick={() => goTo("/showroom")}
+              className="contact-card-link"
             >
               Find a showroom
               <ArrowUpRight size={14} />
             </button>
-
           </div>
 
         </div>
-
       </section>
 
 
-      {/* =================================
-          FORM + VISUAL
-      ================================= */}
+      {/* MESSAGE SECTION */}
 
       <section className="contact-form-section">
 
         <div className="contact-form-visual">
-
           <img
-            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=85"
-            alt="Premium car"
+            src={CONTACT_IMAGE}
+            alt="Premium Motora car"
           />
 
           <div className="contact-visual-overlay" />
 
           <div className="contact-visual-content">
-
             <span>
-              MOTORA EXPERIENCE
+              THE MOTORA EXPERIENCE
             </span>
 
             <h2>
-              Have a question?
+              Your question
               <br />
-              We're here.
+              <strong>matters.</strong>
             </h2>
 
+            <p>
+              Tell us what you need and our team
+              will help you find the right direction.
+            </p>
           </div>
 
+          <div className="contact-visual-number">
+            01
+          </div>
         </div>
 
 
         <div className="contact-form-wrapper">
-
-          <span>
+          <span className="contact-form-label">
             SEND US A MESSAGE
           </span>
 
           <h2>
             Tell us
             <br />
-            what's on your mind.
+            <strong>what is on your mind.</strong>
           </h2>
+
+          <p className="contact-form-intro">
+            Fill in your details and our team will
+            get back to you shortly.
+          </p>
 
           <form onSubmit={handleSubmit}>
 
             <div className="form-row">
 
               <label>
-                <span>
-                  YOUR NAME
-                </span>
+                <span>YOUR NAME</span>
 
                 <input
                   type="text"
@@ -289,11 +315,8 @@ const Contact = () => {
                 />
               </label>
 
-
               <label>
-                <span>
-                  EMAIL ADDRESS
-                </span>
+                <span>EMAIL ADDRESS</span>
 
                 <input
                   type="email"
@@ -309,9 +332,7 @@ const Contact = () => {
 
 
             <label>
-              <span>
-                PHONE NUMBER
-              </span>
+              <span>PHONE NUMBER</span>
 
               <input
                 type="tel"
@@ -324,9 +345,7 @@ const Contact = () => {
 
 
             <label>
-              <span>
-                HOW CAN WE HELP?
-              </span>
+              <span>HOW CAN WE HELP?</span>
 
               <textarea
                 name="message"
@@ -344,19 +363,16 @@ const Contact = () => {
               className="contact-submit"
             >
               Send message
-              <ArrowUpRight size={15} />
+              <ArrowUpRight size={16} />
             </button>
 
           </form>
-
         </div>
 
       </section>
 
 
-      {/* =================================
-          AI CONCIERGE
-      ================================= */}
+      {/* AI CONCIERGE */}
 
       <section className="contact-ai">
 
@@ -365,7 +381,6 @@ const Contact = () => {
         </div>
 
         <div className="contact-ai-content">
-
           <span>
             NEED AN INSTANT ANSWER?
           </span>
@@ -373,22 +388,17 @@ const Contact = () => {
           <h2>
             Meet your
             <br />
-            AI Concierge.
+            <strong>AI Concierge.</strong>
           </h2>
 
           <p>
-            Tell us what kind of car you're looking
-            for and get instant guidance without
-            waiting for a response.
+            Tell us what kind of car you are looking
+            for and get instant guidance from Ivy.
           </p>
-
         </div>
 
         <button
-          onClick={() =>
-            (window.location.href =
-              "/ai-concierge")
-          }
+          onClick={() => goTo("/ai-concierge")}
         >
           Talk to AI Concierge
           <ArrowUpRight size={15} />
@@ -397,14 +407,11 @@ const Contact = () => {
       </section>
 
 
-      {/* =================================
-          FAQ
-      ================================= */}
+      {/* FAQ */}
 
       <section className="contact-faq">
 
         <div className="faq-heading">
-
           <span>
             FREQUENTLY ASKED
           </span>
@@ -412,18 +419,20 @@ const Contact = () => {
           <h2>
             Questions,
             <br />
-            answered.
+            <strong>answered.</strong>
           </h2>
 
+          <p>
+            Everything you may want to know
+            before starting your Motora journey.
+          </p>
         </div>
 
 
         <div className="faq-list">
 
           {faqs.map((faq, index) => {
-
-            const isOpen =
-              openFaq === index;
+            const isOpen = openFaq === index;
 
             return (
               <div
@@ -434,29 +443,28 @@ const Contact = () => {
               >
 
                 <button
+                  type="button"
                   onClick={() =>
                     setOpenFaq(
                       isOpen ? null : index
                     )
                   }
                 >
-
                   <span>
+                    <small>
+                      0{index + 1}
+                    </small>
+
                     {faq.question}
                   </span>
 
-                  <ChevronDown
-                    size={17}
-                  />
-
+                  <ChevronDown size={17} />
                 </button>
 
                 <div className="faq-answer">
-
                   <p>
                     {faq.answer}
                   </p>
-
                 </div>
 
               </div>
@@ -468,14 +476,11 @@ const Contact = () => {
       </section>
 
 
-      {/* =================================
-          FINAL CTA
-      ================================= */}
+      {/* FINAL CTA */}
 
       <section className="contact-cta">
 
-        <div>
-
+        <div className="contact-cta-copy">
           <span>
             STILL LOOKING?
           </span>
@@ -483,18 +488,15 @@ const Contact = () => {
           <h2>
             Maybe your
             <br />
-            next car is waiting.
+            <strong>next car is waiting.</strong>
           </h2>
-
         </div>
+
 
         <div className="contact-cta-actions">
 
           <button
-            onClick={() =>
-              (window.location.href =
-                "/cars")
-            }
+            onClick={() => goTo("/cars")}
           >
             Explore cars
             <ArrowUpRight size={15} />
@@ -502,10 +504,7 @@ const Contact = () => {
 
           <button
             className="secondary"
-            onClick={() =>
-              (window.location.href =
-                "/test-drive")
-            }
+            onClick={() => goTo("/test-drive")}
           >
             Book a test drive
             <ArrowUpRight size={15} />

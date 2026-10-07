@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,39 +10,24 @@ import {
   MapPin,
   Phone,
   UserRound,
+  CarFront,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 import "./TestDrive.css";
+import api from "../../api/client";
 
-const cars = [
-  {
-    id: 1,
-    brand: "BMW",
-    model: "X5",
-    variant: "xDrive40i M Sport",
-    price: "₹95.00 L",
-    image:
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    id: 2,
-    brand: "Audi",
-    model: "Q7",
-    variant: "45 TFSI Technology",
-    price: "₹88.00 L",
-    image:
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    id: 3,
-    brand: "Mercedes-Benz",
-    model: "GLE",
-    variant: "300d 4MATIC",
-    price: "₹96.40 L",
-    image:
-      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=85",
-  },
-];
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=2200&q=90";
+
+const SHOWROOM_IMAGE =
+  "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1600&q=90";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=90";
+
 
 const locations = [
   {
@@ -50,6 +36,8 @@ const locations = [
     city: "New Delhi",
     address: "Aerocity, New Delhi",
     distance: "4.2 km",
+    image:
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1000&q=85",
   },
   {
     id: 2,
@@ -57,6 +45,8 @@ const locations = [
     city: "Gurugram",
     address: "Golf Course Road, Gurugram",
     distance: "11.8 km",
+    image:
+      "https://images.unsplash.com/photo-1562141961-bbc3f0f8b8f7?auto=format&fit=crop&w=1000&q=85",
   },
   {
     id: 3,
@@ -64,8 +54,11 @@ const locations = [
     city: "Noida",
     address: "Sector 62, Noida",
     distance: "18.4 km",
+    image:
+      "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?auto=format&fit=crop&w=1000&q=85",
   },
 ];
+
 
 const timeSlots = [
   "09:00 AM",
@@ -76,17 +69,21 @@ const timeSlots = [
   "05:30 PM",
 ];
 
+
 const TestDrive = () => {
   const [step, setStep] = useState(1);
 
-  const [selectedCar, setSelectedCar] =
-    useState(cars[0]);
+  const [cars, setCars] = useState([]);
+  const [carsLoading, setCarsLoading] = useState(true);
+  const [carsError, setCarsError] = useState("");
 
-  const [selectedLocation, setSelectedLocation] =
-    useState(locations[0]);
+  const [selectedCar, setSelectedCar] = useState(null);
+
+  const [selectedLocation, setSelectedLocation] = useState(
+    locations[0]
+  );
 
   const [date, setDate] = useState("");
-
   const [time, setTime] = useState("");
 
   const [form, setForm] = useState({
@@ -95,11 +92,71 @@ const TestDrive = () => {
     email: "",
   });
 
-  const [bookingConfirmed, setBookingConfirmed] =
-    useState(false);
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadCars = async () => {
+      try {
+        setCarsLoading(true);
+        setCarsError("");
+
+        const data = await api.get(
+          "/cars?status=Available&limit=50&sort=-createdAt"
+        );
+
+        const items = Array.isArray(data)
+          ? data
+          : data?.items || [];
+
+        if (!mounted) return;
+
+        const mapped = items.map((car) => ({
+          ...car,
+          id: car._id,
+          image:
+            car.images?.[0] || FALLBACK_IMAGE,
+          priceLabel:
+            `₹${Number(
+              car.price || 0
+            ).toLocaleString("en-IN")}`,
+        }));
+
+        setCars(mapped);
+        setSelectedCar(mapped[0] || null);
+      } catch (error) {
+        if (!mounted) return;
+
+        setCars([]);
+        setSelectedCar(null);
+
+        setCarsError(
+          error?.message ||
+            "Unable to load available cars."
+        );
+      } finally {
+        if (mounted) {
+          setCarsLoading(false);
+        }
+      }
+    };
+
+    loadCars();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
 
   const selectedDateText = useMemo(() => {
-    if (!date) return "Select a date";
+    if (!date) {
+      return "Select a date";
+    }
 
     const parsedDate = new Date(
       `${date}T00:00:00`
@@ -115,6 +172,7 @@ const TestDrive = () => {
     );
   }, [date]);
 
+
   const updateForm = (field, value) => {
     setForm((current) => ({
       ...current,
@@ -122,19 +180,23 @@ const TestDrive = () => {
     }));
   };
 
+
   const nextStep = () => {
     if (step < 4) {
       setStep((current) => current + 1);
+
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
     }
   };
+
 
   const previousStep = () => {
     if (step > 1) {
       setStep((current) => current - 1);
+
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -142,10 +204,19 @@ const TestDrive = () => {
     }
   };
 
+
   const canContinue = () => {
-    if (step === 1) return !!selectedCar;
-    if (step === 2) return !!selectedLocation;
-    if (step === 3) return !!date && !!time;
+    if (step === 1) {
+      return !!selectedCar;
+    }
+
+    if (step === 2) {
+      return !!selectedLocation;
+    }
+
+    if (step === 3) {
+      return !!date && !!time;
+    }
 
     return (
       form.name.trim() &&
@@ -154,20 +225,60 @@ const TestDrive = () => {
     );
   };
 
-  const confirmBooking = () => {
-    if (!canContinue()) return;
 
-    setBookingConfirmed(true);
+  const confirmBooking = async () => {
+    if (
+      !canContinue() ||
+      submitting ||
+      !selectedCar?._id
+    ) {
+      return;
+    }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setSubmitError("");
+
+      await api.post(
+        "/requests/test-drives",
+        {
+          carId: selectedCar._id,
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          location: selectedLocation.name,
+          date,
+          time,
+        }
+      );
+
+      setBookingConfirmed(true);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      setSubmitError(
+        error?.message ||
+          "Unable to submit test drive request."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
+
 
   const resetBooking = () => {
     setStep(1);
-    setSelectedCar(cars[0]);
+    setSelectedCar(cars[0] || null);
     setSelectedLocation(locations[0]);
     setDate("");
     setTime("");
@@ -179,7 +290,9 @@ const TestDrive = () => {
     });
 
     setBookingConfirmed(false);
+    setSubmitError("");
   };
+
 
   if (bookingConfirmed) {
     return (
@@ -187,107 +300,135 @@ const TestDrive = () => {
 
         <section className="booking-success">
 
-          <div className="success-icon">
-            <Check size={24} />
+          <div className="success-image">
+            <img
+              src={
+                selectedCar?.image ||
+                HERO_IMAGE
+              }
+              alt={
+                selectedCar?.model ||
+                "Motora test drive"
+              }
+            />
+
+            <div className="success-image-overlay" />
           </div>
 
-          <span>
-            APPOINTMENT REQUESTED
-          </span>
 
-          <h1>
-            You're all
-            <br />
-            <strong>set.</strong>
-          </h1>
+          <div className="success-content">
 
-          <p>
-            Your test drive request has been
-            received. A Motora specialist will
-            contact you shortly to confirm the
-            appointment.
-          </p>
+            <div className="success-icon">
+              <Check size={24} />
+            </div>
 
-          <div className="booking-summary">
+            <span className="success-eyebrow">
+              APPOINTMENT REQUESTED
+            </span>
 
-            <div className="summary-car">
+            <h1>
+              Your drive is
+              <strong> all set.</strong>
+            </h1>
 
-              <img
-                src={selectedCar.image}
-                alt={selectedCar.model}
-              />
+            <p>
+              Your test drive request has been
+              received. A Motora specialist will
+              contact you shortly to confirm the
+              appointment.
+            </p>
 
-              <div>
-                <span>
-                  {selectedCar.brand}
-                </span>
 
-                <h3>
-                  {selectedCar.model}
-                </h3>
+            <div className="booking-summary">
 
-                <small>
-                  {selectedCar.variant}
-                </small>
+              <div className="summary-car">
+
+                <img
+                  src={selectedCar?.image}
+                  alt={
+                    selectedCar?.model ||
+                    "Selected car"
+                  }
+                />
+
+                <div>
+                  <span>
+                    {selectedCar?.brand}
+                  </span>
+
+                  <h3>
+                    {selectedCar?.model}
+                  </h3>
+
+                  <small>
+                    {selectedCar?.variant ||
+                      "Premium vehicle"}
+                  </small>
+                </div>
+
+              </div>
+
+
+              <div className="summary-line">
+
+                <CalendarDays size={15} />
+
+                <div>
+                  <span>DATE</span>
+
+                  <strong>
+                    {selectedDateText}
+                  </strong>
+                </div>
+
+              </div>
+
+
+              <div className="summary-line">
+
+                <Clock3 size={15} />
+
+                <div>
+                  <span>TIME</span>
+
+                  <strong>
+                    {time}
+                  </strong>
+                </div>
+
+              </div>
+
+
+              <div className="summary-line">
+
+                <MapPin size={15} />
+
+                <div>
+                  <span>LOCATION</span>
+
+                  <strong>
+                    {selectedLocation.name}
+                  </strong>
+
+                  <small>
+                    {selectedLocation.address}
+                  </small>
+                </div>
+
               </div>
 
             </div>
 
-            <div className="summary-line">
-              <CalendarDays size={15} />
 
-              <div>
-                <span>
-                  DATE
-                </span>
-
-                <strong>
-                  {selectedDateText}
-                </strong>
-              </div>
-            </div>
-
-            <div className="summary-line">
-              <Clock3 size={15} />
-
-              <div>
-                <span>
-                  TIME
-                </span>
-
-                <strong>
-                  {time}
-                </strong>
-              </div>
-            </div>
-
-            <div className="summary-line">
-              <MapPin size={15} />
-
-              <div>
-                <span>
-                  LOCATION
-                </span>
-
-                <strong>
-                  {selectedLocation.name}
-                </strong>
-
-                <small>
-                  {selectedLocation.address}
-                </small>
-              </div>
-            </div>
+            <button
+              className="new-booking-button"
+              onClick={resetBooking}
+            >
+              Book another test drive
+              <ArrowRight size={15} />
+            </button>
 
           </div>
-
-          <button
-            className="new-booking-button"
-            onClick={resetBooking}
-          >
-            Book another test drive
-            <ArrowRight size={15} />
-          </button>
 
         </section>
 
@@ -295,55 +436,79 @@ const TestDrive = () => {
     );
   }
 
+
   return (
     <div className="test-drive-page">
 
-      {/* =================================
-          HERO
-      ================================= */}
+      {/* HERO */}
 
       <section className="test-drive-hero">
 
-        <div>
+        <img
+          className="test-drive-hero-image"
+          src={HERO_IMAGE}
+          alt="Premium Motora vehicle"
+        />
 
-          <span>
+        <div className="test-drive-hero-overlay" />
+
+        <div className="test-drive-hero-content">
+
+          <div className="hero-eyebrow">
+            <Sparkles size={14} />
             MOTORA EXPERIENCE
-          </span>
+          </div>
 
           <h1>
             Drive it.
-            <br />
-            <strong>Feel it.</strong>
+            <strong> Feel it.</strong>
           </h1>
 
           <p>
-            Book a private test drive at a Motora
-            experience centre. Take your time,
-            ask questions and experience the car
-            properly.
+            Book a private test drive at a
+            Motora experience centre. Take
+            your time, ask questions and
+            experience the car properly.
           </p>
+
+          <div className="hero-trust-row">
+
+            <div>
+              <ShieldCheck size={15} />
+              Verified vehicles
+            </div>
+
+            <div>
+              <Clock3 size={15} />
+              Private experience
+            </div>
+
+            <div>
+              <MapPin size={15} />
+              Premium locations
+            </div>
+
+          </div>
 
         </div>
 
+
         <div className="hero-drive-mark">
-          <CarIcon />
+          <CarFront size={34} />
+          <span>TEST DRIVE</span>
         </div>
 
       </section>
 
 
-      {/* =================================
-          BOOKING AREA
-      ================================= */}
+      {/* BOOKING */}
 
       <section className="booking-section">
 
         <div className="booking-header">
 
           <div>
-            <span>
-              TEST DRIVE
-            </span>
+            <span>TEST DRIVE</span>
 
             <h2>
               Book your experience.
@@ -377,20 +542,24 @@ const TestDrive = () => {
               }
               key={item}
             >
-              <div>
+
+              <div className="progress-number">
+
                 {step > item ? (
                   <Check size={11} />
                 ) : (
                   item
                 )}
+
               </div>
 
               <span>
                 {item === 1 && "Car"}
                 {item === 2 && "Location"}
-                {item === 3 && "Date & Time"}
+                {item === 3 && "Date and Time"}
                 {item === 4 && "Details"}
               </span>
+
             </div>
 
           ))}
@@ -398,9 +567,7 @@ const TestDrive = () => {
         </div>
 
 
-        {/* =================================
-            STEP 1
-        ================================= */}
+        {/* STEP 1 */}
 
         {step === 1 && (
 
@@ -426,71 +593,106 @@ const TestDrive = () => {
             </div>
 
 
-            <div className="drive-car-grid">
+            {carsLoading ? (
 
-              {cars.map((car) => (
+              <div className="booking-inline-message">
+                Loading available cars...
+              </div>
 
-                <button
-                  className={
-                    selectedCar.id === car.id
-                      ? "drive-car selected"
-                      : "drive-car"
-                  }
-                  key={car.id}
-                  onClick={() =>
-                    setSelectedCar(car)
-                  }
-                >
+            ) : carsError ? (
 
-                  <div className="drive-car-image">
+              <div className="booking-inline-message error">
+                {carsError}
+              </div>
 
-                    <img
-                      src={car.image}
-                      alt={`${car.brand} ${car.model}`}
-                    />
+            ) : cars.length === 0 ? (
 
-                    {selectedCar.id === car.id && (
-                      <div className="selected-check">
-                        <Check size={13} />
+              <div className="booking-inline-message">
+                No available cars found right now.
+              </div>
+
+            ) : (
+
+              <div className="drive-car-grid">
+
+                {cars.map((car) => (
+
+                  <button
+                    type="button"
+                    className={
+                      selectedCar?.id === car.id
+                        ? "drive-car selected"
+                        : "drive-car"
+                    }
+                    key={car.id}
+                    onClick={() =>
+                      setSelectedCar(car)
+                    }
+                  >
+
+                    <div className="drive-car-image">
+
+                      <img
+                        src={car.image}
+                        alt={`${car.brand} ${car.model}`}
+                      />
+
+                      <div className="drive-car-gradient" />
+
+                      {selectedCar?.id === car.id && (
+                        <div className="selected-check">
+                          <Check size={13} />
+                        </div>
+                      )}
+
+                      <div className="drive-car-badge">
+                        <ShieldCheck size={12} />
+                        Available
                       </div>
-                    )}
 
-                  </div>
+                    </div>
 
-                  <div className="drive-car-info">
 
-                    <span>
-                      {car.brand}
-                    </span>
+                    <div className="drive-car-info">
 
-                    <h4>
-                      {car.model}
-                    </h4>
+                      <span>
+                        {car.brand}
+                      </span>
 
-                    <small>
-                      {car.variant}
-                    </small>
+                      <h4>
+                        {car.model}
+                      </h4>
 
-                    <strong>
-                      {car.price}
-                    </strong>
+                      <small>
+                        {car.variant ||
+                          "Premium vehicle"}
+                      </small>
 
-                  </div>
+                      <strong>
+                        {car.priceLabel ||
+                          `₹${Number(
+                            car.price || 0
+                          ).toLocaleString(
+                            "en-IN"
+                          )}`}
+                      </strong>
 
-                </button>
+                    </div>
 
-              ))}
+                  </button>
 
-            </div>
+                ))}
+
+              </div>
+
+            )}
 
           </div>
 
         )}
 
 
-        {/* =================================
-            STEP 2
-        ================================= */}
+        {/* STEP 2 */}
 
         {step === 2 && (
 
@@ -521,6 +723,7 @@ const TestDrive = () => {
               {locations.map((location) => (
 
                 <button
+                  type="button"
                   className={
                     selectedLocation.id ===
                     location.id
@@ -529,15 +732,25 @@ const TestDrive = () => {
                   }
                   key={location.id}
                   onClick={() =>
-                    setSelectedLocation(
-                      location
-                    )
+                    setSelectedLocation(location)
                   }
                 >
 
-                  <div className="location-icon">
-                    <MapPin size={17} />
+                  <div className="location-image">
+
+                    <img
+                      src={location.image}
+                      alt={location.name}
+                    />
+
+                    <div className="location-image-overlay" />
+
+                    <div className="location-icon">
+                      <MapPin size={17} />
+                    </div>
+
                   </div>
+
 
                   <div className="location-info">
 
@@ -555,7 +768,9 @@ const TestDrive = () => {
 
                   </div>
 
+
                   <div className="location-distance">
+
                     <strong>
                       {location.distance}
                     </strong>
@@ -564,6 +779,7 @@ const TestDrive = () => {
                       location.id && (
                       <Check size={14} />
                     )}
+
                   </div>
 
                 </button>
@@ -577,9 +793,7 @@ const TestDrive = () => {
         )}
 
 
-        {/* =================================
-            STEP 3
-        ================================= */}
+        {/* STEP 3 */}
 
         {step === 3 && (
 
@@ -654,6 +868,7 @@ const TestDrive = () => {
                   {timeSlots.map((slot) => (
 
                     <button
+                      type="button"
                       className={
                         time === slot
                           ? "selected"
@@ -680,9 +895,7 @@ const TestDrive = () => {
         )}
 
 
-        {/* =================================
-            STEP 4
-        ================================= */}
+        {/* STEP 4 */}
 
         {step === 4 && (
 
@@ -782,9 +995,10 @@ const TestDrive = () => {
                 </span>
 
                 <div>
+
                   <strong>
-                    {selectedCar.brand}{" "}
-                    {selectedCar.model}
+                    {selectedCar?.brand}{" "}
+                    {selectedCar?.model}
                   </strong>
 
                   <small>
@@ -794,6 +1008,7 @@ const TestDrive = () => {
                   <small>
                     {selectedLocation.name}
                   </small>
+
                 </div>
 
               </div>
@@ -805,27 +1020,41 @@ const TestDrive = () => {
         )}
 
 
-        {/* =================================
-            NAVIGATION
-        ================================= */}
+        {submitError && (
+
+          <div className="booking-inline-message error">
+            {submitError}
+          </div>
+
+        )}
+
+
+        {/* NAVIGATION */}
 
         <div className="booking-navigation">
 
           {step > 1 ? (
+
             <button
+              type="button"
               className="back-button"
               onClick={previousStep}
             >
               <ArrowLeft size={14} />
               Back
             </button>
+
           ) : (
+
             <div />
+
           )}
 
 
           {step < 4 ? (
+
             <button
+              type="button"
               className={
                 canContinue()
                   ? "continue-button"
@@ -837,8 +1066,11 @@ const TestDrive = () => {
               Continue
               <ArrowRight size={14} />
             </button>
+
           ) : (
+
             <button
+              type="button"
               className={
                 canContinue()
                   ? "continue-button"
@@ -847,9 +1079,16 @@ const TestDrive = () => {
               disabled={!canContinue()}
               onClick={confirmBooking}
             >
-              Confirm test drive
-              <Check size={14} />
+              {submitting
+                ? "Submitting..."
+                : "Confirm test drive"}
+
+              {!submitting && (
+                <Check size={14} />
+              )}
+
             </button>
+
           )}
 
         </div>
@@ -857,9 +1096,7 @@ const TestDrive = () => {
       </section>
 
 
-      {/* =================================
-          TRUST
-      ================================= */}
+      {/* TRUST */}
 
       <section className="drive-trust">
 
@@ -878,6 +1115,7 @@ const TestDrive = () => {
 
         </div>
 
+
         <div>
 
           <Clock3 size={15} />
@@ -892,6 +1130,7 @@ const TestDrive = () => {
           </p>
 
         </div>
+
 
         <div>
 
@@ -914,29 +1153,5 @@ const TestDrive = () => {
   );
 };
 
-const CarIcon = () => (
-  <div className="car-mark">
-    <CarFrontIcon />
-  </div>
-);
-
-const CarFrontIcon = () => (
-  <svg
-    width="50"
-    height="50"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="0.8"
-  >
-    <path d="M5 17h14" />
-    <path d="M6 17V9.5L8 5h8l2 4.5V17" />
-    <path d="M6 10h12" />
-    <path d="M8 14h1" />
-    <path d="M15 14h1" />
-    <path d="M7 17v2" />
-    <path d="M17 17v2" />
-  </svg>
-);
 
 export default TestDrive;

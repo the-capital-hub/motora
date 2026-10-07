@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -7,9 +8,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-/* =========================================
-   PUBLIC PAGES
-========================================= */
+// ================= PUBLIC PAGES =================
 
 import Home from "./pages/Home/Home";
 import Cars from "./pages/Cars/Cars";
@@ -17,7 +16,6 @@ import CarDetails from "./pages/CarDetails/CarDetails";
 import SellCar from "./pages/SellCar/SellCar";
 import Brands from "./pages/Brands/Brands";
 import Showroom from "./pages/Showroom/Showroom";
-// import Compare from "./pages/Compare/Compare";
 import CompareCars from "./pages/CompareCars/CompareCars";
 import Wishlist from "./pages/Wishlist/Wishlist";
 import AIConcierge from "./pages/AIConcierge/AIConcierge";
@@ -28,16 +26,18 @@ import About from "./pages/About/About";
 import Testimonials from "./pages/Testimonials/Testimonials";
 import Contact from "./pages/Contact/Contact";
 
-/* =========================================
-   PUBLIC COMPONENTS
-========================================= */
+// ================= AUTH =================
+
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// ================= PUBLIC COMPONENTS =================
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 
-/* =========================================
-   ADMIN
-========================================= */
+// ================= ADMIN =================
 
 import AdminLayout from "./admin/AdminLayout";
 import Dashboard from "./admin/Dashboard";
@@ -46,31 +46,49 @@ import Appointments from "./admin/Appointments";
 import Customers from "./admin/Customers";
 import Analytics from "./admin/Analytics";
 import SellRequests from "./admin/SellRequests";
+import TestDrives from "./admin/TestDrives";
+import Leads from "./admin/Leads";
 import AIAssistant from "./admin/AIAssistant";
+import ActivityLog from "./admin/ActivityLog";
+import Settings from "./admin/Settings";
 
+import AdminLogin from "./pages/AdminLogin/AdminLogin";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
-/* =========================================
-   PUBLIC LAYOUT
-========================================= */
+// ================= SMART SEARCH =================
 
-const PublicLayout = ({ children }) => {
-  return (
-    <>
-      <Navbar />
+import SmartSearch from "./pages/SmartSearch/SmartSearch";
 
-      <main>
-        {children}
-      </main>
+// ================= CLIENT PANEL =================
 
-      <Footer />
-    </>
-  );
-};
+import ClientProtectedRoute from "./client/ClientProtectedRoute";
+import ClientLayout from "./client/ClientLayout";
+import ClientDashboard from "./client/ClientDashboard";
+import ClientProfile from "./client/ClientProfile";
+import ClientNotifications from "./client/ClientNotifications";
+import ClientSettings from "./client/ClientSettings";
 
+import {
+  ClientWishlist,
+  ClientAppointments,
+  ClientEnquiries,
+  ClientSellRequests,
+  ClientActivity,
+} from "./client/ClientListPages";
 
-/* =========================================
-   ADMIN LAYOUT
-========================================= */
+// ================= PUBLIC LAYOUT =================
+
+const PublicLayout = ({ children }) => (
+  <>
+    <Navbar />
+
+    <main>{children}</main>
+
+    <Footer />
+  </>
+);
+
+// ================= ADMIN PAGE WRAPPER =================
 
 const AdminPage = ({ children }) => {
   const navigate = useNavigate();
@@ -86,69 +104,60 @@ const AdminPage = ({ children }) => {
   );
 };
 
+// ================= 404 PAGE =================
 
-/* =========================================
-   404
-========================================= */
+const NotFound = () => (
+  <PublicLayout>
+    <section
+      style={{
+        minHeight: "70vh",
+        display: "grid",
+        placeItems: "center",
+        textAlign: "center",
+        padding: "20px",
+      }}
+    >
+      <div>
+        <span>404</span>
 
-const NotFound = () => {
-  return (
-    <PublicLayout>
-      <section
-        style={{
-          minHeight: "70vh",
-          display: "grid",
-          placeItems: "center",
-          textAlign: "center",
-          padding: "120px 20px",
-        }}
-      >
-        <div>
-          <span>404</span>
+        <h1>Page not found</h1>
 
-          <h1>
-            Page not found
-          </h1>
+        <a href="/">Back to Home</a>
+      </div>
+    </section>
+  </PublicLayout>
+);
 
-          <a href="/">
-            Back to Home
-          </a>
-        </div>
-      </section>
-    </PublicLayout>
-  );
-};
+// ================= APP =================
 
-
-/* =========================================
-   APP
-========================================= */
-
-const App = () => {
+export default function App() {
   return (
     <BrowserRouter>
-
       <Routes>
 
-        {/* =================================
-            HOME
-        ================================= */}
+        {/* ================================================= */}
+        {/*                  PUBLIC WEBSITE                   */}
+        {/* ================================================= */}
 
         <Route
           path="/"
           element={<Home />}
         />
 
-
-        {/* =================================
-            PUBLIC PAGES
-        ================================= */}
-
         <Route
           path="/cars"
           element={
             <PublicLayout>
               <Cars />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/cars/:id"
+          element={
+            <PublicLayout>
+              <CarDetails />
             </PublicLayout>
           }
         />
@@ -163,7 +172,7 @@ const App = () => {
         />
 
         <Route
-          path="/sell"
+          path="/sell-car"
           element={
             <PublicLayout>
               <SellCar />
@@ -189,15 +198,6 @@ const App = () => {
           }
         />
 
-        {/* <Route
-          path="/compare"
-          element={
-            <PublicLayout>
-              <Compare />
-            </PublicLayout>
-          }
-        /> */}
-
         <Route
           path="/compare-cars"
           element={
@@ -207,14 +207,47 @@ const App = () => {
           }
         />
 
+        {/* ================================================= */}
+        {/*                       AUTH                        */}
+        {/* ================================================= */}
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        {/* ================================================= */}
+        {/*                    ADMIN AUTH                     */}
+        {/* ================================================= */}
+
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
+        />
+
+        {/* ================================================= */}
+        {/*                     WISHLIST                      */}
+        {/* ================================================= */}
+
         <Route
           path="/wishlist"
           element={
-            <PublicLayout>
-              <Wishlist />
-            </PublicLayout>
+            <ProtectedRoute>
+              <PublicLayout>
+                <Wishlist />
+              </PublicLayout>
+            </ProtectedRoute>
           }
         />
+
+        {/* ================================================= */}
+        {/*                  AI CONCIERGE                     */}
+        {/* ================================================= */}
 
         <Route
           path="/ai-concierge"
@@ -225,6 +258,23 @@ const App = () => {
           }
         />
 
+        {/* ================================================= */}
+        {/*                   SMART SEARCH                    */}
+        {/* ================================================= */}
+
+        <Route
+          path="/smart-search"
+          element={
+            <PublicLayout>
+              <SmartSearch />
+            </PublicLayout>
+          }
+        />
+
+        {/* ================================================= */}
+        {/*                    TEST DRIVE                     */}
+        {/* ================================================= */}
+
         <Route
           path="/test-drive"
           element={
@@ -233,6 +283,10 @@ const App = () => {
             </PublicLayout>
           }
         />
+
+        {/* ================================================= */}
+        {/*                   HOW IT WORKS                    */}
+        {/* ================================================= */}
 
         <Route
           path="/how-it-works"
@@ -243,6 +297,10 @@ const App = () => {
           }
         />
 
+        {/* ================================================= */}
+        {/*                     SERVICES                      */}
+        {/* ================================================= */}
+
         <Route
           path="/services"
           element={
@@ -251,6 +309,10 @@ const App = () => {
             </PublicLayout>
           }
         />
+
+        {/* ================================================= */}
+        {/*                       ABOUT                       */}
+        {/* ================================================= */}
 
         <Route
           path="/about"
@@ -261,6 +323,10 @@ const App = () => {
           }
         />
 
+        {/* ================================================= */}
+        {/*                    TESTIMONIALS                   */}
+        {/* ================================================= */}
+
         <Route
           path="/testimonials"
           element={
@@ -269,6 +335,10 @@ const App = () => {
             </PublicLayout>
           }
         />
+
+        {/* ================================================= */}
+        {/*                      CONTACT                      */}
+        {/* ================================================= */}
 
         <Route
           path="/contact"
@@ -279,78 +349,193 @@ const App = () => {
           }
         />
 
+        {/* ================================================= */}
+        {/*                    ADMIN PANEL                    */}
+        {/* ================================================= */}
 
-        {/* =================================
-            ADMIN
-        ================================= */}
+        <Route element={<AdminProtectedRoute />}>
 
-        <Route
-          path="/admin"
-          element={
-            <AdminPage>
-              <Dashboard />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin"
+            element={
+              <AdminPage>
+                <Dashboard />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/inventory"
-          element={
-            <AdminPage>
-              <Inventory />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminPage>
+                <Dashboard />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/customers"
-          element={
-            <AdminPage>
-              <Customers />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/inventory"
+            element={
+              <AdminPage>
+                <Inventory />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/appointments"
-          element={
-            <AdminPage>
-              <Appointments />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/customers"
+            element={
+              <AdminPage>
+                <Customers />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/analytics"
-          element={
-            <AdminPage>
-              <Analytics />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/appointments"
+            element={
+              <AdminPage>
+                <Appointments />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/sell-requests"
-          element={
-            <AdminPage>
-              <SellRequests />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/analytics"
+            element={
+              <AdminPage>
+                <Analytics />
+              </AdminPage>
+            }
+          />
 
-        <Route
-          path="/admin/ai-assistant"
-          element={
-            <AdminPage>
-              <AIAssistant />
-            </AdminPage>
-          }
-        />
+          <Route
+            path="/admin/leads"
+            element={
+              <AdminPage>
+                <Leads />
+              </AdminPage>
+            }
+          />
 
+          <Route
+            path="/admin/test-drives"
+            element={
+              <AdminPage>
+                <TestDrives />
+              </AdminPage>
+            }
+          />
 
-        {/* =================================
-            404
-        ================================= */}
+          <Route
+            path="/admin/sell-requests"
+            element={
+              <AdminPage>
+                <SellRequests />
+              </AdminPage>
+            }
+          />
+
+          <Route
+            path="/admin/activity-log"
+            element={
+              <AdminPage>
+                <ActivityLog />
+              </AdminPage>
+            }
+          />
+
+          <Route
+            path="/admin/settings"
+            element={
+              <AdminPage>
+                <Settings />
+              </AdminPage>
+            }
+          />
+
+          <Route
+            path="/admin/ai-assistant"
+            element={
+              <AdminPage>
+                <AIAssistant />
+              </AdminPage>
+            }
+          />
+
+        </Route>
+
+        {/* ================================================= */}
+        {/*                    CLIENT PANEL                   */}
+        {/* ================================================= */}
+
+        <Route element={<ClientProtectedRoute />}>
+
+          <Route
+            path="/client"
+            element={<ClientLayout />}
+          >
+            {/* Client Dashboard */}
+            <Route
+              index
+              element={<ClientDashboard />}
+            />
+
+            {/* Wishlist */}
+            <Route
+              path="wishlist"
+              element={<ClientWishlist />}
+            />
+
+            {/* Appointments */}
+            <Route
+              path="appointments"
+              element={<ClientAppointments />}
+            />
+
+            {/* Enquiries */}
+            <Route
+              path="enquiries"
+              element={<ClientEnquiries />}
+            />
+
+            {/* Sell Requests */}
+            <Route
+              path="sell-requests"
+              element={<ClientSellRequests />}
+            />
+
+            {/* Activity */}
+            <Route
+              path="activity"
+              element={<ClientActivity />}
+            />
+
+            {/* Notifications */}
+            <Route
+              path="notifications"
+              element={<ClientNotifications />}
+            />
+
+            {/* Profile */}
+            <Route
+              path="profile"
+              element={<ClientProfile />}
+            />
+
+            {/* Settings */}
+            <Route
+              path="settings"
+              element={<ClientSettings />}
+            />
+
+          </Route>
+
+        </Route>
+
+        {/* ================================================= */}
+        {/*                       404                         */}
+        {/* ================================================= */}
 
         <Route
           path="*"
@@ -358,9 +543,6 @@ const App = () => {
         />
 
       </Routes>
-
     </BrowserRouter>
   );
-};
-
-export default App;
+}

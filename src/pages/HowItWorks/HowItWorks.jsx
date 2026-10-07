@@ -15,6 +15,17 @@ import {
 
 import "./HowItWorks.css";
 
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=2200&q=90";
+
+const AI_IMAGE =
+  "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1600&q=90";
+
+const SHOWROOM_IMAGE =
+  "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1800&q=90";
+
+
 const steps = [
   {
     number: "01",
@@ -35,7 +46,7 @@ const steps = [
   {
     number: "03",
     icon: ArrowRight,
-    title: "Compare & shortlist",
+    title: "Compare and shortlist",
     text:
       "Save your favourites and compare the details that matter before making a decision.",
     tags: ["Compare", "Wishlist", "Specifications"],
@@ -66,6 +77,7 @@ const steps = [
   },
 ];
 
+
 const journey = [
   {
     icon: Search,
@@ -89,15 +101,24 @@ const journey = [
   },
 ];
 
+
 const HowItWorks = () => {
+
   return (
     <div className="how-page">
 
-      {/* =================================
-          HERO
-      ================================= */}
+      {/* HERO */}
 
       <section className="how-hero">
+
+        <img
+          className="how-hero-image"
+          src={HERO_IMAGE}
+          alt="Premium Motora car"
+        />
+
+        <div className="how-hero-overlay" />
+
 
         <div className="how-hero-content">
 
@@ -116,6 +137,7 @@ const HowItWorks = () => {
             you drive away, Motora brings everything
             together in one seamless experience.
           </p>
+
 
           <div className="how-hero-actions">
 
@@ -141,7 +163,33 @@ const HowItWorks = () => {
 
           </div>
 
+
+          <div className="how-hero-stats">
+
+            <div>
+              <strong>01</strong>
+              <span>Discover</span>
+            </div>
+
+            <div>
+              <strong>02</strong>
+              <span>Compare</span>
+            </div>
+
+            <div>
+              <strong>03</strong>
+              <span>Experience</span>
+            </div>
+
+            <div>
+              <strong>04</strong>
+              <span>Own</span>
+            </div>
+
+          </div>
+
         </div>
+
 
         <div className="how-hero-visual">
 
@@ -169,9 +217,7 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          INTRO
-      ================================= */}
+      {/* INTRO */}
 
       <section className="how-intro">
 
@@ -187,6 +233,7 @@ const HowItWorks = () => {
 
         </div>
 
+
         <div className="how-intro-content">
 
           <h2>
@@ -201,7 +248,7 @@ const HowItWorks = () => {
               Buying a car shouldn't feel like
               navigating ten different websites,
               talking to multiple people and
-              constantly second-guessing your choice.
+              constantly second guessing your choice.
             </p>
 
             <p>
@@ -217,9 +264,7 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          JOURNEY STRIP
-      ================================= */}
+      {/* JOURNEY */}
 
       <section className="how-journey">
 
@@ -261,23 +306,25 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          STEPS
-      ================================= */}
+      {/* STEPS */}
 
       <section className="how-steps">
 
         <div className="how-steps-heading">
 
-          <span>
-            THE JOURNEY
-          </span>
+          <div>
 
-          <h2>
-            Six steps.
-            <br />
-            Zero confusion.
-          </h2>
+            <span>
+              THE JOURNEY
+            </span>
+
+            <h2>
+              Six steps.
+              <br />
+              Zero confusion.
+            </h2>
+
+          </div>
 
           <p>
             We've designed every stage around
@@ -311,6 +358,7 @@ const HowItWorks = () => {
                   />
                 </div>
 
+
                 <div className="step-content">
 
                   <h3>
@@ -321,19 +369,21 @@ const HowItWorks = () => {
                     {step.text}
                   </p>
 
+
                   <div className="step-tags">
 
-                    {step.tags.map(
-                      (tag) => (
-                        <span key={tag}>
-                          {tag}
-                        </span>
-                      )
-                    )}
+                    {step.tags.map((tag) => (
+
+                      <span key={tag}>
+                        {tag}
+                      </span>
+
+                    ))}
 
                   </div>
 
                 </div>
+
 
                 <ArrowUpRight
                   className="step-arrow"
@@ -349,19 +399,26 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          AI SECTION
-      ================================= */}
+      {/* AI */}
 
       <section className="how-ai">
 
         <div className="how-ai-visual">
 
+          <img
+            src={AI_IMAGE}
+            alt="Premium car"
+          />
+
+          <div className="how-ai-image-overlay" />
+
           <div className="ai-ring ring-one" />
           <div className="ai-ring ring-two" />
           <div className="ai-ring ring-three" />
 
+
           <div className="ai-center">
+
             <Bot
               size={34}
               strokeWidth={1}
@@ -370,6 +427,23 @@ const HowItWorks = () => {
             <span>
               IVY
             </span>
+
+          </div>
+
+
+          <div className="ai-floating-card">
+
+            <Sparkles size={14} />
+
+            <div>
+              <strong>
+                Smart guidance
+              </strong>
+
+              <span>
+                Built around you
+              </span>
+            </div>
 
           </div>
 
@@ -394,6 +468,7 @@ const HowItWorks = () => {
             discover suitable cars and guide you
             through the next step.
           </p>
+
 
           <div className="ai-benefits">
 
@@ -420,6 +495,7 @@ const HowItWorks = () => {
 
           </div>
 
+
           <button
             onClick={() =>
               (window.location.href =
@@ -435,9 +511,7 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          SHOWROOM EXPERIENCE
-      ================================= */}
+      {/* SHOWROOM */}
 
       <section className="how-experience">
 
@@ -459,6 +533,7 @@ const HowItWorks = () => {
             and experience your shortlisted cars in
             the real world.
           </p>
+
 
           <div className="experience-points">
 
@@ -485,6 +560,7 @@ const HowItWorks = () => {
 
           </div>
 
+
           <button
             onClick={() =>
               (window.location.href =
@@ -501,24 +577,28 @@ const HowItWorks = () => {
         <div className="experience-visual">
 
           <img
-            src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85"
+            src={SHOWROOM_IMAGE}
             alt="Premium automotive showroom"
           />
 
-          <div />
+          <div className="experience-overlay" />
 
-          <span>
-            EXPERIENCE IT IN PERSON
-          </span>
+          <div className="experience-badge">
+
+            <Store size={15} />
+
+            <span>
+              EXPERIENCE IT IN PERSON
+            </span>
+
+          </div>
 
         </div>
 
       </section>
 
 
-      {/* =================================
-          TRUST
-      ================================= */}
+      {/* TRUST */}
 
       <section className="how-trust">
 
@@ -554,6 +634,7 @@ const HowItWorks = () => {
 
           </div>
 
+
           <div>
 
             <Sparkles size={18} />
@@ -568,6 +649,7 @@ const HowItWorks = () => {
             </p>
 
           </div>
+
 
           <div>
 
@@ -589,9 +671,7 @@ const HowItWorks = () => {
       </section>
 
 
-      {/* =================================
-          FINAL CTA
-      ================================= */}
+      {/* CTA */}
 
       <section className="how-cta">
 
@@ -608,6 +688,7 @@ const HowItWorks = () => {
           </h2>
 
         </div>
+
 
         <div className="how-cta-actions">
 
@@ -641,8 +722,6 @@ const HowItWorks = () => {
 };
 
 
-/* Small reusable icon for the experience section */
-
 const UsersIcon = () => (
   <svg
     width="15"
@@ -660,5 +739,6 @@ const UsersIcon = () => (
     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
   </svg>
 );
+
 
 export default HowItWorks;

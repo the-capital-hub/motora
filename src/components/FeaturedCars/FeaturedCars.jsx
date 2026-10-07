@@ -22,7 +22,7 @@ const cars = [
   },
   {
     id: "02",
-    brand: "MERCEDES-BENZ",
+    brand: "MERCEDES BENZ",
     model: "GLE",
     year: "2024",
     mileage: "12,500 KM",
@@ -64,34 +64,34 @@ const FeaturedCars = () => {
       gsap.from(".collection-eyebrow", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
         },
-        y: 30,
+        y: 20,
         opacity: 0,
-        duration: 0.8,
+        duration: 0.7,
       });
 
       gsap.from(".collection-title-line", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
+          start: "top 75%",
         },
-        yPercent: 100,
+        yPercent: 70,
         opacity: 0,
-        duration: 1,
-        stagger: 0.12,
+        duration: 0.8,
+        stagger: 0.1,
       });
 
       gsap.from(".car-card", {
         scrollTrigger: {
           trigger: ".cars-track",
-          start: "top 80%",
+          start: "top 82%",
         },
-        y: 70,
+        y: 40,
         opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power4.out",
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
       });
     }, sectionRef);
 
@@ -102,13 +102,10 @@ const FeaturedCars = () => {
     if (!trackRef.current) return;
 
     const amount =
-      window.innerWidth > 900 ? 600 : 320;
+      window.innerWidth > 900 ? 520 : 300;
 
     trackRef.current.scrollBy({
-      left:
-        direction === "next"
-          ? amount
-          : -amount,
+      left: direction === "next" ? amount : -amount,
       behavior: "smooth",
     });
   };
@@ -121,10 +118,6 @@ const FeaturedCars = () => {
     >
       <div className="featured-cars-container">
 
-        {/* =================================
-            HEADER
-        ================================= */}
-
         <div className="collection-header">
 
           <div className="collection-heading">
@@ -135,17 +128,19 @@ const FeaturedCars = () => {
             </div>
 
             <h2 className="collection-title">
+
               <span className="collection-title-mask">
                 <span className="collection-title-line">
-                  Exceptional cars,
+                  Exceptional cars
                 </span>
               </span>
 
               <span className="collection-title-mask">
                 <span className="collection-title-line collection-title-bold">
-                  carefully selected.
+                  carefully selected
                 </span>
               </span>
+
             </h2>
 
           </div>
@@ -158,19 +153,20 @@ const FeaturedCars = () => {
               performance, design and character.
             </p>
 
-            <a href="#cars">
-              View All Cars
+            <button
+              type="button"
+              className="view-all-cars"
+              onClick={() => {
+                window.location.href = "#cars";
+              }}
+            >
+              <span>VIEW ALL CARS</span>
               <ArrowUpRight size={16} />
-            </a>
+            </button>
 
           </div>
 
         </div>
-
-
-        {/* =================================
-            CAR TRACK
-        ================================= */}
 
         <div
           ref={trackRef}
@@ -189,6 +185,7 @@ const FeaturedCars = () => {
                   src={car.image}
                   alt={`${car.brand} ${car.model}`}
                   className="car-image"
+                  loading="lazy"
                 />
 
                 <div className="car-image-overlay" />
@@ -197,12 +194,15 @@ const FeaturedCars = () => {
                   {car.id}
                 </span>
 
-                <button className="car-view-button">
-                  <ArrowUpRight size={20} />
+                <button
+                  type="button"
+                  className="car-view-button"
+                  aria-label={`View ${car.brand} ${car.model}`}
+                >
+                  <ArrowUpRight size={18} />
                 </button>
 
               </div>
-
 
               <div className="car-info">
 
@@ -224,16 +224,15 @@ const FeaturedCars = () => {
 
               </div>
 
-
               <div className="car-specs">
 
                 <span>{car.year}</span>
 
-                <i />
+                <i aria-hidden="true" />
 
                 <span>{car.mileage}</span>
 
-                <i />
+                <i aria-hidden="true" />
 
                 <span>{car.fuel}</span>
 
@@ -244,36 +243,29 @@ const FeaturedCars = () => {
 
         </div>
 
-
-        {/* =================================
-            CONTROLS
-        ================================= */}
-
         <div className="collection-bottom">
 
           <div className="collection-count">
             <strong>04</strong>
-            <span>/ 08</span>
+            <span> / 08</span>
           </div>
 
           <div className="collection-controls">
 
             <button
-              onClick={() =>
-                scrollCars("prev")
-              }
+              type="button"
+              onClick={() => scrollCars("prev")}
               aria-label="Previous cars"
             >
-              <ArrowLeft size={18} />
+              <ArrowLeft size={17} />
             </button>
 
             <button
-              onClick={() =>
-                scrollCars("next")
-              }
+              type="button"
+              onClick={() => scrollCars("next")}
               aria-label="Next cars"
             >
-              <ArrowRight size={18} />
+              <ArrowRight size={17} />
             </button>
 
           </div>

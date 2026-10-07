@@ -4,78 +4,49 @@
 
 .sell-car {
   position: relative;
-
-  padding: 160px 0 80px;
-
+  padding: 20px 0;
   background: #050505;
-
   color: #ffffff;
-
   overflow: hidden;
 }
 
-
-/* =========================================
-   CONTAINER
-========================================= */
-
 .sell-car-container {
-  width: min(
-    calc(100% - 80px),
-    var(--container)
-  );
-
+  width: min(calc(100% - 48px), var(--container));
   margin: 0 auto;
 }
-
 
 /* =========================================
    HEADER
 ========================================= */
 
 .sell-header {
-  max-width: 850px;
-
-  margin-bottom: 80px;
+  max-width: 760px;
+  margin-bottom: 20px;
 }
 
 .sell-eyebrow {
   display: flex;
-
   align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 25px;
-
-  color:
-    rgba(255,255,255,0.45);
-
-  font-size: 9px;
-
+  gap: 10px;
+  margin-bottom: 14px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
 }
 
 .sell-eyebrow span {
-  width: 38px;
+  width: 28px;
   height: 1px;
-
-  background:
-    rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .sell-header h2 {
   margin: 0;
-
-  font-size:
-    clamp(58px, 8vw, 112px);
-
-  line-height: 0.86;
-
-  letter-spacing: -0.07em;
-
+  max-width: 700px;
+  font-size: clamp(48px, 7vw, 82px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
   font-weight: 400;
 }
 
@@ -84,18 +55,12 @@
 }
 
 .sell-header p {
-  max-width: 450px;
-
-  margin-top: 32px;
-
-  color:
-    rgba(255,255,255,0.45);
-
-  font-size: 13px;
-
-  line-height: 1.7;
+  max-width: 470px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 14px;
+  line-height: 1.55;
 }
-
 
 /* =========================================
    FLOW
@@ -103,36 +68,24 @@
 
 .sell-flow {
   display: flex;
-
   align-items: center;
-
-  margin-bottom: 35px;
+  margin-bottom: 16px;
 }
 
 .sell-flow-item {
   display: flex;
-
   align-items: center;
-
-  gap: 9px;
-
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 8px;
-
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.13em;
-
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
 .sell-flow-item span {
-  color:
-    rgba(255,255,255,0.6);
-
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
 }
 
 .sell-flow-item.active {
@@ -141,33 +94,21 @@
 
 .sell-flow-line {
   flex: 1;
-
   height: 1px;
-
-  margin: 0 15px;
-
-  background:
-    rgba(255,255,255,0.12);
+  margin: 0 14px;
+  background: rgba(255, 255, 255, 0.12);
 }
-
 
 /* =========================================
    VALUATION CARD
 ========================================= */
 
 .valuation-card {
-  border:
-    1px solid
-    rgba(255,255,255,0.13);
-
-  border-radius: 18px;
-
-  background:
-    rgba(255,255,255,0.035);
-
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
   overflow: hidden;
 }
-
 
 /* =========================================
    TOP
@@ -175,76 +116,48 @@
 
 .valuation-top {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
-  padding: 20px 22px;
-
-  border-bottom:
-    1px solid
-    rgba(255,255,255,0.1);
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .valuation-title {
   display: flex;
-
   align-items: center;
-
-  gap: 12px;
+  gap: 11px;
 }
 
 .valuation-icon {
-  width: 40px;
-  height: 40px;
-
+  width: 38px;
+  height: 38px;
   display: grid;
-
   place-items: center;
-
-  border:
-    1px solid
-    rgba(255,255,255,0.15);
-
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 50%;
-
-  background:
-    rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .valuation-title span {
   display: block;
-
-  margin-bottom: 4px;
-
-  color:
-    rgba(255,255,255,0.4);
-
-  font-size: 7px;
-
+  margin-bottom: 3px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
 }
 
 .valuation-title h3 {
   margin: 0;
-
-  font-size: 13px;
-
+  font-size: 15px;
   font-weight: 500;
 }
 
 .valuation-number {
-  color:
-    rgba(255,255,255,0.3);
-
-  font-size: 8px;
-
-  letter-spacing: 0.13em;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 12px;
+  letter-spacing: 0.1em;
 }
-
 
 /* =========================================
    FORM
@@ -252,53 +165,36 @@
 
 .valuation-form {
   max-width: 900px;
-
   margin: 0 auto;
-
-  padding: 70px 40px 45px;
+  padding: 20px 28px;
 }
 
 .valuation-form-heading {
-  margin-bottom: 40px;
+  margin-bottom: 18px;
 }
 
 .valuation-form-heading > span {
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 8px;
-
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
 .valuation-form-heading h3 {
-  margin: 9px 0 0;
-
-  font-size:
-    clamp(28px, 4vw, 48px);
-
+  margin: 7px 0 0;
+  font-size: clamp(28px, 4vw, 42px);
   line-height: 1;
-
-  letter-spacing: -0.055em;
-
+  letter-spacing: -0.045em;
   font-weight: 500;
 }
 
 .valuation-form-heading p {
-  max-width: 400px;
-
-  margin-top: 14px;
-
-  color:
-    rgba(255,255,255,0.4);
-
-  font-size: 11px;
-
-  line-height: 1.6;
+  max-width: 430px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 13px;
+  line-height: 1.5;
 }
-
 
 /* =========================================
    FIELDS
@@ -306,71 +202,45 @@
 
 .valuation-fields {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
-  gap: 20px;
+  gap: 14px;
 }
 
 .valuation-field label {
   display: block;
-
-  margin-bottom: 9px;
-
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 8px;
-
+  margin-bottom: 7px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
 }
 
 .valuation-field input,
 .valuation-select select {
   width: 100%;
-
-  height: 52px;
-
-  padding: 0 15px;
-
-  border:
-    1px solid
-    rgba(255,255,255,0.14);
-
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 7px;
-
   outline: none;
-
-  background:
-    rgba(255,255,255,0.04);
-
+  background: rgba(255, 255, 255, 0.04);
   color: #ffffff;
-
   font-family: inherit;
-
-  font-size: 11px;
-
+  font-size: 14px;
   transition:
     border-color 0.3s ease,
     background 0.3s ease;
 }
 
 .valuation-field input::placeholder {
-  color:
-    rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .valuation-field input:focus,
 .valuation-select select:focus {
-  border-color:
-    rgba(255,255,255,0.5);
-
-  background:
-    rgba(255,255,255,0.07);
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.07);
 }
-
 
 /* =========================================
    SELECT
@@ -382,32 +252,23 @@
 
 .valuation-select select {
   appearance: none;
-
   cursor: pointer;
-
-  padding-right: 40px;
+  padding-right: 38px;
 }
 
 .valuation-select svg {
   position: absolute;
-
-  right: 14px;
+  right: 13px;
   top: 50%;
-
   transform: translateY(-50%);
-
-  color:
-    rgba(255,255,255,0.5);
-
+  color: rgba(255, 255, 255, 0.55);
   pointer-events: none;
 }
 
 .valuation-select option {
   background: #111111;
-
   color: #ffffff;
 }
-
 
 /* =========================================
    BUTTON
@@ -415,161 +276,103 @@
 
 .valuation-button {
   width: 100%;
-
-  min-height: 60px;
-
-  margin-top: 30px;
-
+  min-height: 50px;
+  margin-top: 16px;
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
-  padding: 0 20px;
-
+  padding: 0 18px;
   border: 0;
-
   border-radius: 8px;
-
   background: #ffffff;
-
   color: #050505;
-
-  font-size: 10px;
-
+  font-size: 13px;
   font-weight: 700;
-
-  letter-spacing: 0.08em;
-
+  letter-spacing: 0.06em;
   cursor: pointer;
-
   transition:
-    transform 0.45s var(--ease-premium),
+    transform 0.35s var(--ease-premium),
     background 0.3s ease;
 }
 
 .valuation-button:hover {
-  transform: translateY(-3px);
-
+  transform: translateY(-2px);
   background: #eeeeec;
 }
 
 .valuation-button svg {
-  transition:
-    transform 0.4s var(--ease-premium);
+  transition: transform 0.35s var(--ease-premium);
 }
 
 .valuation-button:hover svg {
-  transform:
-    translate(4px,-4px);
+  transform: translate(3px, -3px);
 }
-
 
 /* =========================================
    THINKING
 ========================================= */
 
 .valuation-thinking {
-  min-height: 470px;
-
+  min-height: 360px;
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
+  padding: 20px;
   text-align: center;
 }
 
 .thinking-orb {
-  width: 75px;
-  height: 75px;
-
+  width: 68px;
+  height: 68px;
   display: grid;
-
   place-items: center;
-
-  margin-bottom: 25px;
-
-  border:
-    1px solid
-    rgba(255,255,255,0.2);
-
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  animation:
-    valuationPulse 1.6s ease infinite;
+  background: rgba(255, 255, 255, 0.08);
+  animation: valuationPulse 1.6s ease infinite;
 }
 
 @keyframes valuationPulse {
-
   0%,
   100% {
     transform: scale(1);
-
-    box-shadow:
-      0 0 0
-      rgba(255,255,255,0);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
   }
 
   50% {
-    transform: scale(1.08);
-
-    box-shadow:
-      0 0 60px
-      rgba(255,255,255,0.1);
+    transform: scale(1.07);
+    box-shadow: 0 0 45px rgba(255, 255, 255, 0.1);
   }
-
 }
 
 .valuation-thinking > span {
-  color:
-    rgba(255,255,255,0.4);
-
-  font-size: 8px;
-
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
 }
 
 .valuation-thinking h3 {
-  margin: 10px 0 30px;
-
-  font-size:
-    clamp(28px, 4vw, 50px);
-
-  letter-spacing: -0.05em;
-
+  margin: 8px 0 18px;
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -0.04em;
   font-weight: 500;
 }
 
 .valuation-checks {
   display: flex;
-
-  gap: 25px;
-
-  color:
-    rgba(255,255,255,0.5);
-
-  font-size: 8px;
-
+  gap: 22px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 
 .valuation-checks div {
   display: flex;
-
   align-items: center;
-
   gap: 5px;
 }
 
@@ -577,119 +380,80 @@
   color: #ffffff;
 }
 
-
 /* =========================================
    RESULT
 ========================================= */
 
 .valuation-result {
   max-width: 900px;
-
   margin: 0 auto;
-
-  padding: 65px 40px 45px;
+  padding: 20px 28px;
 }
 
 .valuation-success {
   display: flex;
-
   align-items: center;
-
-  gap: 13px;
-
-  padding-bottom: 35px;
-
-  border-bottom:
-    1px solid
-    rgba(255,255,255,0.1);
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .success-icon {
-  width: 42px;
-  height: 42px;
-
+  width: 40px;
+  height: 40px;
   display: grid;
-
   place-items: center;
-
   border-radius: 50%;
-
   background: #ffffff;
-
   color: #050505;
 }
 
 .valuation-success span {
   display: block;
-
-  margin-bottom: 4px;
-
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 7px;
-
+  margin-bottom: 3px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
 .valuation-success h4 {
   margin: 0;
-
-  font-size: 14px;
-
+  font-size: 15px;
   font-weight: 500;
 }
-
 
 /* =========================================
    VALUE
 ========================================= */
 
 .estimated-value {
-  padding: 45px 0;
+  padding: 20px 0;
 }
 
 .estimated-value > span {
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 8px;
-
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.16em;
+  letter-spacing: 0.13em;
 }
 
 .estimated-value strong {
   display: block;
-
-  margin-top: 10px;
-
-  font-size:
-    clamp(58px, 8vw, 100px);
-
-  line-height: 0.9;
-
-  letter-spacing: -0.075em;
-
+  margin-top: 7px;
+  font-size: clamp(48px, 7vw, 76px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
   font-weight: 600;
 }
 
 .estimated-value p {
-  max-width: 400px;
-
-  margin-top: 18px;
-
-  color:
-    rgba(255,255,255,0.4);
-
-  font-size: 11px;
-
-  line-height: 1.6;
+  max-width: 420px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 13px;
+  line-height: 1.5;
 }
-
 
 /* =========================================
    RESULT ACTIONS
@@ -697,70 +461,44 @@
 
 .valuation-result-actions {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
-  padding-top: 25px;
-
-  border-top:
-    1px solid
-    rgba(255,255,255,0.1);
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .valuation-primary {
-  min-height: 50px;
-
+  min-height: 46px;
   display: flex;
-
   align-items: center;
-
-  gap: 10px;
-
-  padding: 0 18px;
-
+  gap: 9px;
+  padding: 0 17px;
+  border: 0;
   border-radius: 100px;
-
   background: #ffffff;
-
   color: #050505;
-
-  font-size: 10px;
-
+  font-size: 13px;
   font-weight: 600;
-
   cursor: pointer;
-
-  transition:
-    transform 0.4s var(--ease-premium);
+  transition: transform 0.35s var(--ease-premium);
 }
 
 .valuation-primary:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .valuation-reset {
+  min-height: 42px;
   display: flex;
-
   align-items: center;
-
   gap: 7px;
-
-  padding: 0 15px;
-
+  padding: 0 14px;
   border: 0;
-
   background: transparent;
-
-  color:
-    rgba(255,255,255,0.45);
-
-  font-size: 9px;
-
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
   cursor: pointer;
 }
-
 
 /* =========================================
    FOOTER
@@ -768,81 +506,83 @@
 
 .sell-footer {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
-  margin-top: 25px;
-
-  color:
-    rgba(255,255,255,0.25);
-
-  font-size: 8px;
-
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
   font-weight: 600;
-
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
 }
-
 
 /* =========================================
    TABLET
 ========================================= */
 
 @media (max-width: 800px) {
-
-  .sell-car {
-    padding: 110px 0 60px;
-  }
-
   .sell-car-container {
-    width:
-      calc(100% - 48px);
+    width: calc(100% - 36px);
   }
 
-  .sell-flow-item {
-    font-size: 7px;
+  .sell-header {
+    max-width: 650px;
   }
 
-  .sell-flow-line {
-    margin: 0 8px;
+  .sell-header h2 {
+    font-size: clamp(44px, 8vw, 68px);
   }
 
   .valuation-form,
   .valuation-result {
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
-}
+  .valuation-fields {
+    gap: 12px;
+  }
 
+  .sell-flow-item {
+    font-size: 12px;
+  }
+
+  .sell-flow-line {
+    margin: 0 9px;
+  }
+}
 
 /* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 600px) {
-
   .sell-car {
-    padding: 90px 0 45px;
+    padding: 20px 0;
   }
 
   .sell-car-container {
-    width:
-      calc(100% - 32px);
+    width: calc(100% - 28px);
+  }
+
+  .sell-header {
+    margin-bottom: 16px;
+  }
+
+  .sell-eyebrow {
+    margin-bottom: 10px;
   }
 
   .sell-header h2 {
-    font-size: 57px;
+    font-size: clamp(42px, 13vw, 60px);
+  }
+
+  .sell-header p {
+    font-size: 13px;
   }
 
   .sell-flow {
     display: grid;
-
-    grid-template-columns:
-      repeat(4, 1fr);
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 5px;
   }
 
@@ -851,31 +591,51 @@
   }
 
   .sell-flow-item {
-    min-height: 45px;
-
+    min-height: 44px;
     flex-direction: column;
-
     justify-content: center;
-
     gap: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 12px;
+  }
 
-    border:
-      1px solid
-      rgba(255,255,255,0.1);
-
-    font-size: 6px;
+  .sell-flow-item span {
+    font-size: 12px;
   }
 
   .valuation-top {
-    padding: 17px;
+    padding: 12px 14px;
+  }
+
+  .valuation-title {
+    gap: 9px;
+  }
+
+  .valuation-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .valuation-title h3 {
+    font-size: 14px;
+  }
+
+  .valuation-number {
+    font-size: 12px;
   }
 
   .valuation-form,
   .valuation-result {
-    padding:
-      45px
-      17px
-      30px;
+    padding: 20px 14px;
+  }
+
+  .valuation-form-heading {
+    margin-bottom: 16px;
+  }
+
+  .valuation-form-heading h3 {
+    font-size: 28px;
   }
 
   .valuation-fields {
@@ -883,33 +643,60 @@
   }
 
   .valuation-thinking {
-    min-height: 400px;
+    min-height: 330px;
+  }
 
-    padding: 20px;
+  .valuation-thinking h3 {
+    font-size: 30px;
   }
 
   .valuation-checks {
     flex-direction: column;
-
-    gap: 10px;
+    gap: 9px;
   }
 
   .estimated-value strong {
-    font-size: 60px;
+    font-size: 52px;
   }
 
   .valuation-result-actions {
-    align-items: flex-start;
-
+    align-items: stretch;
     flex-direction: column;
+  }
+
+  .valuation-primary {
+    justify-content: center;
+  }
+
+  .valuation-reset {
+    justify-content: center;
   }
 
   .sell-footer {
     flex-direction: column;
-
     align-items: flex-start;
+    gap: 6px;
+  }
+}
 
-    gap: 8px;
+@media (max-width: 380px) {
+  .sell-header h2 {
+    font-size: 40px;
   }
 
+  .sell-flow-item {
+    font-size: 12px;
+  }
+
+  .valuation-title h3 {
+    font-size: 13px;
+  }
+
+  .valuation-number {
+    display: none;
+  }
+
+  .estimated-value strong {
+    font-size: 46px;
+  }
 }

@@ -8,12 +8,15 @@ import {
   Fuel,
   Settings2,
   CalendarDays,
+  Sparkles,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 
 import "./CarDetails.css";
 
 const car = {
+  id: "bmw-x5",
   brand: "BMW",
   model: "X5",
   year: "2024",
@@ -28,6 +31,7 @@ const car = {
 
 const CarDetails = () => {
   const sectionRef = useRef(null);
+  const navigate = useNavigate();
 
   const [saved, setSaved] = useState(false);
 
@@ -36,60 +40,79 @@ const CarDetails = () => {
       gsap.from(".details-eyebrow", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 78%",
         },
-        y: 25,
+        y: 20,
         opacity: 0,
         duration: 0.7,
+        ease: "power3.out",
       });
 
       gsap.from(".details-title-line", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
+          start: "top 72%",
         },
         yPercent: 100,
         opacity: 0,
-        duration: 1,
-        stagger: 0.12,
+        duration: 0.9,
+        stagger: 0.1,
+        ease: "power4.out",
       });
 
       gsap.from(".details-image-wrapper", {
         scrollTrigger: {
           trigger: ".details-main",
-          start: "top 75%",
+          start: "top 78%",
         },
-        scale: 0.94,
+        scale: 0.96,
         opacity: 0,
-        duration: 1.2,
+        duration: 1,
         ease: "power4.out",
       });
 
       gsap.from(".detail-item", {
         scrollTrigger: {
           trigger: ".details-specs",
-          start: "top 80%",
+          start: "top 82%",
         },
-        y: 25,
+        y: 18,
         opacity: 0,
-        duration: 0.7,
-        stagger: 0.08,
+        duration: 0.6,
+        stagger: 0.07,
         ease: "power3.out",
       });
 
       gsap.from(".details-actions", {
         scrollTrigger: {
           trigger: ".details-actions",
-          start: "top 85%",
+          start: "top 88%",
         },
-        y: 20,
+        y: 15,
         opacity: 0,
-        duration: 0.7,
+        duration: 0.6,
+        ease: "power3.out",
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  const handleTestDrive = () => {
+    navigate("/test-drive");
+  };
+
+  const handleEnquiry = () => {
+    navigate("/contact");
+  };
+
+  const handleAskAI = () => {
+    navigate("/ai-concierge");
+  };
+
+  const handleSave = () => {
+    setSaved((previous) => !previous);
+  };
 
   return (
     <section
@@ -98,10 +121,6 @@ const CarDetails = () => {
       id="car-details"
     >
       <div className="car-details-container">
-
-        {/* =================================
-            HEADER
-        ================================= */}
 
         <div className="details-header">
 
@@ -139,17 +158,12 @@ const CarDetails = () => {
             </p>
 
             <span>
-              {car.year} / {car.brand}
+              {car.year} <i /> {car.brand}
             </span>
 
           </div>
 
         </div>
-
-
-        {/* =================================
-            MAIN IMAGE
-        ================================= */}
 
         <div className="details-main">
 
@@ -159,41 +173,69 @@ const CarDetails = () => {
               src={car.image}
               alt={`${car.brand} ${car.model}`}
               className="details-image"
+              loading="lazy"
             />
 
             <div className="details-image-overlay" />
 
-            <span className="details-image-label">
-              MOTORA / 01
-            </span>
+            <div className="details-image-top">
 
-            <button
-              className={
-                saved
-                  ? "save-car saved"
-                  : "save-car"
-              }
-              onClick={() =>
-                setSaved(!saved)
-              }
-              aria-label="Save car"
-            >
-              <Heart
-                size={17}
-                fill={
+              <span className="details-image-label">
+                MOTORA / 01
+              </span>
+
+              <button
+                type="button"
+                className={
                   saved
-                    ? "currentColor"
-                    : "none"
+                    ? "save-car saved"
+                    : "save-car"
                 }
-              />
-            </button>
+                onClick={handleSave}
+                aria-label={
+                  saved
+                    ? "Remove car from saved cars"
+                    : "Save car"
+                }
+              >
+                <Heart
+                  size={17}
+                  fill={
+                    saved
+                      ? "currentColor"
+                      : "none"
+                  }
+                />
+              </button>
+
+            </div>
+
+            <div className="details-image-data">
+
+              <span>
+                {car.brand}
+              </span>
+
+              <strong>
+                {car.model}
+              </strong>
+
+              <div>
+                <span>{car.year}</span>
+                <i />
+                <span>{car.fuel}</span>
+                <i />
+                <span>{car.transmission}</span>
+              </div>
+
+            </div>
+
+            <div className="details-image-badge">
+              <Check size={13} />
+              VERIFIED
+            </div>
 
           </div>
-
-
-          {/* =================================
-              INFO
-          ================================= */}
 
           <div className="details-info">
 
@@ -207,13 +249,15 @@ const CarDetails = () => {
                 {car.price}
               </strong>
 
-            </div>
+              <small>
+                Ex showroom price
+              </small>
 
+            </div>
 
             <div className="details-specs">
 
               <div className="detail-item">
-
                 <div className="detail-icon">
                   <CalendarDays size={17} />
                 </div>
@@ -222,12 +266,9 @@ const CarDetails = () => {
                   <span>YEAR</span>
                   <strong>{car.year}</strong>
                 </div>
-
               </div>
 
-
               <div className="detail-item">
-
                 <div className="detail-icon">
                   <Gauge size={17} />
                 </div>
@@ -236,12 +277,9 @@ const CarDetails = () => {
                   <span>MILEAGE</span>
                   <strong>{car.mileage}</strong>
                 </div>
-
               </div>
 
-
               <div className="detail-item">
-
                 <div className="detail-icon">
                   <Fuel size={17} />
                 </div>
@@ -250,12 +288,9 @@ const CarDetails = () => {
                   <span>FUEL</span>
                   <strong>{car.fuel}</strong>
                 </div>
-
               </div>
 
-
               <div className="detail-item">
-
                 <div className="detail-icon">
                   <Settings2 size={17} />
                 </div>
@@ -266,81 +301,62 @@ const CarDetails = () => {
                     {car.transmission}
                   </strong>
                 </div>
-
               </div>
 
             </div>
-
-
-            {/* =================================
-                ACTIONS
-            ================================= */}
 
             <div className="details-actions">
 
-              <button className="details-primary">
-
-                Book a Test Drive
-
+              <button
+                type="button"
+                className="details-primary"
+                onClick={handleTestDrive}
+              >
+                <span>Book a Test Drive</span>
                 <ArrowUpRight size={18} />
-
               </button>
 
-              <button className="details-secondary">
-
+              <button
+                type="button"
+                className="details-secondary"
+                onClick={handleEnquiry}
+              >
                 <MessageCircle size={17} />
-
-                Enquire Now
-
+                <span>Enquire Now</span>
               </button>
 
             </div>
 
-
-            {/* =================================
-                AI CTA
-            ================================= */}
-
-            <button className="details-ai">
-
+            <button
+              type="button"
+              className="details-ai"
+              onClick={handleAskAI}
+            >
               <div className="details-ai-icon">
-                ✦
+                <Sparkles size={16} />
               </div>
 
               <div className="details-ai-copy">
-
-                <span>
-                  MOTORA AI
-                </span>
+                <span>MOTORA AI</span>
 
                 <strong>
                   Ask AI about this car
                 </strong>
-
               </div>
 
               <ArrowUpRight
                 size={17}
                 className="details-ai-arrow"
               />
-
             </button>
 
           </div>
-
         </div>
-
-
-        {/* =================================
-            BOTTOM STORY
-        ================================= */}
 
         <div className="details-story">
 
-          <div>
-            <span>
-              WHY THIS CAR
-            </span>
+          <div className="details-story-label">
+            <span>WHY THIS CAR</span>
           </div>
 
           <p>
@@ -352,15 +368,8 @@ const CarDetails = () => {
           </p>
 
           <div className="details-power">
-
-            <strong>
-              {car.power}
-            </strong>
-
-            <span>
-              POWER
-            </span>
-
+            <strong>{car.power}</strong>
+            <span>POWER</span>
           </div>
 
         </div>

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../api/client";
+import { useAuth } from "../../context/AuthContext";
 import {
   ArrowLeft,
   ArrowRight,
@@ -37,6 +40,10 @@ const steps = [
 ];
 
 const SellCar = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [step, setStep] = useState(0);
   const [form, setForm] = useState(initialForm);
   const [photos, setPhotos] = useState([]);
@@ -87,9 +94,63 @@ const SellCar = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
+
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: "/sell" } });
+      return;
+    }
+
+    if (
+      !form.make.trim() ||
+      !form.model.trim() ||
+      !form.year ||
+      !form.kilometers ||
+      !form.fuel ||
+      !form.transmission ||
+      !form.condition ||
+      !form.name.trim() ||
+      !form.phone.trim() ||
+      !form.city.trim()
+    ) {
+      setSubmitError("Please complete all required vehicle and contact details.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setSubmitError("");
+
+      await api.post("/requests/sell-requests", {
+        brand: form.make.trim(),
+        make: form.make.trim(),
+        model: form.model.trim(),
+        variant: form.variant.trim(),
+        year: Number(form.year),
+        km: Number(form.kilometers),
+        kilometers: Number(form.kilometers),
+        fuel: form.fuel,
+        transmission: form.transmission,
+        condition: form.condition,
+        expectedPrice: Number(form.expectedPrice || 0),
+        location: form.city.trim(),
+        city: form.city.trim(),
+        name: form.name.trim(),
+        owner: form.name.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        images: [],
+        photoCount: photos.length,
+      });
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Sell request failed:", err);
+      setSubmitError(err.message || "Unable to submit your sell request.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -808,6 +869,10 @@ const SellCar = () => {
               NAVIGATION
           ================================= */}
 
+          {submitError && (
+            <p className="sell-submit-message">{submitError}</p>
+          )}
+
           <div className="sell-form-actions">
 
             {step > 0 ? (
@@ -837,7 +902,7 @@ const SellCar = () => {
                 type="submit"
                 className="sell-next-button"
               >
-                Submit Request
+                {submitting ? "Submitting..." : "Submit Request"}
                 <CheckCircle2 size={15} />
               </button>
             )}

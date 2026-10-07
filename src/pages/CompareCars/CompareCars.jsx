@@ -1,196 +1,112 @@
-import { useState } from "react";
-import {
-  ArrowLeftRight,
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  Gauge,
-  Heart,
-  Plus,
-  Sparkles,
-  X,
-} from "lucide-react";
-
+import { useEffect, useState } from "react";
+import { ArrowUpRight, CarFront, Check, X } from "lucide-react";
+import { compareCars } from "../../api/smartApi";
 import "./CompareCars.css";
 
-const cars = [
-  {
-    id: 1,
-    brand: "BMW",
-    model: "X5",
-    variant: "xDrive40i M Sport",
-    price: "₹95.00 L",
-    image:
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=85",
-    specs: {
-      Engine: "2998 cc",
-      Power: "335 bhp",
-      Torque: "450 Nm",
-      Mileage: "12 km/l",
-      Fuel: "Petrol",
-      Transmission: "Automatic",
-      Drive: "AWD",
-      Seats: "5",
-    },
-  },
-  {
-    id: 2,
-    brand: "Audi",
-    model: "Q7",
-    variant: "45 TFSI Technology",
-    price: "₹88.00 L",
-    image:
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=85",
-    specs: {
-      Engine: "2995 cc",
-      Power: "335 bhp",
-      Torque: "500 Nm",
-      Mileage: "11.2 km/l",
-      Fuel: "Petrol",
-      Transmission: "Automatic",
-      Drive: "AWD",
-      Seats: "7",
-    },
-  },
-  {
-    id: 3,
-    brand: "Mercedes-Benz",
-    model: "GLE",
-    variant: "300d 4MATIC",
-    price: "₹96.40 L",
-    image:
-      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=85",
-    specs: {
-      Engine: "1993 cc",
-      Power: "245 bhp",
-      Torque: "550 Nm",
-      Mileage: "14.5 km/l",
-      Fuel: "Diesel",
-      Transmission: "Automatic",
-      Drive: "AWD",
-      Seats: "5",
-    },
-  },
-  {
-    id: 4,
-    brand: "Porsche",
-    model: "Cayenne",
-    variant: "3.0 Turbo",
-    price: "₹1.42 Cr",
-    image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85",
-    specs: {
-      Engine: "2995 cc",
-      Power: "348 bhp",
-      Torque: "500 Nm",
-      Mileage: "10.8 km/l",
-      Fuel: "Petrol",
-      Transmission: "Automatic",
-      Drive: "AWD",
-      Seats: "5",
-    },
-  },
+const fields = [
+  ["Price", "price"],
+  ["Year", "year"],
+  ["Type", "type"],
+  ["Fuel", "fuel"],
+  ["Transmission", "transmission"],
+  ["Kilometres", "km"],
+  ["Location", "location"],
+  ["Engine", "specs.engine"],
+  ["Power", "specs.power"],
+  ["Mileage", "specs.mileage"],
+  ["Owners", "specs.owners"],
+  ["Color", "specs.color"],
 ];
 
-const comparisonRows = [
-  {
-    label: "Engine",
-    key: "Engine",
-  },
-  {
-    label: "Power",
-    key: "Power",
-  },
-  {
-    label: "Torque",
-    key: "Torque",
-  },
-  {
-    label: "Mileage",
-    key: "Mileage",
-  },
-  {
-    label: "Fuel",
-    key: "Fuel",
-  },
-  {
-    label: "Transmission",
-    key: "Transmission",
-  },
-  {
-    label: "Drive",
-    key: "Drive",
-  },
-  {
-    label: "Seats",
-    key: "Seats",
-  },
-];
+const valueAt = (car, path) =>
+  path
+    .split(".")
+    .reduce((value, key) => value?.[key], car) ?? "Not available";
 
-const CompareCars = () => {
-  const [selectedCars, setSelectedCars] = useState([
-    cars[0],
-    cars[1],
-  ]);
+const money = (value) =>
+  `₹${Number(value || 0).toLocaleString("en-IN")}`;
 
-  const [selectorOpen, setSelectorOpen] =
-    useState(false);
+export default function CompareCars() {
+  const [ids, setIds] = useState(() =>
+    JSON.parse(
+      localStorage.getItem("motoraCompare") || "[]"
+    )
+  );
 
-  const [selectorSlot, setSelectorSlot] =
-    useState(null);
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [showAllSpecs, setShowAllSpecs] =
-    useState(false);
-
-  const openSelector = (slot) => {
-    setSelectorSlot(slot);
-    setSelectorOpen(true);
-  };
-
-  const selectCar = (car) => {
-    if (selectedCars.some((item) => item.id === car.id)) {
-      setSelectorOpen(false);
+  useEffect(() => {
+    if (ids.length < 2) {
+      setItems([]);
       return;
     }
 
-    setSelectedCars((current) => {
-      const updated = [...current];
-      updated[selectorSlot] = car;
-      return updated;
-    });
+    setLoading(true);
+    setError("");
 
-    setSelectorOpen(false);
+    compareCars(ids)
+      .then((data) => {
+        setItems(data.items || []);
+      })
+      .catch((err) => {
+        setError(
+          err?.message ||
+            "Unable to load comparison right now."
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [ids]);
+
+  const removeCar = (id) => {
+    const next = ids.filter((item) => item !== id);
+
+    setIds(next);
+    localStorage.setItem(
+      "motoraCompare",
+      JSON.stringify(next)
+    );
   };
 
-  const removeCar = (index) => {
-    setSelectedCars((current) => {
-      const updated = [...current];
-      updated.splice(index, 1);
-      return updated;
-    });
+  const clearComparison = () => {
+    localStorage.removeItem("motoraCompare");
+    setIds([]);
+    setItems([]);
+    setError("");
   };
 
-  const addCar = () => {
-    if (selectedCars.length >= 3) return;
+  const addCarId = (value) => {
+    const cleanValue = value.trim();
 
-    setSelectorSlot(selectedCars.length);
-    setSelectorOpen(true);
+    if (!cleanValue || ids.includes(cleanValue)) {
+      return;
+    }
+
+    const next = [...ids, cleanValue].slice(-4);
+
+    setIds(next);
+
+    localStorage.setItem(
+      "motoraCompare",
+      JSON.stringify(next)
+    );
   };
 
   return (
-    <div className="compare-page">
+    <section className="compare-page">
 
-      {/* =================================
-          HERO
-      ================================= */}
+      {/* HERO */}
 
-      <section className="compare-hero">
+      <div className="compare-hero">
 
-        <div>
+        <div className="compare-hero-content">
 
-          <span>
-            MOTORA COMPARISON
-          </span>
+          <div className="compare-eyebrow">
+            MOTORA COMPARE
+          </div>
 
           <h1>
             Compare cars.
@@ -199,589 +115,327 @@ const CompareCars = () => {
           </h1>
 
           <p>
-            Put your favourites side by side.
-            Compare the details that actually
-            matter before making your decision.
+            Compare your shortlisted cars side by
+            side and find the right balance of
+            price, performance and features.
           </p>
 
         </div>
 
-        <div className="compare-hero-mark">
-          <ArrowLeftRight size={30} />
-
+        <div className="compare-hero-stat">
           <span>
-            SIDE
-            <br />
-            BY
-            <br />
-            SIDE
+            CARS SELECTED
           </span>
+
+          <strong>
+            {String(ids.length).padStart(2, "0")}
+          </strong>
+
+          <small>
+            Up to 4 cars
+          </small>
         </div>
 
-      </section>
+      </div>
 
+      {/* ID BAR */}
 
-      {/* =================================
-          SELECT CARS
-      ================================= */}
+      <div className="compare-toolbar">
 
-      <section className="compare-section">
+        <div className="compare-input-wrap">
 
-        <div className="compare-heading">
+          <CarFront size={18} />
 
-          <div>
+          <input
+            id="compare-id"
+            placeholder="Paste a car ID and press Enter"
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                addCarId(event.currentTarget.value);
+                event.currentTarget.value = "";
+              }
+            }}
+          />
 
+        </div>
+
+        <button
+          type="button"
+          className="compare-clear"
+          onClick={clearComparison}
+        >
+          Clear comparison
+        </button>
+
+      </div>
+
+      {/* SELECTED CARS */}
+
+      {ids.length > 0 && (
+        <div className="compare-selected">
+
+          <div className="compare-selected-heading">
             <span>
-              YOUR SHORTLIST
+              SHORTLIST
             </span>
 
-            <h2>
-              Choose your cars.
-            </h2>
-
+            <strong>
+              {ids.length} selected
+            </strong>
           </div>
 
-          <span className="compare-count">
-            {selectedCars.length} / 3 CARS
-          </span>
+          <div className="compare-id-list">
 
-        </div>
+            {ids.map((id, index) => (
+              <div
+                className="compare-id-chip"
+                key={id}
+              >
 
+                <span>
+                  Car {index + 1}
+                </span>
 
-        <div className="compare-car-selector">
-
-          {selectedCars.map((car, index) => (
-
-            <article
-              className="selected-compare-car"
-              key={car.id}
-            >
-
-              <div className="selected-car-image">
-
-                <img
-                  src={car.image}
-                  alt={`${car.brand} ${car.model}`}
-                />
+                <strong>
+                  {id}
+                </strong>
 
                 <button
-                  className="remove-car"
-                  onClick={() =>
-                    removeCar(index)
-                  }
+                  type="button"
+                  onClick={() => removeCar(id)}
+                  aria-label={`Remove car ${id}`}
                 >
                   <X size={14} />
                 </button>
 
               </div>
+            ))}
 
-              <div className="selected-car-info">
-
-                <span>
-                  {car.brand}
-                </span>
-
-                <h3>
-                  {car.model}
-                </h3>
-
-                <p>
-                  {car.variant}
-                </p>
-
-                <strong>
-                  {car.price}
-                </strong>
-
-              </div>
-
-            </article>
-
-          ))}
-
-
-          {selectedCars.length < 3 && (
-
-            <button
-              className="add-compare-car"
-              onClick={addCar}
-            >
-
-              <div>
-                <Plus size={19} />
-              </div>
-
-              <span>
-                ADD ANOTHER CAR
-              </span>
-
-              <p>
-                Compare up to 3 cars
-              </p>
-
-            </button>
-
-          )}
+          </div>
 
         </div>
+      )}
 
-      </section>
+      {/* ERROR */}
 
+      {error && (
+        <div className="compare-error">
+          <span>
+            {error}
+          </span>
+        </div>
+      )}
 
-      {/* =================================
-          COMPARISON TABLE
-      ================================= */}
+      {/* LOADING */}
 
-      {selectedCars.length >= 2 && (
+      {loading && (
+        <div className="compare-loading">
+          <div className="compare-loader" />
+          <span>
+            Preparing your comparison
+          </span>
+        </div>
+      )}
 
-        <section className="comparison-section">
+      {/* COMPARISON */}
 
-          <div className="comparison-title">
+      {!loading && items.length >= 2 && (
+        <div className="compare-content">
+
+          <div className="compare-result-head">
 
             <div>
-
               <span>
-                DETAILED COMPARISON
+                SIDE BY SIDE
               </span>
 
               <h2>
-                See the difference.
+                Your car comparison
               </h2>
+            </div>
 
+            <div className="compare-result-count">
+              <Check size={16} />
+              <span>
+                {items.length} cars compared
+              </span>
+            </div>
+
+          </div>
+
+          <div className="compare-table-wrap">
+
+            <table className="compare-table">
+
+              <thead>
+
+                <tr>
+
+                  <th className="compare-label-column">
+                    Specification
+                  </th>
+
+                  {items.map((car) => (
+                    <th
+                      key={car._id}
+                      className="compare-car-column"
+                    >
+
+                      <div className="compare-car-head">
+
+                        {car.images?.[0] && (
+                          <div className="compare-car-image">
+                            <img
+                              src={car.images[0]}
+                              alt={`${car.brand} ${car.model}`}
+                            />
+                          </div>
+                        )}
+
+                        <div className="compare-car-info">
+
+                          <span>
+                            {car.brand}
+                          </span>
+
+                          <strong>
+                            {car.model}
+                          </strong>
+
+                          {car.variant && (
+                            <small>
+                              {car.variant}
+                            </small>
+                          )}
+
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeCar(car._id)
+                          }
+                          aria-label="Remove car"
+                          className="compare-remove"
+                        >
+                          <X size={14} />
+                        </button>
+
+                      </div>
+
+                    </th>
+                  ))}
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {fields.map(([label, path]) => (
+                  <tr key={path}>
+
+                    <td className="compare-field">
+                      <span>
+                        {label}
+                      </span>
+                    </td>
+
+                    {items.map((car) => (
+                      <td key={car._id}>
+
+                        {path === "price"
+                          ? money(
+                              valueAt(car, path)
+                            )
+                          : valueAt(car, path)}
+
+                      </td>
+                    ))}
+
+                  </tr>
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <div className="compare-bottom-note">
+
+            <div>
+              <span>
+                MOTORA INSIGHT
+              </span>
+
+              <p>
+                Compare the numbers, then choose
+                the car that fits your lifestyle.
+              </p>
             </div>
 
             <button
+              type="button"
               onClick={() =>
-                setShowAllSpecs(
-                  !showAllSpecs
-                )
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                })
               }
             >
-              {showAllSpecs
-                ? "Show less"
-                : "Show all specs"}
-
-              <ChevronDown
-                size={14}
-                className={
-                  showAllSpecs
-                    ? "rotate"
-                    : ""
-                }
-              />
+              Back to top
+              <ArrowUpRight size={15} />
             </button>
 
           </div>
 
-
-          <div className="comparison-table">
-
-            <div className="comparison-table-header">
-
-              <div className="spec-label">
-                SPECIFICATION
-              </div>
-
-              {selectedCars.map((car) => (
-
-                <div
-                  className="comparison-car-heading"
-                  key={car.id}
-                >
-
-                  <span>
-                    {car.brand}
-                  </span>
-
-                  <strong>
-                    {car.model}
-                  </strong>
-
-                </div>
-
-              ))}
-
-            </div>
-
-
-            {/* PRICE */}
-
-            <div className="comparison-row price-row">
-
-              <div className="spec-label">
-                PRICE
-              </div>
-
-              {selectedCars.map((car) => (
-
-                <div key={car.id}>
-                  <strong>
-                    {car.price}
-                  </strong>
-                </div>
-
-              ))}
-
-            </div>
-
-
-            {comparisonRows
-              .slice(
-                0,
-                showAllSpecs
-                  ? comparisonRows.length
-                  : 5
-              )
-              .map((row) => (
-
-                <div
-                  className="comparison-row"
-                  key={row.key}
-                >
-
-                  <div className="spec-label">
-                    {row.label}
-                  </div>
-
-                  {selectedCars.map(
-                    (car) => (
-                      <div
-                        key={car.id}
-                      >
-                        {car.specs[row.key]}
-                      </div>
-                    )
-                  )}
-
-                </div>
-
-              ))}
-
-          </div>
-
-        </section>
+        </div>
       )}
 
+      {/* EMPTY */}
 
-      {/* =================================
-          AI VERDICT
-      ================================= */}
+      {!loading && items.length < 2 && (
+        <div className="compare-empty">
 
-      {selectedCars.length >= 2 && (
-
-        <section className="compare-verdict">
-
-          <div className="verdict-icon">
-            <Sparkles size={19} />
+          <div className="compare-empty-icon">
+            <CarFront size={28} />
           </div>
-
-          <div className="verdict-content">
-
-            <span>
-              MOTORA AI VERDICT
-            </span>
-
-            <h2>
-              Which one makes
-              <br />
-              more sense?
-            </h2>
-
-            <p>
-              The BMW X5 stands out as the most
-              balanced choice for buyers looking
-              for performance, luxury and everyday
-              usability. The Audi Q7 makes more
-              sense if space and practicality are
-              your priority.
-            </p>
-
-          </div>
-
-
-          <div className="verdict-cards">
-
-            <div className="verdict-card winner">
-
-              <div>
-                <span>
-                  BEST OVERALL
-                </span>
-
-                <Check size={14} />
-              </div>
-
-              <strong>
-                BMW X5
-              </strong>
-
-              <p>
-                Best balance
-              </p>
-
-            </div>
-
-
-            <div className="verdict-card">
-
-              <div>
-                <span>
-                  BEST FOR SPACE
-                </span>
-
-                <Check size={14} />
-              </div>
-
-              <strong>
-                Audi Q7
-              </strong>
-
-              <p>
-                7-seat practicality
-              </p>
-
-            </div>
-
-          </div>
-
-        </section>
-      )}
-
-
-      {/* =================================
-          QUICK INSIGHTS
-      ================================= */}
-
-      <section className="comparison-insights">
-
-        <div className="insights-heading">
 
           <span>
-            QUICK INSIGHTS
+            READY TO COMPARE
           </span>
 
           <h2>
-            What matters
-            <br />
-            at a glance.
+            Select at least two cars.
           </h2>
 
-        </div>
+          <p>
+            Add car IDs from your shortlisted
+            vehicles to see a detailed comparison.
+          </p>
 
+          <div className="compare-empty-steps">
 
-        <div className="insights-grid">
-
-          <div className="insight-card">
-
-            <Gauge size={19} />
-
-            <span>
-              MOST POWERFUL
-            </span>
-
-            <strong>
-              BMW X5
-            </strong>
-
-            <p>
-              335 bhp
-            </p>
-
-          </div>
-
-
-          <div className="insight-card">
-
-            <Sparkles size={19} />
-
-            <span>
-              BEST VALUE
-            </span>
-
-            <strong>
-              Audi Q7
-            </strong>
-
-            <p>
-              Lower starting price
-            </p>
-
-          </div>
-
-
-          <div className="insight-card">
-
-            <ArrowLeftRight size={19} />
-
-            <span>
-              BEST EFFICIENCY
-            </span>
-
-            <strong>
-              Mercedes GLE
-            </strong>
-
-            <p>
-              14.5 km/l
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* =================================
-          CTA
-      ================================= */}
-
-      <section className="compare-cta">
-
-        <div>
-
-          <span>
-            MADE YOUR DECISION?
-          </span>
-
-          <h2>
-            Take the next
-            <br />
-            step.
-          </h2>
-
-        </div>
-
-        <div className="compare-cta-actions">
-
-          <button
-            onClick={() =>
-              (window.location.href =
-                "/test-drive")
-            }
-          >
-            Book a test drive
-            <ArrowUpRight size={15} />
-          </button>
-
-          <button
-            className="secondary"
-            onClick={() =>
-              (window.location.href =
-                "/cars")
-            }
-          >
-            Explore more cars
-            <ArrowUpRight size={15} />
-          </button>
-
-        </div>
-
-      </section>
-
-
-      {/* =================================
-          SELECTOR MODAL
-      ================================= */}
-
-      {selectorOpen && (
-
-        <div
-          className="compare-modal-backdrop"
-          onClick={() =>
-            setSelectorOpen(false)
-          }
-        >
-
-          <div
-            className="compare-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
-          >
-
-            <div className="modal-header">
-
-              <div>
-
-                <span>
-                  SELECT A CAR
-                </span>
-
-                <h3>
-                  Add to comparison.
-                </h3>
-
-              </div>
-
-              <button
-                onClick={() =>
-                  setSelectorOpen(false)
-                }
-              >
-                <X size={17} />
-              </button>
-
+            <div>
+              <strong>01</strong>
+              <span>
+                Add a car ID
+              </span>
             </div>
 
+            <div>
+              <strong>02</strong>
+              <span>
+                Add another car
+              </span>
+            </div>
 
-            <div className="modal-car-list">
-
-              {cars.map((car) => {
-
-                const alreadySelected =
-                  selectedCars.some(
-                    (item) =>
-                      item.id === car.id
-                  );
-
-                return (
-                  <button
-                    className={
-                      alreadySelected
-                        ? "modal-car disabled"
-                        : "modal-car"
-                    }
-                    key={car.id}
-                    disabled={
-                      alreadySelected
-                    }
-                    onClick={() =>
-                      selectCar(car)
-                    }
-                  >
-
-                    <img
-                      src={car.image}
-                      alt={car.model}
-                    />
-
-                    <div>
-
-                      <span>
-                        {car.brand}
-                      </span>
-
-                      <strong>
-                        {car.model}
-                      </strong>
-
-                      <small>
-                        {car.variant}
-                      </small>
-
-                    </div>
-
-                    {alreadySelected ? (
-                      <Check size={14} />
-                    ) : (
-                      <Plus size={16} />
-                    )}
-
-                  </button>
-                );
-              })}
-
+            <div>
+              <strong>03</strong>
+              <span>
+                Compare details
+              </span>
             </div>
 
           </div>
@@ -789,8 +443,6 @@ const CompareCars = () => {
         </div>
       )}
 
-    </div>
+    </section>
   );
-};
-
-export default CompareCars;
+}

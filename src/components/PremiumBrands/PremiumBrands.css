@@ -4,18 +4,12 @@
 
 .premium-brands {
   position: relative;
-
   min-height: 100svh;
-
-  padding: 150px 0 70px;
-
+  padding: 20px 0;
   overflow: hidden;
-
   background: #050505;
-
   color: #ffffff;
 }
-
 
 /* =========================================
    BACKGROUND
@@ -23,61 +17,48 @@
 
 .brands-background {
   position: absolute;
-
   inset: 0;
-
   overflow: hidden;
 }
 
 .brand-bg-image {
   position: absolute;
-
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
-
   opacity: 0;
-
-  transform: scale(1.08);
-
+  transform: scale(1.06);
   filter:
     grayscale(100%)
     brightness(0.35)
-    contrast(1.1);
-
+    contrast(1.08);
   transition:
-    opacity 0.8s ease,
-    transform 1.2s var(--ease-premium);
+    opacity 0.75s ease,
+    transform 1s var(--ease-premium);
 }
 
 .brand-bg-image.active {
   opacity: 1;
-
   transform: scale(1);
 }
 
 .brands-overlay {
   position: absolute;
-
   inset: 0;
-
   background:
     linear-gradient(
       90deg,
-      rgba(0,0,0,0.9),
-      rgba(0,0,0,0.45),
-      rgba(0,0,0,0.8)
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.46),
+      rgba(0, 0, 0, 0.8)
     ),
     linear-gradient(
       0deg,
-      rgba(0,0,0,0.9),
-      transparent 60%
+      rgba(0, 0, 0, 0.9),
+      transparent 62%
     );
 }
-
 
 /* =========================================
    CONTAINER
@@ -85,59 +66,38 @@
 
 .brands-container {
   position: relative;
-
   z-index: 2;
-
-  width: min(
-    calc(100% - 80px),
-    var(--container)
-  );
-
-  min-height: calc(100svh - 220px);
-
+  width: min(calc(100% - 48px), var(--container));
+  min-height: calc(100svh - 40px);
   margin: 0 auto;
-
   display: flex;
-
   flex-direction: column;
 }
-
 
 /* =========================================
    HEADER
 ========================================= */
 
 .brands-header {
-  margin-bottom: 75px;
+  margin-bottom: 20px;
 }
 
 .brands-eyebrow {
   display: flex;
-
   align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 25px;
-
-  color:
-    rgba(255,255,255,0.5);
-
-  font-size: 9px;
-
+  gap: 10px;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.18em;
+  letter-spacing: 0.13em;
 }
 
 .brands-eyebrow span {
-  width: 38px;
+  width: 30px;
   height: 1px;
-
-  background:
-    rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
-
 
 /* =========================================
    TITLE
@@ -145,20 +105,15 @@
 
 .brands-title {
   margin: 0;
-
-  font-size:
-    clamp(58px, 7.5vw, 105px);
-
-  line-height: 0.86;
-
-  letter-spacing: -0.07em;
-
+  max-width: 850px;
+  font-size: clamp(48px, 7vw, 80px);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
   font-weight: 400;
 }
 
 .brands-title-mask {
   display: block;
-
   overflow: hidden;
 }
 
@@ -170,21 +125,15 @@
   font-weight: 700;
 }
 
-
 /* =========================================
    LIST
 ========================================= */
 
 .brands-list {
   width: 100%;
-
   margin-top: auto;
-
-  border-top:
-    1px solid
-    rgba(255,255,255,0.17);
+  border-top: 1px solid rgba(255, 255, 255, 0.17);
 }
-
 
 /* =========================================
    ROW
@@ -192,43 +141,32 @@
 
 .brand-row {
   position: relative;
-
-  min-height: 105px;
-
+  min-height: 88px;
   display: grid;
-
-  grid-template-columns:
-    80px
-    1fr
-    150px;
-
+  grid-template-columns: 52px 1fr 120px;
   align-items: center;
-
-  border-bottom:
-    1px solid
-    rgba(255,255,255,0.15);
-
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-
   transition:
-    min-height 0.6s var(--ease-premium);
+    min-height 0.5s var(--ease-premium),
+    background 0.3s ease;
+}
+
+.brand-row:hover,
+.brand-row.active {
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .brand-row::before {
   content: "";
-
   position: absolute;
-
   left: 0;
   bottom: -1px;
-
   width: 0;
   height: 2px;
-
   background: #ffffff;
-
-  transition:
-    width 0.7s var(--ease-premium);
+  transition: width 0.6s var(--ease-premium);
 }
 
 .brand-row:hover::before,
@@ -236,24 +174,17 @@
   width: 100%;
 }
 
-
 /* =========================================
    NUMBER
 ========================================= */
 
 .brand-number {
   align-self: start;
-
-  padding-top: 35px;
-
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 9px;
-
-  letter-spacing: 0.1em;
+  padding-top: 18px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  letter-spacing: 0.08em;
 }
-
 
 /* =========================================
    NAME
@@ -261,59 +192,42 @@
 
 .brand-name-wrapper {
   display: flex;
-
   align-items: center;
-
-  gap: 35px;
+  gap: 24px;
+  min-width: 0;
 }
 
 .brand-name-wrapper h3 {
   margin: 0;
-
-  font-size:
-    clamp(32px, 4vw, 62px);
-
+  font-size: clamp(27px, 3.7vw, 54px);
   line-height: 1;
-
-  letter-spacing: -0.06em;
-
+  letter-spacing: -0.05em;
   font-weight: 500;
-
-  transition:
-    transform 0.65s var(--ease-premium);
+  transition: transform 0.55s var(--ease-premium);
 }
 
 .brand-name-wrapper > span {
-  color:
-    rgba(255,255,255,0.35);
-
-  font-size: 8px;
-
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
   font-weight: 600;
-
-  letter-spacing: 0.12em;
-
+  letter-spacing: 0.08em;
   opacity: 0;
-
-  transform: translateX(-15px);
-
+  transform: translateX(-10px);
   transition:
-    opacity 0.45s ease,
-    transform 0.6s var(--ease-premium);
+    opacity 0.4s ease,
+    transform 0.5s var(--ease-premium);
 }
 
 .brand-row:hover .brand-name-wrapper h3,
 .brand-row.active .brand-name-wrapper h3 {
-  transform: translateX(12px);
+  transform: translateX(7px);
 }
 
 .brand-row:hover .brand-name-wrapper > span,
 .brand-row.active .brand-name-wrapper > span {
   opacity: 1;
-
   transform: translateX(0);
 }
-
 
 /* =========================================
    ACTION
@@ -321,26 +235,19 @@
 
 .brand-action {
   display: flex;
-
   align-items: center;
-
   justify-content: flex-end;
-
-  gap: 10px;
-
-  color:
-    rgba(255,255,255,0.4);
-
-  font-size: 8px;
-
+  gap: 9px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
   font-weight: 700;
-
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
 }
 
 .brand-action svg {
+  flex-shrink: 0;
   transition:
-    transform 0.5s var(--ease-premium),
+    transform 0.45s var(--ease-premium),
     color 0.3s ease;
 }
 
@@ -351,10 +258,8 @@
 
 .brand-row:hover .brand-action svg,
 .brand-row.active .brand-action svg {
-  transform:
-    translate(4px,-4px);
+  transform: translate(3px, -3px);
 }
-
 
 /* =========================================
    FOOTER
@@ -362,91 +267,75 @@
 
 .brands-footer {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
-  margin-top: 28px;
-
-  color:
-    rgba(255,255,255,0.3);
-
-  font-size: 8px;
-
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 12px;
   font-weight: 600;
-
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
 }
-
 
 /* =========================================
    TABLET
 ========================================= */
 
 @media (max-width: 900px) {
-
-  .premium-brands {
-    padding: 110px 0 60px;
+  .brands-container {
+    width: calc(100% - 36px);
+    min-height: calc(100svh - 40px);
   }
 
-  .brands-container {
-    width:
-      calc(100% - 48px);
+  .brands-title {
+    font-size: clamp(44px, 8vw, 70px);
   }
 
   .brand-row {
-    grid-template-columns:
-      55px
-      1fr
-      100px;
+    grid-template-columns: 42px 1fr 90px;
+    min-height: 82px;
+  }
+
+  .brand-name-wrapper {
+    gap: 16px;
   }
 
   .brand-name-wrapper > span {
     display: none;
   }
-
 }
-
 
 /* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 600px) {
-
   .premium-brands {
     min-height: auto;
-
-    padding: 90px 0 45px;
+    padding: 20px 0;
   }
 
   .brands-container {
-    width:
-      calc(100% - 32px);
-
+    width: calc(100% - 28px);
     min-height: auto;
   }
 
   .brands-header {
-    margin-bottom: 55px;
+    margin-bottom: 18px;
   }
 
   .brands-title {
-    font-size: 56px;
+    font-size: clamp(42px, 13vw, 58px);
   }
 
   .brand-row {
-    min-height: 92px;
-
-    grid-template-columns:
-      35px
-      1fr
-      35px;
+    min-height: 78px;
+    grid-template-columns: 30px 1fr 28px;
+    gap: 6px;
   }
 
   .brand-number {
-    padding-top: 31px;
+    padding-top: 16px;
+    font-size: 12px;
   }
 
   .brand-name-wrapper {
@@ -454,19 +343,18 @@
   }
 
   .brand-name-wrapper h3 {
-    font-size: 28px;
+    font-size: 25px;
   }
 
   .brand-name-wrapper > span {
     display: block;
-
-    margin-top: 7px;
-
-    font-size: 6px;
-
+    margin-top: 5px;
+    font-size: 12px;
     opacity: 1;
-
     transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .brand-row:hover .brand-name-wrapper h3,
@@ -480,14 +368,26 @@
 
   .brand-action svg {
     width: 17px;
+    height: 17px;
   }
 
   .brands-footer {
     flex-direction: column;
-
     align-items: flex-start;
+    gap: 6px;
+  }
+}
 
-    gap: 8px;
+@media (max-width: 380px) {
+  .brands-title {
+    font-size: 40px;
   }
 
+  .brand-name-wrapper h3 {
+    font-size: 22px;
+  }
+
+  .brand-name-wrapper > span {
+    font-size: 12px;
+  }
 }

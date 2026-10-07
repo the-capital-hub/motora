@@ -1,0 +1,40 @@
+# MOTORA CLIENT PANEL ROUTES
+
+Add these imports to your existing frontend App.jsx:
+
+import ClientProtectedRoute from "./client/ClientProtectedRoute";
+import ClientLayout from "./client/ClientLayout";
+import ClientDashboard from "./client/ClientDashboard";
+import ClientProfile from "./client/ClientProfile";
+import ClientNotifications from "./client/ClientNotifications";
+import ClientSettings from "./client/ClientSettings";
+import {
+  ClientWishlist,
+  ClientAppointments,
+  ClientEnquiries,
+  ClientSellRequests,
+  ClientActivity,
+} from "./client/ClientListPages";
+
+Then add these routes inside your existing <Routes>:
+
+<Route element={<ClientProtectedRoute />}>
+  <Route path="/client" element={<ClientLayout />}>
+    <Route index element={<ClientDashboard />} />
+    <Route path="wishlist" element={<ClientWishlist />} />
+    <Route path="appointments" element={<ClientAppointments />} />
+    <Route path="enquiries" element={<ClientEnquiries />} />
+    <Route path="sell-requests" element={<ClientSellRequests />} />
+    <Route path="activity" element={<ClientActivity />} />
+    <Route path="notifications" element={<ClientNotifications />} />
+    <Route path="profile" element={<ClientProfile />} />
+    <Route path="settings" element={<ClientSettings />} />
+  </Route>
+</Route>
+
+IMPORTANT:
+1. Your existing api client should remain at src/api/client.js.
+2. The existing clientApi.js imports that file.
+3. The panel expects the authenticated token in localStorage under "token".
+4. Existing Wishlist, Test Drive and Sell Request APIs are reused.
+5. This package expects the new backend route GET/PATCH /api/client/me and GET /api/requests/mine/leads.

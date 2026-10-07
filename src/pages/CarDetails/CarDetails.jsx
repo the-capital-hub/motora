@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -16,6 +16,9 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+
+import api from "../../api/client";
+import { useAuth } from "../../context/AuthContext";
 
 import "./CarDetails.css";
 
@@ -128,21 +131,282 @@ const formatPrice = (price) => {
 
 const CarDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
-  const car = useMemo(
-    () =>
-      cars.find(
-        (item) => String(item.id) === String(id)
-      ) || cars[0],
-    [id]
-  );
+  const [apiCar, setApiCar] = useState(null);
+  const [loadingCar, setLoadingCar] = useState(true);
+  const [apiError, setApiError] = useState("");
+
+  useEffect(() => {
+    setActiveImage(0);
+
+    const fetchCar = async () => {
+      try {
+        setLoadingCar(true);
+        setApiError("");
+
+        const data = await api.get(`/cars/${id}`);
+
+        setApiCar(data);
+      } catch (err) {
+        console.error("Failed to load car:", err);
+        setApiError(err.message || "Unable to load vehicle.");
+      } finally {
+        setLoadingCar(false);
+      }
+    };
+
+    if (id) fetchCar();
+  }, [id]);
+
+  const car = useMemo(() => {
+    if (apiCar) {
+      return {
+        ...apiCar,
+        id: apiCar._id,
+
+        images:
+          Array.isArray(apiCar.images) && apiCar.images.length
+            ? apiCar.images
+            : [""],
+
+        specs: apiCar.specs || {},
+
+        engine: apiCar.specs?.engine || "",
+        power: apiCar.specs?.power || "",
+        mileage: apiCar.specs?.mileage || "",
+        owners: apiCar.specs?.owners || "",
+        color: apiCar.specs?.color || "",
+
+        features: Array.isArray(apiCar.specs?.features)
+          ? apiCar.specs.features
+          : [],
+
+        description: apiCar.description || "",
+      };
+    }
+
+    return null;
+  }, [apiCar, id]);
 
   const [activeImage, setActiveImage] = useState(0);
+
   const [saved, setSaved] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+
   const [showTestDrive, setShowTestDrive] = useState(false);
+
+  const [testDriveForm, setTestDriveForm] = useState({
+    name: "",
+    phone: "",
+    date: "",
+    time: "",
+  });
+
+  const [testDriveLoading, setTestDriveLoading] = useState(false);
+  const [testDriveMessage, setTestDriveMessage] = useState("");
+
   const [showEnquiry, setShowEnquiry] = useState(false);
 
+  const [enquiryForm, setEnquiryForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+
+  const [enquiryLoading, setEnquiryLoading] = useState(false);
+  const [enquiryMessage, setEnquiryMessage] = useState("");
+
+  useEffect(() => {
+    if (!isAuthenticated || !car?.id) return;
+
+    const loadWishlistState = async () => {
+      try {
+        const data = await api.get("/wishlist");
+
+        const ids = (data?.cars || []).map((item) =>
+          String(item._id)
+        );
+
+        setSaved(ids.includes(String(car.id)));
+      } catch (err) {
+        console.error("Failed to load wishlist state:", err);
+      }
+    };
+
+    loadWishlistState();
+  }, [isAuthenticated, car?.id]);
+
+  const toggleWishlist = async () => {
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: `/cars/${car.id}`,
+        },
+      });
+
+      return;
+    }
+
+    try {
+      setWishlistLoading(true);
+
+      if (saved) {
+        await api.delete(`/wishlist/${car.id}`);
+        setSaved(false);
+      } else {
+        await api.post(`/wishlist/${car.id}`);
+        setSaved(true);
+      }
+    } catch (err) {
+      console.error("Failed to update wishlist:", err);
+
+      alert(err.message || "Unable to update wishlist.");
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  const handleTestDriveChange = (event) => {
+    const { name, value } = event.target;
+
+    setTestDriveForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const submitTestDrive = async (event) => {
+    event.preventDefault();
+
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: `/cars/${car.id}`,
+        },
+      });
+
+      return;
+    }
+
+    if (
+      !testDriveForm.name.trim() ||
+      !testDriveForm.phone.trim() ||
+      !testDriveForm.date
+    ) {
+      setTestDriveMessage("Please fill name, phone and date.");
+      return;
+    }
+
+    try {
+      setTestDriveLoading(true);
+      setTestDriveMessage("");
+
+      await api.post("/requests/test-drives", {
+        carId: car.id,
+        name: testDriveForm.name.trim(),
+        phone: testDriveForm.phone.trim(),
+        date: testDriveForm.date,
+        time: testDriveForm.time,
+      });
+
+      setTestDriveMessage(
+        "Your test drive request has been submitted."
+      );
+
+      setTestDriveForm({
+        name: "",
+        phone: "",
+        date: "",
+        time: "",
+      });
+    } catch (err) {
+      console.error("Test drive request failed:", err);
+
+      setTestDriveMessage(
+        err.message || "Unable to submit test drive request."
+      );
+    } finally {
+      setTestDriveLoading(false);
+    }
+  };
+
+  const handleEnquiryChange = (event) => {
+    const { name, value } = event.target;
+
+    setEnquiryForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const submitEnquiry = async (event) => {
+    event.preventDefault();
+
+    if (!isAuthenticated) {
+      navigate("/login", {
+        state: {
+          from: `/cars/${car.id}`,
+        },
+      });
+
+      return;
+    }
+
+    if (
+      !enquiryForm.name.trim() ||
+      !enquiryForm.phone.trim() ||
+      !enquiryForm.email.trim()
+    ) {
+      setEnquiryMessage(
+        "Please fill name, phone and email."
+      );
+
+      return;
+    }
+
+    try {
+      setEnquiryLoading(true);
+      setEnquiryMessage("");
+
+      await api.post("/requests/leads", {
+        carId: car.id,
+        name: enquiryForm.name.trim(),
+        phone: enquiryForm.phone.trim(),
+        email: enquiryForm.email.trim(),
+        message:
+          enquiryForm.message.trim() ||
+          `Enquiry for ${car.brand} ${car.model}`,
+        type: "Enquiry",
+        source: "Website",
+      });
+
+      setEnquiryMessage(
+        "Your enquiry has been submitted successfully."
+      );
+
+      setEnquiryForm({
+        name: "",
+        phone: "",
+        email: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Enquiry submission failed:", err);
+
+      setEnquiryMessage(
+        err.message || "Unable to submit enquiry."
+      );
+    } finally {
+      setEnquiryLoading(false);
+    }
+  };
+
   const nextImage = () => {
+    if (!car?.images?.length) return;
+
     setActiveImage(
       (current) =>
         (current + 1) % car.images.length
@@ -150,12 +414,47 @@ const CarDetails = () => {
   };
 
   const previousImage = () => {
+    if (!car?.images?.length) return;
+
     setActiveImage(
       (current) =>
         (current - 1 + car.images.length) %
         car.images.length
     );
   };
+
+  if (loadingCar) {
+    return (
+      <div className="car-details-page">
+        <div className="car-details-summary">
+          <span className="details-eyebrow">
+            MOTORA
+          </span>
+
+          <h1>Loading vehicle...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  if (!car) {
+    return (
+      <div className="car-details-page">
+        <div className="car-details-summary">
+          <span className="details-eyebrow">
+            MOTORA
+          </span>
+
+          <h1>Vehicle not found</h1>
+
+          <p>
+            {apiError ||
+              "The requested vehicle could not be found."}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="car-details-page">
@@ -171,11 +470,13 @@ const CarDetails = () => {
           onClick={() => window.history.back()}
         >
           <ArrowLeft size={15} />
+
           Back to cars
         </button>
 
         <div className="car-details-top-meta">
           <ShieldCheck size={14} />
+
           Motora Verified Vehicle
         </div>
 
@@ -227,7 +528,8 @@ const CarDetails = () => {
                   ? "details-save active"
                   : "details-save"
               }
-              onClick={() => setSaved(!saved)}
+              onClick={toggleWishlist}
+              disabled={wishlistLoading}
               aria-label="Save car"
             >
               <Heart
@@ -282,7 +584,9 @@ const CarDetails = () => {
 
           <h1>
             {car.brand}
+
             <br />
+
             <strong>{car.model}</strong>
           </h1>
 
@@ -290,12 +594,50 @@ const CarDetails = () => {
             {car.description}
           </p>
 
+          {car.specs && (
+            <div className="details-specs-grid">
+
+              {[
+                ["Engine", car.specs.engine],
+                ["Power", car.specs.power],
+                ["Mileage", car.specs.mileage],
+                ["Owners", car.specs.owners],
+                ["Color", car.specs.color],
+              ]
+                .filter(([, value]) => value)
+                .map(([label, value]) => (
+                  <div key={label}>
+                    <span>{label}</span>
+
+                    <strong>{value}</strong>
+                  </div>
+                ))}
+
+            </div>
+          )}
+
+          {Array.isArray(car.specs?.features) &&
+            car.specs.features.length > 0 && (
+              <div className="details-features">
+
+                <span>FEATURES</span>
+
+                <div>
+                  {car.specs.features.map((feature) => (
+                    <span key={feature}>
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+              </div>
+            )}
 
           <div className="details-location">
             <MapPin size={14} />
+
             {car.location}
           </div>
-
 
           <div className="details-price">
             <span>ASKING PRICE</span>
@@ -304,7 +646,6 @@ const CarDetails = () => {
               {formatPrice(car.price)}
             </strong>
           </div>
-
 
           <div className="details-primary-actions">
 
@@ -315,6 +656,7 @@ const CarDetails = () => {
               }
             >
               <CalendarDays size={15} />
+
               Book a Test Drive
             </button>
 
@@ -325,11 +667,11 @@ const CarDetails = () => {
               }
             >
               Enquire Now
+
               <ArrowUpRight size={15} />
             </button>
 
           </div>
-
 
           <div className="details-trust">
 
@@ -365,6 +707,7 @@ const CarDetails = () => {
         <div className="details-section-heading">
 
           <div>
+
             <span>THE DETAILS</span>
 
             <h2>
@@ -372,6 +715,7 @@ const CarDetails = () => {
               <br />
               to know.
             </h2>
+
           </div>
 
           <p>
@@ -418,6 +762,7 @@ const CarDetails = () => {
           </div>
 
           <div className="details-spec-card">
+
             <span className="spec-power">
               HP
             </span>
@@ -428,6 +773,7 @@ const CarDetails = () => {
           </div>
 
           <div className="details-spec-card">
+
             <span className="spec-mileage">
               KM
             </span>
@@ -462,12 +808,13 @@ const CarDetails = () => {
 
           <div className="details-feature-list">
 
-            {car.features.map((feature) => (
+            {car.features?.map((feature) => (
               <div
                 className="details-feature"
                 key={feature}
               >
                 <Check size={14} />
+
                 {feature}
               </div>
             ))}
@@ -497,6 +844,7 @@ const CarDetails = () => {
           </p>
 
           <div className="finance-estimate">
+
             <small>
               ESTIMATED MONTHLY
             </small>
@@ -508,10 +856,12 @@ const CarDetails = () => {
             <span>
               *Indicative estimate
             </span>
+
           </div>
 
           <button>
             Calculate your EMI
+
             <ArrowUpRight size={14} />
           </button>
 
@@ -528,21 +878,25 @@ const CarDetails = () => {
 
         <div className="vehicle-info-item">
           <span>YEAR</span>
+
           <strong>{car.year}</strong>
         </div>
 
         <div className="vehicle-info-item">
           <span>OWNERS</span>
+
           <strong>{car.owners}</strong>
         </div>
 
         <div className="vehicle-info-item">
           <span>COLOUR</span>
+
           <strong>{car.color}</strong>
         </div>
 
         <div className="vehicle-info-item">
           <span>LOCATION</span>
+
           <strong>{car.location}</strong>
         </div>
 
@@ -575,6 +929,7 @@ const CarDetails = () => {
           }
         >
           Book a Test Drive
+
           <ArrowUpRight size={17} />
         </button>
 
@@ -620,29 +975,62 @@ const CarDetails = () => {
               Motora team will confirm your visit.
             </p>
 
-            <input
-              type="text"
-              placeholder="Your name"
-            />
+            <form onSubmit={submitTestDrive}>
 
-            <input
-              type="tel"
-              placeholder="Phone number"
-            />
+              <input
+                name="name"
+                type="text"
+                placeholder="Your name"
+                value={testDriveForm.name}
+                onChange={handleTestDriveChange}
+              />
 
-            <input
-              type="date"
-            />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Phone number"
+                value={testDriveForm.phone}
+                onChange={handleTestDriveChange}
+              />
 
-            <button
-              className="modal-submit"
-              onClick={() =>
-                setShowTestDrive(false)
-              }
-            >
-              Request Test Drive
-              <ArrowUpRight size={15} />
-            </button>
+              <input
+                name="date"
+                type="date"
+                value={testDriveForm.date}
+                onChange={handleTestDriveChange}
+                min={
+                  new Date()
+                    .toISOString()
+                    .split("T")[0]
+                }
+              />
+
+              <input
+                name="time"
+                type="time"
+                value={testDriveForm.time}
+                onChange={handleTestDriveChange}
+              />
+
+              {testDriveMessage && (
+                <p className="details-form-message">
+                  {testDriveMessage}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="modal-submit"
+                disabled={testDriveLoading}
+              >
+                {testDriveLoading
+                  ? "Submitting..."
+                  : "Request Test Drive"}
+
+                <ArrowUpRight size={15} />
+              </button>
+
+            </form>
 
           </div>
 
@@ -678,7 +1066,9 @@ const CarDetails = () => {
               <X size={17} />
             </button>
 
-            <span>ENQUIRE ABOUT THIS CAR</span>
+            <span>
+              ENQUIRE ABOUT THIS CAR
+            </span>
 
             <h2>
               Let's talk cars.
@@ -689,30 +1079,59 @@ const CarDetails = () => {
               specialist will get back to you.
             </p>
 
-            <input
-              type="text"
-              placeholder="Your name"
-            />
+            <form onSubmit={submitEnquiry}>
 
-            <input
-              type="tel"
-              placeholder="Phone number"
-            />
+              <input
+                name="name"
+                type="text"
+                placeholder="Your name"
+                value={enquiryForm.name}
+                onChange={handleEnquiryChange}
+              />
 
-            <input
-              type="email"
-              placeholder="Email address"
-            />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Phone number"
+                value={enquiryForm.phone}
+                onChange={handleEnquiryChange}
+              />
 
-            <button
-              className="modal-submit"
-              onClick={() =>
-                setShowEnquiry(false)
-              }
-            >
-              Send Enquiry
-              <ArrowUpRight size={15} />
-            </button>
+              <input
+                name="email"
+                type="email"
+                placeholder="Email address"
+                value={enquiryForm.email}
+                onChange={handleEnquiryChange}
+              />
+
+              <textarea
+                name="message"
+                placeholder="Message (optional)"
+                value={enquiryForm.message}
+                onChange={handleEnquiryChange}
+                rows="4"
+              />
+
+              {enquiryMessage && (
+                <p className="details-form-message">
+                  {enquiryMessage}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="modal-submit"
+                disabled={enquiryLoading}
+              >
+                {enquiryLoading
+                  ? "Sending..."
+                  : "Send Enquiry"}
+
+                <ArrowUpRight size={15} />
+              </button>
+
+            </form>
 
           </div>
 

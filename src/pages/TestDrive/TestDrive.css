@@ -1,12 +1,22 @@
-/* =========================================
-   MOTORA — TEST DRIVE
-========================================= */
-
 .test-drive-page {
   min-height: 100vh;
-  padding: 145px 0 110px;
-  background: #f5f5f2;
-  color: #080808;
+  background: #08090b;
+  color: #f3f3ef;
+  font-family: Inter, Arial, sans-serif;
+  padding: 20px 0;
+}
+
+.test-drive-page * {
+  box-sizing: border-box;
+}
+
+.test-drive-page button,
+.test-drive-page input {
+  font: inherit;
+}
+
+.test-drive-page button {
+  cursor: pointer;
 }
 
 
@@ -15,117 +25,202 @@
 ========================================= */
 
 .test-drive-hero {
-  width: min(calc(100% - 80px), var(--container));
-  min-height: 430px;
-  margin: 0 auto;
-  padding: 60px 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 50px;
+  position: relative;
+  width: min(1380px, calc(100% - 40px));
+  min-height: 570px;
+  margin: 0 auto 18px;
   overflow: hidden;
-  border-radius: 10px;
-  background: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  background: #111215;
+}
+
+.test-drive-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.02);
+  transition: transform 1s ease;
+}
+
+.test-drive-hero:hover .test-drive-hero-image {
+  transform: scale(1.045);
+}
+
+.test-drive-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 5, 7, 0.97) 0%,
+      rgba(4, 5, 7, 0.82) 34%,
+      rgba(4, 5, 7, 0.38) 67%,
+      rgba(4, 5, 7, 0.3) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(4, 5, 7, 0.7),
+      transparent 55%
+    );
+}
+
+.test-drive-hero-content {
+  position: relative;
+  z-index: 2;
+  min-height: 570px;
+  width: min(650px, 100%);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #d5d6d1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  backdrop-filter: blur(12px);
+}
+
+.hero-eyebrow svg {
   color: #fff;
 }
 
-.test-drive-hero > div:first-child {
-  max-width: 720px;
-}
-
-.test-drive-hero span {
-  color: rgba(255,255,255,0.35);
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.17em;
-}
-
 .test-drive-hero h1 {
-  margin: 23px 0 0;
-  font-size: clamp(60px, 7vw, 95px);
-  line-height: 0.84;
-  letter-spacing: -0.08em;
-  font-weight: 400;
+  max-width: 600px;
+  margin: 0;
+  font-size: clamp(50px, 7vw, 84px);
+  line-height: 0.93;
+  letter-spacing: -0.06em;
+  font-weight: 700;
 }
 
 .test-drive-hero h1 strong {
-  font-weight: 600;
+  display: block;
+  color: #a5a6a2;
+  font-weight: 700;
 }
 
-.test-drive-hero p {
-  max-width: 440px;
-  margin: 28px 0 0;
-  color: rgba(255,255,255,0.42);
-  font-size: 10px;
-  line-height: 1.8;
+.test-drive-hero-content > p {
+  max-width: 510px;
+  margin: 20px 0 0;
+  color: #c0c1bc;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.hero-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.hero-trust-row div {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #dddeda;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
 }
 
 .hero-drive-mark {
-  width: 180px;
-  height: 180px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255,255,255,0.12);
+  position: absolute;
+  z-index: 3;
+  right: 22px;
+  bottom: 22px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  color: rgba(255,255,255,0.5);
+  background: rgba(7, 8, 10, 0.65);
+  color: #fff;
+  backdrop-filter: blur(18px);
 }
 
-.car-mark {
-  display: grid;
-  place-items: center;
+.hero-drive-mark span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
 
 /* =========================================
-   BOOKING
+   BOOKING SECTION
 ========================================= */
 
 .booking-section {
-  width: min(calc(100% - 80px), var(--container));
-  margin: 100px auto 0;
-  padding: 40px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 9px;
-  background: #fff;
+  width: min(1380px, calc(100% - 40px));
+  margin: 0 auto 18px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  background: #101114;
 }
 
 .booking-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-bottom: 28px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  gap: 20px;
+  margin-bottom: 18px;
 }
 
-.booking-header span {
-  color: #aaa;
-  font-size: 7px;
+.booking-header > div:first-child > span {
+  color: #858782;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.15em;
 }
 
 .booking-header h2 {
-  margin: 10px 0 0;
-  font-size: clamp(35px, 4vw, 52px);
-  line-height: 0.9;
-  letter-spacing: -0.07em;
-  font-weight: 400;
+  margin: 8px 0 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.045em;
 }
 
 .booking-step-count {
   display: flex;
   align-items: baseline;
-  gap: 3px;
+  gap: 5px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: #17181b;
 }
 
 .booking-step-count strong {
-  font-size: 32px;
-  letter-spacing: -0.06em;
+  font-size: 20px;
 }
 
 .booking-step-count span {
-  font-size: 8px;
+  color: #747671;
+  font-size: 12px;
 }
 
 
@@ -137,162 +232,219 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  margin-top: 30px;
+  margin-bottom: 18px;
 }
 
 .progress-step {
   position: relative;
+  min-height: 58px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #aaa;
-}
-
-.progress-step > div {
-  width: 25px;
-  height: 25px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  font-size: 7px;
-}
-
-.progress-step span {
-  font-size: 7px;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 11px;
+  background: #0c0d0f;
+  color: #6e706b;
 }
 
 .progress-step.active {
-  color: #111;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: #17181b;
+  color: #f0f0eb;
 }
 
-.progress-step.active > div {
-  border-color: #111;
-  background: #111;
-  color: #fff;
+.progress-number {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  background: #111215;
+  color: #777973;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress-step.active .progress-number {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: #f1f1ec;
+  color: #0a0b0d;
+}
+
+.progress-step span {
+  font-size: 12px;
+  font-weight: 600;
 }
 
 
 /* =========================================
-   STEP
+   STEP CONTENT
 ========================================= */
 
 .booking-step-content {
-  display: grid;
-  grid-template-columns: 0.65fr 1.35fr;
-  gap: 65px;
-  margin-top: 60px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: #0b0c0e;
+}
+
+.step-intro {
+  max-width: 620px;
+  margin-bottom: 18px;
 }
 
 .step-intro > span {
-  color: #aaa;
-  font-size: 6px;
+  color: #777973;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
 }
 
 .step-intro h3 {
-  margin: 12px 0 0;
-  font-size: clamp(30px, 4vw, 48px);
-  line-height: 0.9;
-  letter-spacing: -0.07em;
-  font-weight: 400;
+  margin: 8px 0 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
 }
 
 .step-intro p {
-  max-width: 260px;
-  margin: 17px 0 0;
-  color: #999;
-  font-size: 8px;
-  line-height: 1.7;
+  margin: 12px 0 0;
+  color: #858782;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 
 /* =========================================
-   CAR SELECTION
+   CAR GRID
 ========================================= */
 
 .drive-car-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .drive-car {
-  padding: 0;
+  position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 6px;
-  background: #fafaf8;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  background: #121316;
+  color: #fff;
   text-align: left;
-  font-family: inherit;
-  cursor: pointer;
-  transition: 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
 .drive-car:hover {
-  transform: translateY(-3px);
-  border-color: #777;
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #17181b;
 }
 
 .drive-car.selected {
-  border-color: #080808;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+  border-color: rgba(255, 255, 255, 0.48);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 16px 35px rgba(0, 0, 0, 0.25);
 }
 
 .drive-car-image {
   position: relative;
-  height: 150px;
+  height: 220px;
   overflow: hidden;
+  background: #17181a;
 }
 
 .drive-car-image img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.drive-car:hover .drive-car-image img {
+  transform: scale(1.05);
+}
+
+.drive-car-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.08),
+      transparent 45%,
+      rgba(0, 0, 0, 0.6)
+    );
+}
+
+.drive-car-badge {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(7, 8, 10, 0.72);
+  color: #e9e9e5;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
 }
 
 .selected-check {
   position: absolute;
-  right: 9px;
-  top: 9px;
-  width: 27px;
-  height: 27px;
+  right: 12px;
+  top: 12px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #080808;
-  color: #fff;
+  background: #f1f1ec;
+  color: #08090b;
 }
 
 .drive-car-info {
-  padding: 13px;
+  padding: 16px;
 }
 
-.drive-car-info span {
-  color: #aaa;
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+.drive-car-info > span {
+  color: #92938e;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .drive-car-info h4 {
-  margin: 5px 0 0;
-  font-size: 18px;
-  letter-spacing: -0.04em;
+  margin: 7px 0 0;
+  font-size: 21px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 .drive-car-info small {
   display: block;
-  margin-top: 5px;
-  color: #999;
-  font-size: 6px;
+  margin-top: 7px;
+  color: #777973;
+  font-size: 12px;
 }
 
 .drive-car-info strong {
   display: block;
-  margin-top: 13px;
-  font-size: 10px;
+  margin-top: 14px;
+  color: #f4f4ef;
+  font-size: 18px;
 }
 
 
@@ -301,93 +453,132 @@
 ========================================= */
 
 .location-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .location-card {
-  min-height: 92px;
-  display: grid;
-  grid-template-columns: 45px 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 6px;
-  background: #fafaf8;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  background: #121316;
+  color: #fff;
   text-align: left;
-  font-family: inherit;
-  cursor: pointer;
-  transition: 0.25s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .location-card:hover {
-  border-color: #777;
-  background: #fff;
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .location-card.selected {
-  border-color: #080808;
-  background: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.location-image {
+  position: relative;
+  height: 170px;
+  overflow: hidden;
+}
+
+.location-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.location-card:hover .location-image img {
+  transform: scale(1.05);
+}
+
+.location-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 40%,
+      rgba(0, 0, 0, 0.65)
+    );
 }
 
 .location-icon {
-  width: 42px;
-  height: 42px;
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 5px;
-  background: #eee;
-  color: #666;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(7, 8, 10, 0.72);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.location-info {
+  padding: 16px;
 }
 
 .location-info > span {
-  color: #aaa;
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.location-info h4 {
-  margin: 5px 0 0;
+  color: #999a95;
   font-size: 12px;
 }
 
+.location-info h4 {
+  margin: 7px 0 0;
+  font-size: 17px;
+  line-height: 1.15;
+}
+
 .location-info p {
-  margin: 4px 0 0;
-  color: #999;
-  font-size: 7px;
+  margin: 7px 0 0;
+  color: #777973;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .location-distance {
+  position: absolute;
+  right: 12px;
+  bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .location-distance strong {
-  color: #777;
-  font-size: 7px;
+  color: #bfc0bb;
+  font-size: 12px;
 }
 
 
 /* =========================================
-   DATE / TIME
+   DATE AND TIME
 ========================================= */
 
 .date-time-area {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
-  gap: 25px;
+  gap: 14px;
 }
 
 .date-picker,
 .time-picker {
-  padding: 20px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 6px;
-  background: #fafaf8;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: #111215;
 }
 
 .date-picker label,
@@ -395,68 +586,79 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #aaa;
-  font-size: 6px;
+  color: #858782;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
 .date-input {
   position: relative;
-  margin-top: 25px;
+  margin-top: 12px;
 }
 
 .date-input input {
   width: 100%;
-  height: 48px;
-  padding: 0 12px;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 5px;
+  height: 52px;
+  padding: 0 42px 0 13px;
   outline: none;
-  background: #fff;
-  font-family: inherit;
-  font-size: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: #18191c;
+  color: #eee;
+  font-size: 13px;
+}
+
+.date-input input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .date-input svg {
   position: absolute;
-  right: 12px;
-  top: 17px;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
   pointer-events: none;
+  color: #777973;
 }
 
-.date-picker p {
-  margin: 12px 0 0;
-  color: #777;
-  font-size: 8px;
+.date-picker > p {
+  margin: 10px 0 0;
+  color: #bfc0bb;
+  font-size: 12px;
 }
 
 .time-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-  margin-top: 25px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .time-grid button {
-  height: 42px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 5px;
-  background: #fff;
-  color: #666;
-  font-family: inherit;
-  font-size: 7px;
-  cursor: pointer;
+  min-height: 46px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9px;
+  background: #18191c;
+  color: #aaa;
+  font-size: 12px;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .time-grid button:hover {
-  border-color: #555;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
 
 .time-grid button.selected {
-  border-color: #080808;
-  background: #080808;
-  color: #fff;
+  border-color: #eee;
+  background: #eee;
+  color: #08090b;
+  font-weight: 700;
 }
 
 
@@ -466,74 +668,109 @@
 
 .details-area {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .input-field {
-  padding: 16px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 6px;
-  background: #fafaf8;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .input-field label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: #aaa;
-  font-size: 6px;
+  gap: 7px;
+  color: #858782;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 
 .input-field input {
   width: 100%;
-  height: 42px;
-  margin-top: 10px;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: #111;
-  font-family: inherit;
-  font-size: 9px;
+  height: 48px;
+  padding: 0 13px;
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  background: #17181b;
+  color: #fff;
+  font-size: 13px;
 }
 
 .input-field input::placeholder {
-  color: #bbb;
+  color: #686a65;
+}
+
+.input-field input:focus {
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .appointment-summary {
   grid-column: 1 / -1;
-  margin-top: 5px;
-  padding: 18px;
-  border-radius: 6px;
-  background: #080808;
-  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 3px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+  background:
+    linear-gradient(
+      135deg,
+      #18191c,
+      #101114
+    );
 }
 
 .appointment-summary > span {
-  color: rgba(255,255,255,0.3);
-  font-size: 6px;
+  color: #858782;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.1em;
 }
 
 .appointment-summary > div {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 5px;
-  margin-top: 12px;
 }
 
 .appointment-summary strong {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .appointment-summary small {
-  color: rgba(255,255,255,0.4);
-  font-size: 7px;
+  color: #858782;
+  font-size: 12px;
+}
+
+
+/* =========================================
+   INLINE MESSAGE
+========================================= */
+
+.booking-inline-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  padding: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 13px;
+  color: #858782;
+  font-size: 13px;
+  text-align: center;
+}
+
+.booking-inline-message.error {
+  border-color: rgba(255, 100, 100, 0.22);
+  background: rgba(100, 20, 20, 0.1);
+  color: #d99b9b;
 }
 
 
@@ -545,40 +782,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 55px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0,0,0,0.08);
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .back-button,
 .continue-button {
-  min-height: 44px;
-  display: flex;
+  min-height: 46px;
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 17px;
-  border-radius: 100px;
-  font-family: inherit;
-  font-size: 8px;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 12px;
   font-weight: 700;
-  cursor: pointer;
 }
 
 .back-button {
-  border: 1px solid rgba(0,0,0,0.1);
-  background: #fff;
-  color: #666;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #17181b;
+  color: #d1d2cd;
+}
+
+.back-button:hover {
+  background: #202125;
 }
 
 .continue-button {
   border: 0;
-  background: #080808;
-  color: #fff;
+  background: #f1f1ec;
+  color: #08090b;
+}
+
+.continue-button:hover {
+  background: #fff;
 }
 
 .continue-button.disabled {
-  opacity: 0.3;
   cursor: not-allowed;
+  opacity: 0.38;
 }
 
 
@@ -587,35 +830,37 @@
 ========================================= */
 
 .drive-trust {
-  width: min(calc(100% - 80px), var(--container));
-  margin: 70px auto 0;
+  width: min(1380px, calc(100% - 40px));
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .drive-trust > div {
-  padding: 25px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  background: #101114;
 }
 
-.drive-trust svg {
-  color: #777;
+.drive-trust > div > svg {
+  color: #d8d9d4;
 }
 
 .drive-trust span {
   display: block;
-  margin-top: 20px;
-  color: #777;
-  font-size: 6px;
+  margin-top: 12px;
+  color: #d4d5d0;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.1em;
 }
 
 .drive-trust p {
   margin: 8px 0 0;
-  color: #999;
-  font-size: 8px;
+  color: #777973;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -625,214 +870,294 @@
 ========================================= */
 
 .booking-success {
-  width: min(calc(100% - 80px), 900px);
-  min-height: 700px;
+  position: relative;
+  width: min(1100px, calc(100% - 40px));
+  min-height: 650px;
   margin: 0 auto;
-  padding: 70px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: #080808;
-  color: #fff;
-  text-align: center;
-}
-
-.success-icon {
-  width: 52px;
-  height: 52px;
+  overflow: hidden;
   display: grid;
-  place-items: center;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
+  grid-template-columns: 0.8fr 1.2fr;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: #101114;
 }
 
-.booking-success > span {
-  margin-top: 20px;
-  color: rgba(255,255,255,0.35);
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-}
-
-.booking-success h1 {
-  margin: 15px 0 0;
-  font-size: clamp(60px, 7vw, 90px);
-  line-height: 0.85;
-  letter-spacing: -0.08em;
-  font-weight: 400;
-}
-
-.booking-success h1 strong {
-  font-weight: 600;
-}
-
-.booking-success > p {
-  max-width: 420px;
-  margin: 25px 0 0;
-  color: rgba(255,255,255,0.4);
-  font-size: 9px;
-  line-height: 1.8;
-}
-
-.booking-summary {
-  width: 100%;
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 7px;
+.success-image {
+  position: relative;
+  min-height: 650px;
   overflow: hidden;
 }
 
-.summary-car,
-.summary-line {
-  min-height: 105px;
+.success-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.success-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.55)
+    );
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.success-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 15px;
+  border-radius: 50%;
+  background: #f1f1ec;
+  color: #08090b;
+}
+
+.success-eyebrow {
+  color: #8a8c87;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.success-content h1 {
+  margin: 10px 0 0;
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.success-content h1 strong {
+  display: block;
+  color: #a3a4a0;
+}
+
+.success-content > p {
+  max-width: 500px;
+  margin: 18px 0 0;
+  color: #969793;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.booking-summary {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 15px;
+  background: #0b0c0e;
+}
+
+.summary-car {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  text-align: left;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .summary-car img {
-  width: 80px;
-  height: 65px;
+  width: 90px;
+  height: 60px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
-.summary-car > div,
+.summary-car span {
+  color: #858782;
+  font-size: 12px;
+}
+
+.summary-car h3 {
+  margin: 4px 0 0;
+  font-size: 16px;
+}
+
+.summary-car small {
+  display: block;
+  margin-top: 4px;
+  color: #777973;
+  font-size: 12px;
+}
+
+.summary-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.summary-line > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #9b9c97;
+}
+
 .summary-line > div {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.summary-car span,
 .summary-line span {
-  color: rgba(255,255,255,0.3);
-  font-size: 6px;
+  color: #777973;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
-.summary-car h3 {
-  margin: 0;
-  font-size: 14px;
-}
-
-.summary-car small,
-.summary-line small {
-  color: rgba(255,255,255,0.4);
-  font-size: 6px;
-}
-
-.summary-line > svg {
-  color: rgba(255,255,255,0.45);
-  flex-shrink: 0;
+  letter-spacing: 0.08em;
 }
 
 .summary-line strong {
-  font-size: 8px;
-  line-height: 1.4;
+  color: #e8e8e3;
+  font-size: 13px;
+}
+
+.summary-line small {
+  color: #777973;
+  font-size: 12px;
 }
 
 .new-booking-button {
-  min-height: 45px;
-  display: flex;
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: 16px;
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 25px;
-  padding: 0 18px;
+  gap: 8px;
+  padding: 10px 15px;
   border: 0;
-  border-radius: 100px;
-  background: #fff;
-  color: #080808;
-  font-family: inherit;
-  font-size: 8px;
+  border-radius: 9px;
+  background: #f1f1ec;
+  color: #08090b;
+  font-size: 12px;
   font-weight: 700;
-  cursor: pointer;
+}
+
+.new-booking-button:hover {
+  background: #fff;
 }
 
 
 /* =========================================
-   TABLET
+   RESPONSIVE
 ========================================= */
 
-@media (max-width: 1000px) {
-  .test-drive-hero,
-  .booking-section,
-  .drive-trust {
-    width: calc(100% - 48px);
-  }
+@media (max-width: 1100px) {
 
-  .booking-step-content {
-    grid-template-columns: 1fr;
-    gap: 35px;
-  }
-
-  .booking-success {
-    width: calc(100% - 48px);
-  }
-
-  .booking-summary {
+  .drive-car-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .summary-car,
-  .summary-line:nth-child(2) {
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+  .location-list {
+    grid-template-columns: 1fr;
+  }
+
+  .location-card {
+    min-height: 250px;
+  }
+
+  .date-time-area {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-success {
+    grid-template-columns: 1fr;
+  }
+
+  .success-image {
+    min-height: 360px;
+    max-height: 360px;
   }
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
+@media (max-width: 760px) {
 
-@media (max-width: 700px) {
   .test-drive-page {
-    padding-top: 105px;
+    padding: 12px 0;
   }
 
   .test-drive-hero,
   .booking-section,
   .drive-trust,
   .booking-success {
-    width: calc(100% - 28px);
+    width: min(100% - 24px, 1380px);
   }
 
   .test-drive-hero {
-    min-height: 500px;
-    padding: 35px 25px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    min-height: 590px;
+    border-radius: 20px;
+  }
+
+  .test-drive-hero-content {
+    min-height: 590px;
+    padding: 18px;
+    justify-content: flex-end;
+  }
+
+  .test-drive-hero-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(4, 5, 7, 0.16),
+        rgba(4, 5, 7, 0.92) 70%
+      );
   }
 
   .test-drive-hero h1 {
-    font-size: 55px;
+    font-size: 50px;
+  }
+
+  .test-drive-hero-content > p {
+    font-size: 13px;
+  }
+
+  .hero-trust-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-trust-row div {
+    width: fit-content;
   }
 
   .hero-drive-mark {
-    width: 110px;
-    height: 110px;
+    top: 16px;
+    right: 16px;
+    bottom: auto;
+    width: 92px;
+    height: 92px;
+  }
+
+  .hero-drive-mark span {
+    font-size: 12px;
   }
 
   .booking-section {
-    padding: 25px;
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .booking-header {
+    align-items: flex-start;
   }
 
   .booking-progress {
-    overflow-x: auto;
-    padding-bottom: 5px;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .progress-step {
-    min-width: 100px;
+  .booking-step-content {
+    padding: 16px;
   }
 
   .drive-car-grid {
@@ -840,65 +1165,104 @@
   }
 
   .drive-car-image {
-    height: 210px;
+    height: 230px;
   }
 
-  .date-time-area,
+  .location-list {
+    grid-template-columns: 1fr;
+  }
+
+  .date-time-area {
+    grid-template-columns: 1fr;
+  }
+
+  .time-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .details-area {
     grid-template-columns: 1fr;
   }
 
   .appointment-summary {
     grid-column: auto;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .appointment-summary > div {
+    align-items: flex-start;
   }
 
   .drive-trust {
     grid-template-columns: 1fr;
   }
 
-  .drive-trust > div {
-    padding: 20px 0;
-  }
-
   .booking-success {
-    min-height: 650px;
-    padding: 35px 22px;
-  }
-
-  .booking-success h1 {
-    font-size: 60px;
-  }
-
-  .booking-summary {
     grid-template-columns: 1fr;
+    border-radius: 20px;
   }
 
-  .summary-car,
-  .summary-line {
-    border-right: 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+  .success-image {
+    min-height: 300px;
+    max-height: 300px;
   }
 
-  .summary-line:last-child {
-    border-bottom: 0;
+  .success-content {
+    padding: 18px;
+  }
+
+  .success-content h1 {
+    font-size: 48px;
   }
 }
 
 
-/* =========================================
-   SMALL MOBILE
-========================================= */
+@media (max-width: 480px) {
 
-@media (max-width: 420px) {
-  .test-drive-hero h1 {
-    font-size: 48px;
+  .booking-progress {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .booking-header h2 {
-    font-size: 35px;
+  .progress-step {
+    min-height: 54px;
+  }
+
+  .progress-step span {
+    font-size: 12px;
   }
 
   .booking-navigation {
-    margin-top: 35px;
+    position: sticky;
+    bottom: 10px;
+    z-index: 20;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(12, 13, 15, 0.92);
+    backdrop-filter: blur(14px);
+  }
+
+  .back-button,
+  .continue-button {
+    min-width: 110px;
+  }
+
+  .location-card {
+    min-height: 280px;
+  }
+
+  .location-image {
+    height: 150px;
+  }
+
+  .success-image {
+    min-height: 250px;
+    max-height: 250px;
+  }
+
+  .summary-car img {
+    width: 76px;
+    height: 54px;
   }
 }
