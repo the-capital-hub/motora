@@ -1,204 +1,387 @@
 import { useEffect, useMemo, useState } from "react";
-
 import {
+  ArrowLeft,
   ArrowUpRight,
+  Check,
   ChevronDown,
-  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Fuel,
+  Gauge,
+  MapPin,
+  RotateCcw,
   Search,
   SlidersHorizontal,
   X,
 } from "lucide-react";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../api/client";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-
 import "./Cars.css";
 
+const BODY_TYPES = [
+  "SUV",
+  "Sedan",
+  "Coupe",
+  "Convertible",
+  "Hatchback",
+];
 
-/* =========================================================
-   PRICE FORMAT
-========================================================= */
+const FUEL_TYPES = [
+  "Petrol",
+  "Diesel",
+  "Electric",
+  "Hybrid",
+];
 
-const formatPrice = (price) => {
-  if (!price) return "₹0";
+const TRANSMISSIONS = [
+  "Automatic",
+  "Manual",
+];
 
-  if (price >= 10000000) {
-    return `₹${(price / 10000000).toFixed(2)} Cr`;
+const CITIES = [
+  "Delhi",
+  "Mumbai",
+  "Bangalore",
+  "Hyderabad",
+  "Pune",
+  "Chennai",
+  "Kolkata",
+  "Ahmedabad",
+  "Gurgaon",
+  "Noida",
+];
+
+const MIN_PRICE = 0;
+const MAX_PRICE = 15000000;
+
+const MIN_YEAR = 2015;
+const MAX_YEAR = new Date().getFullYear();
+
+const MIN_KM = 0;
+const MAX_KM = 150000;
+
+const formatPrice = (value) => {
+  const amount = Number(value || 0);
+
+  if (amount >= 10000000) {
+    return `₹${(amount / 10000000).toFixed(2)}Cr`;
   }
 
-  return `₹${(price / 100000).toFixed(1)} L`;
+  if (amount >= 100000) {
+    return `₹${(amount / 100000).toFixed(1)}L`;
+  }
+
+  return `₹${amount.toLocaleString("en-IN")}`;
 };
 
-
-/* =========================================================
-   CARS
-========================================================= */
+const formatKm = (value) => {
+  return `${Number(value || 0).toLocaleString("en-IN")} km`;
+};
 
 const Cars = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { isAuthenticated } = useAuth();
+  const searchParams = new URLSearchParams(location.search);
 
-
-  /* =======================================================
-     CARS
-  ======================================================= */
+  const initialCity = searchParams.get("city") || "All";
+  const initialBrand = searchParams.get("brand") || "All";
+  const initialType = searchParams.get("type") || "All";
+  const initialMaxPrice = Number(searchParams.get("maxPrice")) || MAX_PRICE;
 
   const [cars, setCars] = useState([]);
+  const [filterInventory, setFilterInventory] = useState([]);
 
   const [loading, setLoading] = useState(true);
-
+  const [filterLoading, setFilterLoading] = useState(true);
   const [error, setError] = useState("");
-
-
-  /* =======================================================
-     SEARCH
-  ======================================================= */
 
   const [search, setSearch] = useState("");
 
-
-  /* =======================================================
-     BASIC FILTERS
-  ======================================================= */
-
-  const [brand, setBrand] = useState("All");
-
+  const [city, setCity] = useState(initialCity);
+  const [brand, setBrand] = useState(initialBrand);
   const [model, setModel] = useState("All");
 
-  const [bodyType, setBodyType] = useState("All");
+  const [bodyType, setBodyType] = useState(
+    initialType !== "All" ? initialType : "All"
+  );
 
   const [fuel, setFuel] = useState("All");
+  const [transmission, setTransmission] = useState("All");
 
-  const [transmission, setTransmission] =
-    useState("All");
+  const [minPrice, setMinPrice] = useState(MIN_PRICE);
+  const [maxPrice, setMaxPrice] = useState(
+    Math.min(initialMaxPrice, MAX_PRICE)
+  );
 
+  const [minYear, setMinYear] = useState(MIN_YEAR);
+  const [maxYear, setMaxYear] = useState(MAX_YEAR);
 
-  /* =======================================================
-     PRICE FILTERS
-  ======================================================= */
+  const [maxKm, setMaxKm] = useState(MAX_KM);
 
-  const [minPrice, setMinPrice] =
-    useState("");
-
-  const [maxPrice, setMaxPrice] =
-    useState("");
-
-
-  /* =======================================================
-     YEAR FILTERS
-  ======================================================= */
-
-  const [minYear, setMinYear] =
-    useState("");
-
-  const [maxYear, setMaxYear] =
-    useState("");
-
-
-  /* =======================================================
-     KM FILTER
-  ======================================================= */
-
-  const [maxKm, setMaxKm] =
-    useState("");
-
-
-  /* =======================================================
-     OTHER FILTERS
-  ======================================================= */
-
-  const [location, setLocation] =
-    useState("All");
-
-  const [ownership, setOwnership] =
-    useState("All");
-
-  const [featuredOnly, setFeaturedOnly] =
-    useState(false);
-
-
-  /* =======================================================
-     SORT
-  ======================================================= */
-
-  const [sort, setSort] =
-    useState("featured");
-
-
-  /* =======================================================
-     MOBILE FILTER
-  ======================================================= */
-
-  const [mobileFilters, setMobileFilters] =
-    useState(false);
-
-
-  /* =======================================================
-     PAGINATION
-  ======================================================= */
+  const [sort, setSort] = useState("featured");
 
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCars, setTotalCars] = useState(0);
 
-  const [pagination, setPagination] =
-    useState({
-      page: 1,
-      pages: 1,
-      total: 0,
-    });
+  const [wishlist, setWishlist] = useState([]);
 
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  /* =======================================================
-     WISHLIST
-  ======================================================= */
+  const [popup, setPopup] = useState(null);
 
-  const [wishlist, setWishlist] =
-    useState([]);
+  const [citySearch, setCitySearch] = useState("");
+  const [brandSearch, setBrandSearch] = useState("");
 
-  const [wishlistLoading, setWishlistLoading] =
-    useState(false);
+  const [selectedBrandDraft, setSelectedBrandDraft] = useState(brand);
+  const [selectedModelDraft, setSelectedModelDraft] = useState(model);
 
+  const [selectedFuelDraft, setSelectedFuelDraft] = useState(fuel);
+  const [selectedBodyDraft, setSelectedBodyDraft] =
+    useState(bodyType);
+  const [selectedTransmissionDraft, setSelectedTransmissionDraft] =
+    useState(transmission);
 
-  /* =======================================================
-     FETCH CARS
-  ======================================================= */
+  const [draftMinPrice, setDraftMinPrice] = useState(minPrice);
+  const [draftMaxPrice, setDraftMaxPrice] = useState(maxPrice);
+
+  const [draftMinYear, setDraftMinYear] = useState(minYear);
+  const [draftMaxYear, setDraftMaxYear] = useState(maxYear);
+
+  const [draftMaxKm, setDraftMaxKm] = useState(maxKm);
+
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
+
+  const openPopup = (type) => {
+    if (type === "city") {
+      setCitySearch("");
+    }
+
+    if (type === "brand") {
+      setBrandSearch("");
+      setSelectedBrandDraft(brand);
+      setSelectedModelDraft(model);
+    }
+
+    if (type === "fuel") {
+      setSelectedFuelDraft(fuel);
+    }
+
+    if (type === "body") {
+      setSelectedBodyDraft(bodyType);
+    }
+
+    if (type === "transmission") {
+      setSelectedTransmissionDraft(transmission);
+    }
+
+    if (type === "price") {
+      setDraftMinPrice(minPrice);
+      setDraftMaxPrice(maxPrice);
+    }
+
+    if (type === "year") {
+      setDraftMinYear(minYear);
+      setDraftMaxYear(maxYear);
+    }
+
+    if (type === "km") {
+      setDraftMaxKm(maxKm);
+    }
+
+    setPopup(type);
+  };
+
+  const closePopup = () => {
+    setPopup(null);
+  };
+
+  const clearFilters = () => {
+    setCity("All");
+    setBrand("All");
+    setModel("All");
+    setBodyType("All");
+    setFuel("All");
+    setTransmission("All");
+    setMinPrice(MIN_PRICE);
+    setMaxPrice(MAX_PRICE);
+    setMinYear(MIN_YEAR);
+    setMaxYear(MAX_YEAR);
+    setMaxKm(MAX_KM);
+    setSearch("");
+    setPage(1);
+
+    navigate("/cars");
+  };
+
+  const applyCity = (value) => {
+    setCity(value);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyBrand = () => {
+    setBrand(selectedBrandDraft);
+    setModel(selectedModelDraft);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyPrice = () => {
+    const safeMin = Math.min(draftMinPrice, draftMaxPrice);
+    const safeMax = Math.max(draftMinPrice, draftMaxPrice);
+
+    setMinPrice(safeMin);
+    setMaxPrice(safeMax);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyYear = () => {
+    const safeMin = Math.min(draftMinYear, draftMaxYear);
+    const safeMax = Math.max(draftMinYear, draftMaxYear);
+
+    setMinYear(safeMin);
+    setMaxYear(safeMax);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyKm = () => {
+    setMaxKm(draftMaxKm);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyBodyType = () => {
+    setBodyType(selectedBodyDraft);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyFuel = () => {
+    setFuel(selectedFuelDraft);
+    setPage(1);
+    setPopup(null);
+  };
+
+  const applyTransmission = () => {
+    setTransmission(selectedTransmissionDraft);
+    setPage(1);
+    setPopup(null);
+  };
+
+  useEffect(() => {
+    const fetchFilterInventory = async () => {
+      try {
+        setFilterLoading(true);
+
+        const data = await api.get(
+          "/cars?limit=1000&status=Available"
+        );
+
+        const inventory = (data.items || []).map((car) => ({
+          id: car._id,
+          brand: car.brand || "",
+          model: car.model || "",
+          year: Number(car.year || 0),
+          price: Number(car.price || 0),
+          type: car.type || "",
+          fuel: car.fuel || "",
+          transmission: car.transmission || "",
+          km: Number(car.km || 0),
+          location: car.location || "",
+          featured: Boolean(car.featured),
+        }));
+
+        setFilterInventory(inventory);
+      } catch (err) {
+        console.error("Filter inventory error:", err);
+      } finally {
+        setFilterLoading(false);
+      }
+    };
+
+    fetchFilterInventory();
+  }, []);
+
+  const brands = useMemo(() => {
+    const values = filterInventory
+      .map((item) => item.brand)
+      .filter(Boolean);
+
+    return ["All", ...Array.from(new Set(values)).sort()];
+  }, [filterInventory]);
+
+  const models = useMemo(() => {
+    if (selectedBrandDraft === "All") {
+      return [];
+    }
+
+    const values = filterInventory
+      .filter((item) => item.brand === selectedBrandDraft)
+      .map((item) => item.model)
+      .filter(Boolean);
+
+    return Array.from(new Set(values)).sort();
+  }, [filterInventory, selectedBrandDraft]);
+
+  const availableCities = useMemo(() => {
+    const values = filterInventory
+      .map((item) => item.location)
+      .filter(Boolean);
+
+    const unique = Array.from(new Set(values));
+
+    const ordered = [
+      ...CITIES.filter((item) => unique.includes(item)),
+      ...unique.filter((item) => !CITIES.includes(item)),
+    ];
+
+    return ["All", ...ordered];
+  }, [filterInventory]);
+
+  const filteredCities = useMemo(() => {
+    const query = citySearch.trim().toLowerCase();
+
+    if (!query) {
+      return availableCities;
+    }
+
+    return availableCities.filter((item) =>
+      item.toLowerCase().includes(query)
+    );
+  }, [availableCities, citySearch]);
+
+  const filteredBrands = useMemo(() => {
+    const query = brandSearch.trim().toLowerCase();
+
+    if (!query) {
+      return brands;
+    }
+
+    return brands.filter((item) =>
+      item.toLowerCase().includes(query)
+    );
+  }, [brands, brandSearch]);
 
   useEffect(() => {
     const fetchCars = async () => {
       try {
         setLoading(true);
-
         setError("");
 
+        const params = new URLSearchParams();
 
-        const params = new URLSearchParams({
-          page: String(page),
-
-          limit: "12",
-
-          sort:
-            sort === "price-low"
-              ? "price"
-              : sort === "price-high"
-                ? "-price"
-                : sort === "year-new"
-                  ? "-year"
-                  : "featured",
-        });
-
-
-        /* SEARCH */
+        params.set("page", String(page));
+        params.set("limit", "12");
+        params.set("status", "Available");
 
         if (search.trim()) {
-          params.set(
-            "search",
-            search.trim()
-          );
+          params.set("search", search.trim());
         }
-
-
-        /* BASIC FILTERS */
 
         if (brand !== "All") {
           params.set("brand", brand);
@@ -217,169 +400,57 @@ const Cars = () => {
         }
 
         if (transmission !== "All") {
-          params.set(
-            "transmission",
-            transmission
-          );
+          params.set("transmission", transmission);
         }
 
-
-        /* PRICE */
-
-        if (minPrice) {
-          params.set(
-            "minPrice",
-            minPrice
-          );
+        if (minPrice > MIN_PRICE) {
+          params.set("minPrice", String(minPrice));
         }
 
-        if (maxPrice) {
-          params.set(
-            "maxPrice",
-            maxPrice
-          );
+        if (maxPrice < MAX_PRICE) {
+          params.set("maxPrice", String(maxPrice));
         }
 
-
-        /* YEAR */
-
-        if (minYear) {
-          params.set(
-            "minYear",
-            minYear
-          );
+        if (minYear > MIN_YEAR) {
+          params.set("minYear", String(minYear));
         }
 
-        if (maxYear) {
-          params.set(
-            "maxYear",
-            maxYear
-          );
+        if (maxYear < MAX_YEAR) {
+          params.set("maxYear", String(maxYear));
         }
 
-
-        /* KM */
-
-        if (maxKm) {
-          params.set(
-            "maxKm",
-            maxKm
-          );
+        if (maxKm < MAX_KM) {
+          params.set("maxKm", String(maxKm));
         }
 
-
-        /* LOCATION */
-
-        if (location !== "All") {
-          params.set(
-            "location",
-            location
-          );
+        if (city !== "All") {
+          params.set("location", city);
         }
 
-
-        /* OWNERSHIP */
-
-        if (ownership !== "All") {
-          params.set(
-            "ownership",
-            ownership
-          );
+        if (sort === "price-low") {
+          params.set("sort", "price");
+        } else if (sort === "price-high") {
+          params.set("sort", "-price");
+        } else if (sort === "year-new") {
+          params.set("sort", "-year");
+        } else {
+          params.set("sort", "featured");
         }
 
+        const data = await api.get(`/cars?${params.toString()}`);
 
-        /* FEATURED */
-
-        if (featuredOnly) {
-          params.set(
-            "featured",
-            "true"
-          );
-        }
-
-
-        /* PUBLIC INVENTORY */
-
-        params.set(
-          "status",
-          "Available"
-        );
-
-
-        const data = await api.get(
-          `/cars?${params.toString()}`
-        );
-
-
-        const formattedCars =
-          (data.items || []).map((car) => ({
-            id: car._id,
-
-            brand: car.brand,
-
-            model: car.model,
-
-            year: car.year,
-
-            price: car.price,
-
-            type: car.type,
-
-            fuel: car.fuel,
-
-            transmission:
-              car.transmission,
-
-            km: `${Number(
-              car.km || 0
-            ).toLocaleString("en-IN")} km`,
-
-            kmValue: Number(
-              car.km || 0
-            ),
-
-            location: car.location,
-
-            ownership:
-              car.ownership ||
-              car.ownerCount ||
-              "",
-
-            image:
-              car.images?.[0] || "",
-
-            featured:
-              Boolean(car.featured),
-
-            status: car.status,
-          }));
-
-
-        setCars(formattedCars);
-
-
-        setPagination(
-          data.pagination || {
-            page,
-            pages: 1,
-            total: formattedCars.length,
-          }
-        );
+        setCars(data.items || []);
+        setTotalPages(Number(data.pages || 1));
+        setTotalCars(Number(data.total || 0));
       } catch (err) {
-        console.error(
-          "Failed to fetch cars:",
-          err
-        );
-
+        console.error(err);
         setError(
-          err.message ||
-            "Unable to load cars. Please try again."
+          err.message || "Unable to load the car collection."
         );
       } finally {
         setLoading(false);
       }
     };
-
 
     fetchCars();
   }, [
@@ -395,154 +466,9 @@ const Cars = () => {
     minYear,
     maxYear,
     maxKm,
-    location,
-    ownership,
-    featuredOnly,
+    city,
     sort,
   ]);
-
-
-  /* =======================================================
-     FETCH USER WISHLIST
-  ======================================================= */
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setWishlist([]);
-      return;
-    }
-
-
-    const fetchWishlist = async () => {
-      try {
-        const data =
-          await api.get("/wishlist");
-
-
-        setWishlist(
-          (data?.cars || []).map(
-            (car) => car._id
-          )
-        );
-      } catch (err) {
-        console.error(
-          "Failed to fetch wishlist:",
-          err
-        );
-      }
-    };
-
-
-    fetchWishlist();
-  }, [isAuthenticated]);
-
-
-  /* =======================================================
-     FILTER OPTIONS
-  ======================================================= */
-
-  const brands = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .map((car) => car.brand)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars]);
-
-
-  const models = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .filter(
-            (car) =>
-              brand === "All" ||
-              car.brand === brand
-          )
-          .map((car) => car.model)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars, brand]);
-
-
-  const bodyTypes = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .map((car) => car.type)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars]);
-
-
-  const fuels = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .map((car) => car.fuel)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars]);
-
-
-  const transmissions = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .map((car) => car.transmission)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars]);
-
-
-  const locations = useMemo(() => {
-    return [
-      "All",
-      ...new Set(
-        cars
-          .map((car) => car.location)
-          .filter(Boolean)
-      ),
-    ];
-  }, [cars]);
-
-
-  /* =======================================================
-     YEARS
-  ======================================================= */
-
-  const currentYear =
-    new Date().getFullYear();
-
-
-  const years = Array.from(
-    { length: 12 },
-    (_, index) =>
-      currentYear - index
-  );
-
-
-  /* =======================================================
-     FILTER + SEARCH
-  ======================================================= */
-
-  const filteredCars = cars;
-
-
-  /* =======================================================
-     RESET PAGE WHEN FILTER CHANGES
-  ======================================================= */
 
   useEffect(() => {
     setPage(1);
@@ -558,1175 +484,1506 @@ const Cars = () => {
     minYear,
     maxYear,
     maxKm,
-    location,
-    ownership,
-    featuredOnly,
+    city,
     sort,
   ]);
 
-
-  /* =======================================================
-     TOGGLE WISHLIST
-  ======================================================= */
-
-  const toggleWishlist = async (id) => {
-    if (!isAuthenticated) {
-      navigate("/login", {
-        state: {
-          from: "/cars",
-        },
-      });
-
-      return;
-    }
-
+  const toggleWishlist = async (carId) => {
+    if (favoritesLoading) return;
 
     try {
-      setWishlistLoading(true);
+      setFavoritesLoading(true);
 
-
-      if (wishlist.includes(id)) {
-        await api.delete(
-          `/wishlist/${id}`
-        );
-
+      if (wishlist.includes(carId)) {
+        await api.delete(`/wishlist/${carId}`);
 
         setWishlist((current) =>
-          current.filter(
-            (item) => item !== id
-          )
+          current.filter((id) => id !== carId)
         );
       } else {
-        await api.post(
-          `/wishlist/${id}`
-        );
+        await api.post(`/wishlist/${carId}`);
 
-
-        setWishlist((current) => [
-          ...current,
-          id,
-        ]);
+        setWishlist((current) => [...current, carId]);
       }
     } catch (err) {
-      console.error(
-        "Failed to update wishlist:",
-        err
-      );
-
-      alert(
-        err.message ||
-          "Unable to update wishlist."
-      );
+      console.error("Wishlist error:", err);
     } finally {
-      setWishlistLoading(false);
+      setFavoritesLoading(false);
     }
   };
 
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
 
-  /* =======================================================
-     CLEAR FILTERS
-  ======================================================= */
+    if (city !== "All") count += 1;
+    if (brand !== "All") count += 1;
+    if (model !== "All") count += 1;
+    if (bodyType !== "All") count += 1;
+    if (fuel !== "All") count += 1;
+    if (transmission !== "All") count += 1;
+    if (minPrice > MIN_PRICE || maxPrice < MAX_PRICE) count += 1;
+    if (minYear > MIN_YEAR || maxYear < MAX_YEAR) count += 1;
+    if (maxKm < MAX_KM) count += 1;
 
-  const clearFilters = () => {
-    setSearch("");
+    return count;
+  }, [
+    city,
+    brand,
+    model,
+    bodyType,
+    fuel,
+    transmission,
+    minPrice,
+    maxPrice,
+    minYear,
+    maxYear,
+    maxKm,
+  ]);
 
-    setBrand("All");
+  const priceMinPercent =
+    ((draftMinPrice - MIN_PRICE) /
+      (MAX_PRICE - MIN_PRICE)) *
+    100;
 
-    setModel("All");
+  const priceMaxPercent =
+    ((draftMaxPrice - MIN_PRICE) /
+      (MAX_PRICE - MIN_PRICE)) *
+    100;
 
-    setBodyType("All");
+  const handleMinPriceChange = (event) => {
+    const value = Number(event.target.value);
 
-    setFuel("All");
-
-    setTransmission("All");
-
-    setMinPrice("");
-
-    setMaxPrice("");
-
-    setMinYear("");
-
-    setMaxYear("");
-
-    setMaxKm("");
-
-    setLocation("All");
-
-    setOwnership("All");
-
-    setFeaturedOnly(false);
-
-    setSort("featured");
-
-    setPage(1);
+    if (value <= draftMaxPrice) {
+      setDraftMinPrice(value);
+    }
   };
 
+  const handleMaxPriceChange = (event) => {
+    const value = Number(event.target.value);
 
-  /* =======================================================
-     ACTIVE FILTER COUNT
-  ======================================================= */
+    if (value >= draftMinPrice) {
+      setDraftMaxPrice(value);
+    }
+  };
 
-  const activeFilterCount = [
-    brand !== "All",
-    model !== "All",
-    bodyType !== "All",
-    fuel !== "All",
-    transmission !== "All",
-    Boolean(minPrice),
-    Boolean(maxPrice),
-    Boolean(minYear),
-    Boolean(maxYear),
-    Boolean(maxKm),
-    location !== "All",
-    ownership !== "All",
-    featuredOnly,
-  ].filter(Boolean).length;
+  const goToDetails = (carId) => {
+    navigate(`/cars/${carId}`);
+  };
 
+  const getImage = (car) => {
+    if (Array.isArray(car.images) && car.images.length) {
+      return car.images[0];
+    }
 
-  /* =======================================================
-     LOADING
-  ======================================================= */
+    return "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=85";
+  };
 
-  if (loading) {
-    return (
-      <div className="cars-page">
-        <div className="cars-empty">
-          <div>
-            <Search size={20} />
-          </div>
-
-          <h3>
-            Loading cars
-          </h3>
-
-          <p>
-            Please wait while we load
-            the latest inventory.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-
-  /* =======================================================
-     ERROR
-  ======================================================= */
-
-  if (error) {
-    return (
-      <div className="cars-page">
-        <div className="cars-empty">
-          <div>
-            <X size={20} />
-          </div>
-
-          <h3>
-            Unable to load cars
-          </h3>
-
-          <p>{error}</p>
-
-          <button
-            onClick={() =>
-              window.location.reload()
-            }
-          >
-            Try again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-
-  /* =======================================================
-     RETURN
-  ======================================================= */
+  const visiblePageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  ).slice(
+    Math.max(0, page - 3),
+    Math.min(totalPages, page + 2)
+  );
 
   return (
-    <div className="cars-page">
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
+    <main className="cars-page">
 
       <section className="cars-header">
+        <div className="cars-header-inner">
 
-        <div className="cars-header-content">
+          <button
+            type="button"
+            className="cars-back-button"
+            onClick={() => navigate("/")}
+          >
+            <ArrowLeft size={16} />
+            <span>Back to home</span>
+          </button>
 
-          <span className="cars-eyebrow">
-            MOTORA COLLECTION
-          </span>
+          <div className="cars-header-content">
+            <div>
+              <div className="cars-eyebrow">
+                <span />
+                MOTORA COLLECTION
+              </div>
 
-          <h1>
-            Find a car
-            <br />
-            worth driving.
-          </h1>
+              <h1>
+                Find your next
+                <br />
+                <em>perfect drive.</em>
+              </h1>
+            </div>
 
-          <p>
-            Explore a curated collection of
-            premium, performance and everyday cars.
-          </p>
-
-        </div>
-
-
-        <div className="cars-header-meta">
-
-          <span>
-            CURATED INVENTORY
-          </span>
-
-          <strong>
-            {pagination.total
-              ?.toString()
-              .padStart(2, "0") ||
-              cars.length
-                .toString()
-                .padStart(2, "0")}
-          </strong>
-
-          <small>
-            vehicles available
-          </small>
+            <p>
+              Explore our curated collection of premium
+              automobiles selected for quality, performance
+              and everyday confidence.
+            </p>
+          </div>
 
         </div>
-
       </section>
 
+      <section className="cars-toolbar">
+        <div className="cars-toolbar-inner">
 
-      {/* =================================================
-          SEARCH
-      ================================================= */}
+          <div className="cars-search">
+            <Search size={18} />
 
-      <section className="cars-search-section">
+            <input
+              type="text"
+              placeholder="Search cars, brands or models"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
+            />
 
-        <div className="cars-search">
+            {search && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={() => setSearch("")}
+                aria-label="Clear search"
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
 
-          <Search size={17} />
+          <button
+            type="button"
+            className="mobile-filter-button"
+            onClick={() => setMobileFiltersOpen(true)}
+          >
+            <SlidersHorizontal size={17} />
+            Filters
 
-          <input
-            type="text"
-            placeholder="Search by brand, model or body type..."
-            value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
-          />
+            {activeFilterCount > 0 && (
+              <span>{activeFilterCount}</span>
+            )}
+          </button>
 
-          {search && (
-            <button
-              onClick={() =>
-                setSearch("")
-              }
-              aria-label="Clear search"
+          <div className="cars-sort">
+            <span>Sort by</span>
+
+            <select
+              value={sort}
+              onChange={(event) => {
+                setSort(event.target.value);
+                setPage(1);
+              }}
             >
-              <X size={15} />
-            </button>
-          )}
+              <option value="featured">Featured</option>
+              <option value="price-low">
+                Price low to high
+              </option>
+              <option value="price-high">
+                Price high to low
+              </option>
+              <option value="year-new">
+                Newest first
+              </option>
+            </select>
+
+            <ChevronDown size={15} />
+          </div>
 
         </div>
-
-
-        <button
-          className="mobile-filter-button"
-          onClick={() =>
-            setMobileFilters(true)
-          }
-        >
-          <SlidersHorizontal
-            size={15}
-          />
-
-          Filters
-
-          {activeFilterCount > 0 && (
-            <span>
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
-
       </section>
-
-
-      {/* =================================================
-          CONTENT
-      ================================================= */}
 
       <section className="cars-content">
 
-
-        {/* =================================================
-            FILTERS
-        ================================================= */}
-
         <aside
           className={`cars-filters ${
-            mobileFilters
-              ? "cars-filters-open"
-              : ""
+            mobileFiltersOpen ? "is-open" : ""
           }`}
         >
 
-          <div className="filters-header">
-
+          <div className="mobile-filter-header">
             <div>
-
-              <span>
-                REFINE
-              </span>
-
-              <h2>
-                Filters
-              </h2>
-
-              {activeFilterCount > 0 && (
-                <small className="active-filter-count">
-                  {activeFilterCount} active
-                </small>
-              )}
-
+              <span>REFINE COLLECTION</span>
+              <strong>Filters</strong>
             </div>
-
 
             <button
-              className="mobile-filter-close"
-              onClick={() =>
-                setMobileFilters(false)
-              }
+              type="button"
+              onClick={() => setMobileFiltersOpen(false)}
               aria-label="Close filters"
             >
-              <X size={18} />
+              <X size={20} />
             </button>
-
           </div>
 
-
-          {/* =================================================
-              BRAND
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              BRAND
-            </label>
-
-            <div className="filter-options">
-
-              {brands.map((item) => (
-                <button
-                  key={item}
-                  className={
-                    brand === item
-                      ? "filter-option active"
-                      : "filter-option"
-                  }
-                  onClick={() => {
-                    setBrand(item);
-                    setModel("All");
-                  }}
-                >
-                  {item}
-                </button>
-              ))}
-
+          <div className="filters-header">
+            <div>
+              <span>REFINE</span>
+              <strong>Find your match</strong>
             </div>
 
-          </div>
-
-
-          {/* =================================================
-              MODEL
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              MODEL
-            </label>
-
-            <div className="filter-select-wrap">
-
-              <select
-                value={model}
-                onChange={(e) =>
-                  setModel(e.target.value)
-                }
-              >
-                {models.map((item) => (
-                  <option
-                    key={item}
-                    value={item}
-                  >
-                    {item === "All"
-                      ? "All Models"
-                      : item}
-                  </option>
-                ))}
-              </select>
-
-              <ChevronDown
-                size={14}
-              />
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              PRICE
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              PRICE RANGE
-            </label>
-
-            <div className="filter-price-grid">
-
-              <div className="filter-input-wrap">
-
-                <span>
-                  MIN
-                </span>
-
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="₹20 L"
-                  value={minPrice}
-                  onChange={(e) =>
-                    setMinPrice(
-                      e.target.value
-                    )
-                  }
-                />
-
-              </div>
-
-
-              <div className="filter-input-wrap">
-
-                <span>
-                  MAX
-                </span>
-
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="₹1 Cr"
-                  value={maxPrice}
-                  onChange={(e) =>
-                    setMaxPrice(
-                      e.target.value
-                    )
-                  }
-                />
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              BODY TYPE
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              BODY TYPE
-            </label>
-
-            <div className="filter-options">
-
-              {bodyTypes.map((item) => (
-                <button
-                  key={item}
-                  className={
-                    bodyType === item
-                      ? "filter-option active"
-                      : "filter-option"
-                  }
-                  onClick={() =>
-                    setBodyType(item)
-                  }
-                >
-                  {item}
-                </button>
-              ))}
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              FUEL
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              FUEL TYPE
-            </label>
-
-            <div className="filter-options filter-options-grid">
-
-              {fuels.map((item) => (
-                <button
-                  key={item}
-                  className={
-                    fuel === item
-                      ? "filter-option active"
-                      : "filter-option"
-                  }
-                  onClick={() =>
-                    setFuel(item)
-                  }
-                >
-                  {item}
-                </button>
-              ))}
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              TRANSMISSION
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              TRANSMISSION
-            </label>
-
-            <div className="filter-options">
-
-              {transmissions.map(
-                (item) => (
-                  <button
-                    key={item}
-                    className={
-                      transmission === item
-                        ? "filter-option active"
-                        : "filter-option"
-                    }
-                    onClick={() =>
-                      setTransmission(item)
-                    }
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              MODEL YEAR
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              MODEL YEAR
-            </label>
-
-            <div className="filter-price-grid">
-
-              <div className="filter-input-wrap">
-
-                <span>
-                  FROM
-                </span>
-
-                <select
-                  value={minYear}
-                  onChange={(e) =>
-                    setMinYear(
-                      e.target.value
-                    )
-                  }
-                >
-                  <option value="">
-                    Any
-                  </option>
-
-                  {years.map((year) => (
-                    <option
-                      key={year}
-                      value={year}
-                    >
-                      {year}
-                    </option>
-                  ))}
-                </select>
-
-              </div>
-
-
-              <div className="filter-input-wrap">
-
-                <span>
-                  TO
-                </span>
-
-                <select
-                  value={maxYear}
-                  onChange={(e) =>
-                    setMaxYear(
-                      e.target.value
-                    )
-                  }
-                >
-                  <option value="">
-                    Any
-                  </option>
-
-                  {years.map((year) => (
-                    <option
-                      key={year}
-                      value={year}
-                    >
-                      {year}
-                    </option>
-                  ))}
-                </select>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              KILOMETRES
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              KILOMETRES
-            </label>
-
-            <div className="filter-options">
-
+            {activeFilterCount > 0 && (
               <button
-                className={
-                  maxKm === "10000"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setMaxKm("10000")
-                }
+                type="button"
+                onClick={clearFilters}
               >
-                Under 10,000 km
+                <RotateCcw size={13} />
+                Clear
               </button>
-
-              <button
-                className={
-                  maxKm === "25000"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setMaxKm("25000")
-                }
-              >
-                Under 25,000 km
-              </button>
-
-              <button
-                className={
-                  maxKm === "50000"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setMaxKm("50000")
-                }
-              >
-                Under 50,000 km
-              </button>
-
-              <button
-                className={
-                  maxKm === "75000"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setMaxKm("75000")
-                }
-              >
-                Under 75,000 km
-              </button>
-
-            </div>
-
+            )}
           </div>
-
-
-          {/* =================================================
-              LOCATION
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              LOCATION
-            </label>
-
-            <div className="filter-select-wrap">
-
-              <select
-                value={location}
-                onChange={(e) =>
-                  setLocation(
-                    e.target.value
-                  )
-                }
-              >
-                {locations.map(
-                  (item) => (
-                    <option
-                      key={item}
-                      value={item}
-                    >
-                      {item === "All"
-                        ? "All Locations"
-                        : item}
-                    </option>
-                  )
-                )}
-              </select>
-
-              <ChevronDown
-                size={14}
-              />
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              OWNERSHIP
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label>
-              OWNERSHIP
-            </label>
-
-            <div className="filter-options">
-
-              <button
-                className={
-                  ownership === "First Owner"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setOwnership(
-                    ownership === "First Owner"
-                      ? "All"
-                      : "First Owner"
-                  )
-                }
-              >
-                First Owner
-              </button>
-
-              <button
-                className={
-                  ownership === "Second Owner"
-                    ? "filter-option active"
-                    : "filter-option"
-                }
-                onClick={() =>
-                  setOwnership(
-                    ownership === "Second Owner"
-                      ? "All"
-                      : "Second Owner"
-                  )
-                }
-              >
-                Second Owner
-              </button>
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              FEATURED
-          ================================================= */}
-
-          <div className="filter-group">
-
-            <label className="featured-filter">
-
-              <input
-                type="checkbox"
-                checked={featuredOnly}
-                onChange={(e) =>
-                  setFeaturedOnly(
-                    e.target.checked
-                  )
-                }
-              />
-
-              <span>
-                Featured Cars Only
-              </span>
-
-            </label>
-
-          </div>
-
-
-          {/* =================================================
-              CLEAR
-          ================================================= */}
 
           <button
-            className="clear-filters"
+            type="button"
+            className={`filter-card ${
+              city !== "All" ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("city")}
+          >
+            <div className="filter-card-icon">
+              <MapPin size={17} />
+            </div>
+
+            <div className="filter-card-content">
+              <span>LOCATION</span>
+              <strong>
+                {city === "All" ? "Select city" : city}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              brand !== "All" ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("brand")}
+          >
+            <div className="filter-card-icon">
+              <span className="brand-icon">M</span>
+            </div>
+
+            <div className="filter-card-content">
+              <span>BRAND</span>
+              <strong>
+                {brand === "All" ? "Select brand" : brand}
+
+                {model !== "All" && (
+                  <small>{model}</small>
+                )}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              minPrice > MIN_PRICE ||
+              maxPrice < MAX_PRICE
+                ? "is-active"
+                : ""
+            }`}
+            onClick={() => openPopup("price")}
+          >
+            <div className="filter-card-icon">
+              <span className="price-icon">₹</span>
+            </div>
+
+            <div className="filter-card-content">
+              <span>PRICE RANGE</span>
+              <strong>
+                {minPrice > MIN_PRICE ||
+                maxPrice < MAX_PRICE
+                  ? `${formatPrice(minPrice)} to ${formatPrice(
+                      maxPrice
+                    )}`
+                  : "Any budget"}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              bodyType !== "All" ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("body")}
+          >
+            <div className="filter-card-icon">
+              <Gauge size={17} />
+            </div>
+
+            <div className="filter-card-content">
+              <span>BODY TYPE</span>
+              <strong>
+                {bodyType === "All" ? "All types" : bodyType}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              fuel !== "All" ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("fuel")}
+          >
+            <div className="filter-card-icon">
+              <Fuel size={17} />
+            </div>
+
+            <div className="filter-card-content">
+              <span>FUEL TYPE</span>
+              <strong>
+                {fuel === "All" ? "All fuels" : fuel}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              transmission !== "All" ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("transmission")}
+          >
+            <div className="filter-card-icon">
+              <span className="transmission-icon">T</span>
+            </div>
+
+            <div className="filter-card-content">
+              <span>TRANSMISSION</span>
+              <strong>
+                {transmission === "All"
+                  ? "All transmissions"
+                  : transmission}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              minYear > MIN_YEAR ||
+              maxYear < MAX_YEAR
+                ? "is-active"
+                : ""
+            }`}
+            onClick={() => openPopup("year")}
+          >
+            <div className="filter-card-icon">
+              <span className="year-icon">Y</span>
+            </div>
+
+            <div className="filter-card-content">
+              <span>MODEL YEAR</span>
+              <strong>
+                {minYear === MIN_YEAR &&
+                maxYear === MAX_YEAR
+                  ? "Any year"
+                  : `${minYear} to ${maxYear}`}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className={`filter-card ${
+              maxKm < MAX_KM ? "is-active" : ""
+            }`}
+            onClick={() => openPopup("km")}
+          >
+            <div className="filter-card-icon">
+              <Gauge size={17} />
+            </div>
+
+            <div className="filter-card-content">
+              <span>MAXIMUM DISTANCE</span>
+              <strong>
+                {maxKm >= MAX_KM
+                  ? "Any distance"
+                  : `Up to ${formatKm(maxKm)}`}
+              </strong>
+            </div>
+
+            <ChevronRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            className="filters-clear-button"
             onClick={clearFilters}
           >
-            Clear all filters
+            <RotateCcw size={15} />
+            Reset all filters
           </button>
 
         </aside>
 
-
-        {/* =================================================
-            RESULTS
-        ================================================= */}
+        {mobileFiltersOpen && (
+          <button
+            type="button"
+            className="filters-overlay"
+            aria-label="Close filters"
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+        )}
 
         <div className="cars-results">
 
-          <div className="cars-results-top">
+          <div className="results-heading">
 
             <div>
-
-              <span>
-                {filteredCars.length} VEHICLES
-              </span>
+              <span>CURATED FOR YOU</span>
 
               <h2>
-                Available now
+                {totalCars || filterInventory.length || 0}
+                {" "}
+                premium cars
               </h2>
-
             </div>
 
-
-            <div className="cars-sort">
-
+            <div className="results-location">
+              <MapPin size={14} />
               <span>
-                Sort by
+                {city === "All"
+                  ? "All locations"
+                  : city}
               </span>
-
-              <div className="sort-select">
-
-                <select
-                  value={sort}
-                  onChange={(e) =>
-                    setSort(
-                      e.target.value
-                    )
-                  }
-                >
-                  <option value="featured">
-                    Featured
-                  </option>
-
-                  <option value="price-low">
-                    Price: Low to High
-                  </option>
-
-                  <option value="price-high">
-                    Price: High to Low
-                  </option>
-
-                  <option value="year-new">
-                    Newest First
-                  </option>
-                </select>
-
-                <ChevronDown
-                  size={13}
-                />
-
-              </div>
-
             </div>
 
           </div>
 
-
-          {/* =================================================
-              CAR GRID
-          ================================================= */}
-
-          {filteredCars.length > 0 ? (
-
-            <div className="cars-grid">
-
-              {filteredCars.map((car) => (
-
-                <article
-                  className="browse-car-card"
-                  key={car.id}
-                >
-
-                  {/* IMAGE */}
-
-                  <div className="browse-car-image">
-
-                    <img
-                      src={car.image}
-                      alt={`${car.brand} ${car.model}`}
-                      loading="lazy"
-                    />
-
-
-                    {/* WISHLIST */}
-
-                    <button
-                      className={
-                        wishlist.includes(
-                          car.id
-                        )
-                          ? "car-wishlist active"
-                          : "car-wishlist"
-                      }
-                      onClick={() =>
-                        toggleWishlist(
-                          car.id
-                        )
-                      }
-                      disabled={
-                        wishlistLoading
-                      }
-                      aria-label={
-                        wishlist.includes(
-                          car.id
-                        )
-                          ? "Remove from wishlist"
-                          : "Add to wishlist"
-                      }
-                    >
-                      <Heart
-                        size={16}
-                        fill={
-                          wishlist.includes(
-                            car.id
-                          )
-                            ? "currentColor"
-                            : "none"
-                        }
-                      />
-                    </button>
-
-
-                    {/* VERIFIED */}
-
-                    <span className="car-condition">
-                      VERIFIED
-                    </span>
-
-                  </div>
-
-
-                  {/* INFO */}
-
-                  <div className="browse-car-info">
-
-                    <div className="browse-car-title">
-
-                      <div>
-
-                        <span>
-                          {car.brand}
-                        </span>
-
-                        <h3>
-                          {car.model}
-                        </h3>
-
-                      </div>
-
-                      <strong>
-                        {formatPrice(
-                          car.price
-                        )}
-                      </strong>
-
-                    </div>
-
-
-                    {/* SPECS */}
-
-                    <div className="browse-car-specs">
-
-                      <span>
-                        {car.year}
-                      </span>
-
-                      <span>
-                        {car.km}
-                      </span>
-
-                      <span>
-                        {car.fuel}
-                      </span>
-
-                      <span>
-                        {car.transmission}
-                      </span>
-
-                    </div>
-
-
-                    {/* BOTTOM */}
-
-                    <div className="browse-car-bottom">
-
-                      <span>
-                        {car.location}
-                      </span>
-
-                      <button
-                        onClick={() =>
-                          navigate(
-                            `/cars/${car.id}`
-                          )
-                        }
-                      >
-                        View details
-
-                        <ArrowUpRight
-                          size={14}
-                        />
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                </article>
-
-              ))}
-
+          {error && (
+            <div className="cars-error">
+              <strong>Something went wrong</strong>
+              <span>{error}</span>
             </div>
+          )}
 
-          ) : (
-
+          {loading ? (
+            <div className="cars-loading-grid">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  className="car-skeleton"
+                  key={index}
+                >
+                  <div className="skeleton-image" />
+                  <div className="skeleton-content">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : cars.length === 0 ? (
             <div className="cars-empty">
-
-              <div>
-                <Search size={20} />
+              <div className="cars-empty-icon">
+                <Filter size={25} />
               </div>
 
-              <h3>
-                No cars found
-              </h3>
+              <h3>No matching cars found</h3>
 
               <p>
-                Try adjusting your search
-                or filters.
+                Try changing your filters or explore
+                the complete collection.
               </p>
 
               <button
+                type="button"
                 onClick={clearFilters}
               >
-                Reset filters
+                Explore all cars
+                <ArrowUpRight size={16} />
               </button>
-
             </div>
+          ) : (
+            <>
+              <div className="cars-grid">
+                {cars.map((car) => {
+                  const carId = car._id;
 
+                  return (
+                    <article
+                      className="car-card"
+                      key={carId}
+                    >
+                      <div className="car-image-wrap">
+
+                        <img
+                          src={getImage(car)}
+                          alt={`${car.brand} ${car.model}`}
+                          className="car-image"
+                          loading="lazy"
+                        />
+
+                        <div className="car-image-gradient" />
+
+                        {car.featured && (
+                          <span className="car-featured">
+                            Featured
+                          </span>
+                        )}
+
+                        <button
+                          type="button"
+                          className={`car-wishlist ${
+                            wishlist.includes(carId)
+                              ? "is-active"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            toggleWishlist(carId)
+                          }
+                          aria-label="Save car"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill={
+                              wishlist.includes(carId)
+                                ? "currentColor"
+                                : "none"
+                            }
+                            stroke="currentColor"
+                            strokeWidth="1.7"
+                          >
+                            <path d="M20.8 8.6c0 5.4-8.8 10.1-8.8 10.1S3.2 14 3.2 8.6A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8.8 2.2Z" />
+                          </svg>
+                        </button>
+
+                        <div className="car-image-bottom">
+                          <span>
+                            {car.year}
+                          </span>
+
+                          <span>
+                            {formatKm(car.km)}
+                          </span>
+                        </div>
+
+                      </div>
+
+                      <div className="car-card-content">
+
+                        <div className="car-card-top">
+
+                          <div>
+                            <span className="car-brand">
+                              {car.brand}
+                            </span>
+
+                            <h3>
+                              {car.model}
+                            </h3>
+
+                            {car.variant && (
+                              <p>
+                                {car.variant}
+                              </p>
+                            )}
+                          </div>
+
+                          <strong className="car-price">
+                            {formatPrice(car.price)}
+                          </strong>
+
+                        </div>
+
+                        <div className="car-meta">
+
+                          <span>
+                            {car.fuel}
+                          </span>
+
+                          <span>
+                            {car.transmission}
+                          </span>
+
+                          <span>
+                            {car.type}
+                          </span>
+
+                        </div>
+
+                        <div className="car-card-footer">
+
+                          <span className="car-location">
+                            <MapPin size={13} />
+                            {car.location}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              goToDetails(carId)
+                            }
+                          >
+                            View car
+                            <ArrowUpRight size={15} />
+                          </button>
+
+                        </div>
+
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="cars-pagination">
+
+                  <button
+                    type="button"
+                    disabled={page <= 1}
+                    onClick={() =>
+                      setPage((current) =>
+                        Math.max(1, current - 1)
+                      )
+                    }
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft size={17} />
+                  </button>
+
+                  {visiblePageNumbers.map(
+                    (pageNumber) => (
+                      <button
+                        type="button"
+                        key={pageNumber}
+                        className={
+                          page === pageNumber
+                            ? "is-active"
+                            : ""
+                        }
+                        onClick={() =>
+                          setPage(pageNumber)
+                        }
+                      >
+                        {pageNumber}
+                      </button>
+                    )
+                  )}
+
+                  <button
+                    type="button"
+                    disabled={page >= totalPages}
+                    onClick={() =>
+                      setPage((current) =>
+                        Math.min(
+                          totalPages,
+                          current + 1
+                        )
+                      )
+                    }
+                    aria-label="Next page"
+                  >
+                    <ChevronRight size={17} />
+                  </button>
+
+                </div>
+              )}
+            </>
           )}
 
         </div>
 
       </section>
 
-
-      {/* =================================================
-          PAGINATION
-      ================================================= */}
-
-      <div className="cars-pagination">
-
-        <button
-          type="button"
-          disabled={page <= 1}
-          onClick={() =>
-            setPage(
-              (current) =>
-                Math.max(
-                  1,
-                  current - 1
-                )
-            )
-          }
+      {popup && (
+        <div
+          className="filter-modal-backdrop"
+          onMouseDown={(event) => {
+            if (
+              event.target === event.currentTarget
+            ) {
+              closePopup();
+            }
+          }}
         >
-          Previous
-        </button>
+          <div className="filter-modal">
 
+            <div className="filter-modal-header">
 
-        <span>
-          Page{" "}
-          {pagination.page || page}{" "}
-          of{" "}
-          {pagination.pages || 1}
-        </span>
+              <div>
+                <span>
+                  {popup === "city" && "LOCATION"}
+                  {popup === "brand" && "MANUFACTURER"}
+                  {popup === "price" && "BUDGET"}
+                  {popup === "body" && "BODY STYLE"}
+                  {popup === "fuel" && "POWERTRAIN"}
+                  {popup === "transmission" &&
+                    "TRANSMISSION"}
+                  {popup === "year" && "MODEL YEAR"}
+                  {popup === "km" && "DISTANCE"}
+                </span>
 
+                <h3>
+                  {popup === "city" &&
+                    "Where are you shopping?"}
 
-        <button
-          type="button"
-          disabled={
-            page >=
-            (pagination.pages || 1)
-          }
-          onClick={() =>
-            setPage(
-              (current) =>
-                Math.min(
-                  pagination.pages || 1,
-                  current + 1
-                )
-            )
-          }
-        >
-          Next
-        </button>
+                  {popup === "brand" &&
+                    "Choose your preferred brand"}
 
-      </div>
+                  {popup === "price" &&
+                    "Set your ideal budget"}
 
-    </div>
+                  {popup === "body" &&
+                    "Choose a body type"}
+
+                  {popup === "fuel" &&
+                    "Choose a fuel type"}
+
+                  {popup === "transmission" &&
+                    "Choose transmission"}
+
+                  {popup === "year" &&
+                    "Choose model year"}
+
+                  {popup === "km" &&
+                    "Set maximum distance"}
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={closePopup}
+                aria-label="Close popup"
+              >
+                <X size={19} />
+              </button>
+
+            </div>
+
+            {popup === "city" && (
+              <div className="modal-body">
+
+                <div className="modal-search">
+                  <Search size={17} />
+
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search your city"
+                    value={citySearch}
+                    onChange={(event) =>
+                      setCitySearch(
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="modal-option-list">
+
+                  {filteredCities.map(
+                    (item) => (
+                      <button
+                        type="button"
+                        key={item}
+                        className={
+                          city === item
+                            ? "modal-option is-selected"
+                            : "modal-option"
+                        }
+                        onClick={() =>
+                          applyCity(item)
+                        }
+                      >
+                        <span>
+                          <MapPin size={15} />
+                          {item === "All"
+                            ? "All locations"
+                            : item}
+                        </span>
+
+                        {city === item && (
+                          <Check size={17} />
+                        )}
+                      </button>
+                    )
+                  )}
+
+                </div>
+
+              </div>
+            )}
+
+            {popup === "brand" && (
+              <div className="modal-body">
+
+                <div className="modal-search">
+                  <Search size={17} />
+
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search brand"
+                    value={brandSearch}
+                    onChange={(event) =>
+                      setBrandSearch(
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="brand-modal-list">
+
+                  {filteredBrands.map(
+                    (item) => {
+                      const brandModels =
+                        filterInventory
+                          .filter(
+                            (car) =>
+                              car.brand === item
+                          )
+                          .map(
+                            (car) =>
+                              car.model
+                          )
+                          .filter(Boolean);
+
+                      const uniqueModels =
+                        Array.from(
+                          new Set(brandModels)
+                        ).sort();
+
+                      return (
+                        <div
+                          className="brand-modal-group"
+                          key={item}
+                        >
+
+                          <button
+                            type="button"
+                            className={
+                              selectedBrandDraft ===
+                              item
+                                ? "brand-modal-row is-selected"
+                                : "brand-modal-row"
+                            }
+                            onClick={() => {
+                              setSelectedBrandDraft(
+                                item
+                              );
+                              setSelectedModelDraft(
+                                "All"
+                              );
+                            }}
+                          >
+                            <span className="brand-radio">
+                              {selectedBrandDraft ===
+                                item && (
+                                <span />
+                              )}
+                            </span>
+
+                            <strong>
+                              {item === "All"
+                                ? "All brands"
+                                : item}
+                            </strong>
+
+                            {selectedBrandDraft ===
+                              item && (
+                              <Check size={16} />
+                            )}
+                          </button>
+
+                          {selectedBrandDraft ===
+                            item &&
+                            item !== "All" &&
+                            uniqueModels.length >
+                              0 && (
+                              <div className="brand-models">
+
+                                <button
+                                  type="button"
+                                  className={
+                                    selectedModelDraft ===
+                                    "All"
+                                      ? "model-option is-selected"
+                                      : "model-option"
+                                  }
+                                  onClick={() =>
+                                    setSelectedModelDraft(
+                                      "All"
+                                    )
+                                  }
+                                >
+                                  <span>
+                                    All models
+                                  </span>
+
+                                  {selectedModelDraft ===
+                                    "All" && (
+                                    <Check size={15} />
+                                  )}
+                                </button>
+
+                                {uniqueModels.map(
+                                  (modelName) => (
+                                    <button
+                                      type="button"
+                                      className={
+                                        selectedModelDraft ===
+                                        modelName
+                                          ? "model-option is-selected"
+                                          : "model-option"
+                                      }
+                                      key={modelName}
+                                      onClick={() =>
+                                        setSelectedModelDraft(
+                                          modelName
+                                        )
+                                      }
+                                    >
+                                      <span>
+                                        {modelName}
+                                      </span>
+
+                                      {selectedModelDraft ===
+                                        modelName && (
+                                        <Check
+                                          size={15}
+                                        />
+                                      )}
+                                    </button>
+                                  )
+                                )}
+
+                              </div>
+                            )}
+
+                        </div>
+                      );
+                    }
+                  )}
+
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() => {
+                      setSelectedBrandDraft("All");
+                      setSelectedModelDraft("All");
+                    }}
+                  >
+                    Clear
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyBrand}
+                  >
+                    Apply brand
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "price" && (
+              <div className="modal-body price-modal">
+
+                <div className="price-display">
+
+                  <div>
+                    <span>MINIMUM</span>
+                    <strong>
+                      {formatPrice(
+                        draftMinPrice
+                      )}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>MAXIMUM</span>
+                    <strong>
+                      {formatPrice(
+                        draftMaxPrice
+                      )}
+                    </strong>
+                  </div>
+
+                </div>
+
+                <div className="range-wrapper">
+
+                  <div
+                    className="range-track-active"
+                    style={{
+                      left: `${priceMinPercent}%`,
+                      right: `${
+                        100 - priceMaxPercent
+                      }%`,
+                    }}
+                  />
+
+                  <input
+                    type="range"
+                    min={MIN_PRICE}
+                    max={MAX_PRICE}
+                    step={100000}
+                    value={draftMinPrice}
+                    onChange={
+                      handleMinPriceChange
+                    }
+                    className="range-input range-min"
+                    aria-label="Minimum price"
+                  />
+
+                  <input
+                    type="range"
+                    min={MIN_PRICE}
+                    max={MAX_PRICE}
+                    step={100000}
+                    value={draftMaxPrice}
+                    onChange={
+                      handleMaxPriceChange
+                    }
+                    className="range-input range-max"
+                    aria-label="Maximum price"
+                  />
+
+                </div>
+
+                <div className="range-labels">
+                  <span>₹0</span>
+                  <span>₹1.5Cr+</span>
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() => {
+                      setDraftMinPrice(
+                        MIN_PRICE
+                      );
+                      setDraftMaxPrice(
+                        MAX_PRICE
+                      );
+                    }}
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyPrice}
+                  >
+                    Apply budget
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "body" && (
+              <div className="modal-body">
+
+                <div className="choice-grid">
+
+                  {[
+                    "All",
+                    ...BODY_TYPES,
+                  ].map((item) => (
+                    <button
+                      type="button"
+                      key={item}
+                      className={
+                        selectedBodyDraft === item
+                          ? "choice-card is-selected"
+                          : "choice-card"
+                      }
+                      onClick={() =>
+                        setSelectedBodyDraft(
+                          item
+                        )
+                      }
+                    >
+                      <span>
+                        {item === "All"
+                          ? "All types"
+                          : item}
+                      </span>
+
+                      {selectedBodyDraft ===
+                        item && (
+                        <Check size={16} />
+                      )}
+                    </button>
+                  ))}
+
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() =>
+                      setSelectedBodyDraft(
+                        "All"
+                      )
+                    }
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyBodyType}
+                  >
+                    Apply
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "fuel" && (
+              <div className="modal-body">
+
+                <div className="choice-grid">
+
+                  {[
+                    "All",
+                    ...FUEL_TYPES,
+                  ].map((item) => (
+                    <button
+                      type="button"
+                      key={item}
+                      className={
+                        selectedFuelDraft === item
+                          ? "choice-card is-selected"
+                          : "choice-card"
+                      }
+                      onClick={() =>
+                        setSelectedFuelDraft(
+                          item
+                        )
+                      }
+                    >
+                      <span>
+                        {item === "All"
+                          ? "All fuels"
+                          : item}
+                      </span>
+
+                      {selectedFuelDraft ===
+                        item && (
+                        <Check size={16} />
+                      )}
+                    </button>
+                  ))}
+
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() =>
+                      setSelectedFuelDraft(
+                        "All"
+                      )
+                    }
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyFuel}
+                  >
+                    Apply
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "transmission" && (
+              <div className="modal-body">
+
+                <div className="choice-grid">
+
+                  {[
+                    "All",
+                    ...TRANSMISSIONS,
+                  ].map((item) => (
+                    <button
+                      type="button"
+                      key={item}
+                      className={
+                        selectedTransmissionDraft ===
+                        item
+                          ? "choice-card is-selected"
+                          : "choice-card"
+                      }
+                      onClick={() =>
+                        setSelectedTransmissionDraft(
+                          item
+                        )
+                      }
+                    >
+                      <span>
+                        {item === "All"
+                          ? "All transmissions"
+                          : item}
+                      </span>
+
+                      {selectedTransmissionDraft ===
+                        item && (
+                        <Check size={16} />
+                      )}
+                    </button>
+                  ))}
+
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() =>
+                      setSelectedTransmissionDraft(
+                        "All"
+                      )
+                    }
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyTransmission}
+                  >
+                    Apply
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "year" && (
+              <div className="modal-body price-modal">
+
+                <div className="price-display">
+
+                  <div>
+                    <span>FROM</span>
+                    <strong>
+                      {draftMinYear}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>TO</span>
+                    <strong>
+                      {draftMaxYear}
+                    </strong>
+                  </div>
+
+                </div>
+
+                <div className="year-range-grid">
+
+                  <label>
+                    <span>Minimum year</span>
+
+                    <select
+                      value={draftMinYear}
+                      onChange={(event) =>
+                        setDraftMinYear(
+                          Number(
+                            event.target.value
+                          )
+                        )
+                      }
+                    >
+                      {Array.from(
+                        {
+                          length:
+                            MAX_YEAR -
+                            MIN_YEAR +
+                            1,
+                        },
+                        (_, index) =>
+                          MIN_YEAR + index
+                      ).map((year) => (
+                        <option
+                          key={year}
+                          value={year}
+                        >
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label>
+                    <span>Maximum year</span>
+
+                    <select
+                      value={draftMaxYear}
+                      onChange={(event) =>
+                        setDraftMaxYear(
+                          Number(
+                            event.target.value
+                          )
+                        )
+                      }
+                    >
+                      {Array.from(
+                        {
+                          length:
+                            MAX_YEAR -
+                            MIN_YEAR +
+                            1,
+                        },
+                        (_, index) =>
+                          MIN_YEAR + index
+                      ).map((year) => (
+                        <option
+                          key={year}
+                          value={year}
+                        >
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() => {
+                      setDraftMinYear(
+                        MIN_YEAR
+                      );
+                      setDraftMaxYear(
+                        MAX_YEAR
+                      );
+                    }}
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyYear}
+                  >
+                    Apply year
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {popup === "km" && (
+              <div className="modal-body price-modal">
+
+                <div className="price-display">
+
+                  <div>
+                    <span>MAXIMUM DISTANCE</span>
+                    <strong>
+                      {formatKm(
+                        draftMaxKm
+                      )}
+                    </strong>
+                  </div>
+
+                </div>
+
+                <input
+                  type="range"
+                  min={MIN_KM}
+                  max={MAX_KM}
+                  step={5000}
+                  value={draftMaxKm}
+                  onChange={(event) =>
+                    setDraftMaxKm(
+                      Number(
+                        event.target.value
+                      )
+                    )
+                  }
+                  className="single-range"
+                  aria-label="Maximum distance"
+                />
+
+                <div className="range-labels">
+                  <span>0 km</span>
+                  <span>150,000 km</span>
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-reset"
+                    onClick={() =>
+                      setDraftMaxKm(MAX_KM)
+                    }
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="button"
+                    className="modal-apply"
+                    onClick={applyKm}
+                  >
+                    Apply distance
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
+    </main>
   );
 };
-
 
 export default Cars;

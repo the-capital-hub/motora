@@ -5,8 +5,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import "./FeaturedCars.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const cars = [
   {
@@ -60,54 +63,108 @@ const FeaturedCars = () => {
   const trackRef = useRef(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) return;
+
     const ctx = gsap.context(() => {
-      gsap.from(".collection-eyebrow", {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.7,
-      });
+      const eyebrow = section.querySelector(
+        ".collection-eyebrow"
+      );
 
-      gsap.from(".collection-title-line", {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        },
-        yPercent: 70,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-      });
+      const titleLines = section.querySelectorAll(
+        ".collection-title-line"
+      );
 
-      gsap.from(".car-card", {
-        scrollTrigger: {
-          trigger: ".cars-track",
-          start: "top 82%",
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-      });
-    }, sectionRef);
+      const cards = section.querySelectorAll(
+        ".car-card"
+      );
 
-    return () => ctx.revert();
+      if (eyebrow) {
+        gsap.from(eyebrow, {
+          y: 20,
+          opacity: 0,
+          duration: 0.7,
+          ease: "power3.out",
+
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            once: true,
+          },
+        });
+      }
+
+      if (titleLines.length) {
+        gsap.from(titleLines, {
+          yPercent: 70,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            once: true,
+          },
+        });
+      }
+
+      if (cards.length) {
+        gsap.from(cards, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+
+          scrollTrigger: {
+            trigger: trackRef.current,
+            start: "top 82%",
+            once: true,
+          },
+        });
+      }
+    }, section);
+
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   const scrollCars = (direction) => {
     if (!trackRef.current) return;
 
     const amount =
-      window.innerWidth > 900 ? 520 : 300;
+      window.innerWidth > 900
+        ? 520
+        : window.innerWidth > 600
+        ? 420
+        : 300;
 
     trackRef.current.scrollBy({
-      left: direction === "next" ? amount : -amount,
+      left:
+        direction === "next"
+          ? amount
+          : -amount,
       behavior: "smooth",
     });
+  };
+
+  const handleViewAll = () => {
+    const carsSection = document.querySelector(
+      "#cars"
+    );
+
+    if (carsSection) {
+      carsSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else {
+      window.location.hash = "cars";
+    }
   };
 
   return (
@@ -117,6 +174,8 @@ const FeaturedCars = () => {
       id="collection"
     >
       <div className="featured-cars-container">
+
+        {/* HEADER */}
 
         <div className="collection-header">
 
@@ -136,7 +195,12 @@ const FeaturedCars = () => {
               </span>
 
               <span className="collection-title-mask">
-                <span className="collection-title-line collection-title-bold">
+                <span
+                  className="
+                    collection-title-line
+                    collection-title-bold
+                  "
+                >
                   carefully selected
                 </span>
               </span>
@@ -144,6 +208,9 @@ const FeaturedCars = () => {
             </h2>
 
           </div>
+
+
+          {/* DESCRIPTION */}
 
           <div className="collection-description">
 
@@ -156,17 +223,24 @@ const FeaturedCars = () => {
             <button
               type="button"
               className="view-all-cars"
-              onClick={() => {
-                window.location.href = "#cars";
-              }}
+              onClick={handleViewAll}
             >
-              <span>VIEW ALL CARS</span>
-              <ArrowUpRight size={16} />
+              <span>
+                VIEW ALL CARS
+              </span>
+
+              <ArrowUpRight
+                size={16}
+                strokeWidth={1.8}
+              />
             </button>
 
           </div>
 
         </div>
+
+
+        {/* CAR TRACK */}
 
         <div
           ref={trackRef}
@@ -174,10 +248,13 @@ const FeaturedCars = () => {
         >
 
           {cars.map((car) => (
+
             <article
               className="car-card"
               key={car.id}
             >
+
+              {/* IMAGE */}
 
               <div className="car-image-wrapper">
 
@@ -188,21 +265,38 @@ const FeaturedCars = () => {
                   loading="lazy"
                 />
 
-                <div className="car-image-overlay" />
+                <div
+                  className="car-image-overlay"
+                />
+
+
+                {/* NUMBER */}
 
                 <span className="car-number">
                   {car.id}
                 </span>
 
+
+                {/* VIEW */}
+
                 <button
                   type="button"
                   className="car-view-button"
                   aria-label={`View ${car.brand} ${car.model}`}
+                  onClick={() => {
+                    handleViewAll();
+                  }}
                 >
-                  <ArrowUpRight size={18} />
+                  <ArrowUpRight
+                    size={18}
+                    strokeWidth={1.8}
+                  />
                 </button>
 
               </div>
+
+
+              {/* CAR INFO */}
 
               <div className="car-info">
 
@@ -224,48 +318,79 @@ const FeaturedCars = () => {
 
               </div>
 
+
+              {/* SPECS */}
+
               <div className="car-specs">
 
-                <span>{car.year}</span>
+                <span>
+                  {car.year}
+                </span>
 
                 <i aria-hidden="true" />
 
-                <span>{car.mileage}</span>
+                <span>
+                  {car.mileage}
+                </span>
 
                 <i aria-hidden="true" />
 
-                <span>{car.fuel}</span>
+                <span>
+                  {car.fuel}
+                </span>
 
               </div>
 
             </article>
+
           ))}
 
         </div>
 
+
+        {/* BOTTOM */}
+
         <div className="collection-bottom">
 
           <div className="collection-count">
-            <strong>04</strong>
-            <span> / 08</span>
+
+            <strong>
+              04
+            </strong>
+
+            <span>
+              / 08
+            </span>
+
           </div>
+
 
           <div className="collection-controls">
 
             <button
               type="button"
-              onClick={() => scrollCars("prev")}
+              onClick={() =>
+                scrollCars("prev")
+              }
               aria-label="Previous cars"
             >
-              <ArrowLeft size={17} />
+              <ArrowLeft
+                size={17}
+                strokeWidth={1.8}
+              />
             </button>
 
             <button
               type="button"
-              onClick={() => scrollCars("next")}
+              onClick={() =>
+                scrollCars("next")
+              }
               aria-label="Next cars"
             >
-              <ArrowRight size={17} />
+              <ArrowRight
+                size={17}
+                strokeWidth={1.8}
+              />
             </button>
 
           </div>
