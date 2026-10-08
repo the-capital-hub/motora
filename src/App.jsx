@@ -76,6 +76,7 @@ import {
   ClientActivity,
 } from "./client/ClientListPages";
 import AIFloatingButton from "./components/AIFloatingButton/AIFloatingButton";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 // ================= PUBLIC LAYOUT =================
 
@@ -89,6 +90,8 @@ const PublicLayout = ({ children }) => (
     <AIFloatingButton onClick={() => {
         window.location.href = "/ai-concierge";
       }}/>
+      <ScrollToTop/>
+    
   </>
 );
 
