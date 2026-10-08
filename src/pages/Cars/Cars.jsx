@@ -604,7 +604,7 @@ const Cars = () => {
           <div className="cars-header-content">
             <div>
               <div className="cars-eyebrow">
-                <span />
+                
                 MOTORA COLLECTION
               </div>
 

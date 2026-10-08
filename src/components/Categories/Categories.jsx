@@ -123,7 +123,7 @@ const Categories = () => {
         <div className="categories-header">
 
           <div className="categories-eyebrow">
-            <span />
+            
             DISCOVER YOUR STYLE
           </div>
 

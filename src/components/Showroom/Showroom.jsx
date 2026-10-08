@@ -97,7 +97,7 @@ const Showroom = () => {
             <div className="showroom-heading">
 
               <div className="showroom-eyebrow">
-                <span />
+                
                 VISIT MOTORA
               </div>
 

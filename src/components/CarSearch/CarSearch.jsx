@@ -120,7 +120,7 @@ const CarSearch = () => {
 
           <div className="car-search-header">
             <div className="car-search-eyebrow">
-              <span className="eyebrow-line" />
+             
               <span>FIND YOUR CAR</span>
             </div>
 

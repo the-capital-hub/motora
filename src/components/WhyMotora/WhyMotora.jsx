@@ -110,7 +110,7 @@ const WhyMotora = () => {
           <div className="why-heading">
 
             <div className="why-eyebrow">
-              <span />
+             
               WHY MOTORA
             </div>
 

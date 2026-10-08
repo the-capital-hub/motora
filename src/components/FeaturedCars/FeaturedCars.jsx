@@ -182,7 +182,7 @@ const FeaturedCars = () => {
           <div className="collection-heading">
 
             <div className="collection-eyebrow">
-              <span />
+              
               THE COLLECTION
             </div>
 

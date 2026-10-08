@@ -29,12 +29,12 @@
   letter-spacing: 1.5px;
 }
 
-.eyebrow-line {
+/* .eyebrow-line {
   width: 28px;
   height: 1px;
   background: #171717;
   display: block;
-}
+} */
 
 .car-search-heading-row {
   display: flex;

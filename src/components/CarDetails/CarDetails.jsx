@@ -127,7 +127,7 @@ const CarDetails = () => {
           <div className="details-heading">
 
             <div className="details-eyebrow">
-              <span />
+             
               FEATURED AUTOMOBILE
             </div>
 

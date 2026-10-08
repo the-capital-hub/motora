@@ -119,7 +119,7 @@ const PremiumBrands = () => {
         <div className="brands-header">
 
           <div className="brands-eyebrow">
-            <span />
+            
             THE COLLECTION
           </div>
 
