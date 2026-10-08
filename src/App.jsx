@@ -87,9 +87,7 @@ const PublicLayout = ({ children }) => (
     <main>{children}</main>
 
     <Footer />
-    <AIFloatingButton onClick={() => {
-        window.location.href = "/ai-concierge";
-      }}/>
+    <AIFloatingButton />
       <ScrollToTop/>
     
   </>

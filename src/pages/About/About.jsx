@@ -105,7 +105,7 @@ function About() {
 
         <div className="motora-about-hero-content">
           <div className="motora-about-eyebrow">
-            <span />
+            
             MORE THAN A CAR
           </div>
 

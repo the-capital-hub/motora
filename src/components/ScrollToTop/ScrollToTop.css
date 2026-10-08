@@ -1,69 +1,64 @@
 .scroll-to-top {
   position: fixed;
-
   right: 24px;
   bottom: 24px;
 
-  z-index: 9998;
+  width: 50px;
+  height: 50px;
 
-  width: 48px;
-  height: 48px;
-
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 50%;
 
-  background: rgba(10, 10, 10, 0.88);
-
+  background: rgba(10, 12, 16, 0.92);
   color: #ffffff;
 
   cursor: pointer;
 
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 
-  transform: translateY(12px);
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.35);
+  transform: translateY(15px);
 
   transition:
     opacity 0.3s ease,
     visibility 0.3s ease,
     transform 0.3s ease,
-    background 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease;
+    background 0.3s ease;
+
+  z-index: 9998;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.scroll-to-top.is-visible {
+.scroll-to-top.show {
   opacity: 1;
   visibility: visible;
-
+  pointer-events: auto;
   transform: translateY(0);
 }
 
 .scroll-to-top:hover {
   background: #ffffff;
-
-  color: #080808;
-
-  border-color: #ffffff;
-
-  transform: translateY(-3px);
+  color: #111111;
+  transform: translateY(-4px);
 }
 
-@media (max-width: 600px) {
-  .scroll-to-top {
-    right: 16px;
-    bottom: 16px;
+.scroll-to-top:active {
+  transform: translateY(-1px);
+}
 
-    width: 44px;
-    height: 44px;
+@media (max-width: 768px) {
+  .scroll-to-top {
+    width: 46px;
+    height: 46px;
+    right: 18px;
+    bottom: 18px;
   }
 }

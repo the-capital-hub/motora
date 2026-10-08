@@ -88,9 +88,7 @@ const Contact = () => {
 
         <div className="contact-hero-inner">
           <div className="contact-hero-copy">
-            <span className="contact-eyebrow">
-              CONTACT MOTORA
-            </span>
+            
 
             <h1>
               Let's talk

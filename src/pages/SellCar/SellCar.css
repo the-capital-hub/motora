@@ -294,6 +294,7 @@
 }
 
 .sell-process-grid > div {
+  filter: none;
   min-height: 250px;
 
   position: relative;
@@ -356,12 +357,12 @@
   inset: 0;
   z-index: -1;
 
-  background:
+  /* background:
     linear-gradient(
       180deg,
       rgba(5, 9, 8, 0.20),
       rgba(5, 9, 8, 0.93)
-    );
+    ); */
 }
 
 .sell-process-grid > div:hover {
