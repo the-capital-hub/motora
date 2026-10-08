@@ -75,6 +75,7 @@ import {
   ClientSellRequests,
   ClientActivity,
 } from "./client/ClientListPages";
+import AIFloatingButton from "./components/AIFloatingButton/AIFloatingButton";
 
 // ================= PUBLIC LAYOUT =================
 
@@ -85,6 +86,9 @@ const PublicLayout = ({ children }) => (
     <main>{children}</main>
 
     <Footer />
+    <AIFloatingButton onClick={() => {
+        window.location.href = "/ai-concierge";
+      }}/>
   </>
 );
 
