@@ -182,13 +182,7 @@ const Hero = () => {
       <div className="hero-container">
         <div className="hero-content">
 
-          <div className="hero-eyebrow">
-            <span className="eyebrow-line" />
-
-            <span>
-              PREMIUM AUTOMOTIVE
-            </span>
-          </div>
+         
 
           <h1 className="hero-title">
 
