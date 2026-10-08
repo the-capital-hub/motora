@@ -25,7 +25,7 @@ const showrooms = [
     cars: 42,
     type: "Flagship",
     image:
-      "https://images.unsplash.com/photo-1562141961-b9d9b8b8e4f5?auto=format&fit=crop&w=1800&q=90",
+      "https://images.pexels.com/photos/9702328/pexels-photo-9702328.jpeg",
   },
   {
     id: 2,
@@ -125,9 +125,7 @@ const Showroom = () => {
 
         <div className="showroom-hero-content">
 
-          <span className="showroom-eyebrow">
-            MOTORA SHOWROOMS
-          </span>
+          
 
           <h1>
             Come see it
